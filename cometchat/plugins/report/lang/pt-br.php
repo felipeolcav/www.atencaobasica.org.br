@@ -1,0 +1,14 @@
+<?php
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/* LANGUAGE */
+
+$report_language[0] = 'Relatar Conversação';
+$report_language[1] = 'Razões pelas quais está reportando esse usuário?';
+$report_language[2] = 'Reportar Usuário';
+$report_language[3] = 'Obrigado por reportar esse usuário';
+$report_language[4] = 'Fechando janela em breve';
+$report_language[5] = 'Desculpe, mas sua conversação com esse usuário está vazia.';
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
