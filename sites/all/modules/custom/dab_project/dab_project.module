@@ -1,0 +1,35 @@
+<?php
+
+/**
+ *  Javascript for
+ */
+
+function dab_project_init(){
+  drupal_add_js(drupal_get_path('module', 'dab_project') .'/dab-project.js');
+}
+
+
+/**
+ *  Adição de validação customizada no form de registro de usuário
+ */
+function dab_project_form_user_register_form_alter(&$form, &$form_state, $form_id){
+    $form['#validate'][] = 'dab_project_user_registration_validate';
+
+}
+
+
+/**
+ *
+ */
+function dab_project_user_registration_validate(&$form,&$form_state){
+    $cpf = $form_state['values']['field_cpf']['und'][0]['value'];
+
+    $check_unique_query = 'SELECT field_cpf_value FROM {field_data_field_cpf} WHERE field_cpf_value = :cpf  LIMIT 1 ';
+
+    //if a result is returned, that means the $staff_id exists
+    if (db_query($check_unique_query,array(':cpf'=>$cpf))->fetchField()){
+        form_set_error('cpf','This CPF is already in use');
+    }
+}
+
+?>
