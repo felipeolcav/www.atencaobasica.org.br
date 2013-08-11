@@ -9,28 +9,29 @@ dependencies[] = commons_topics
 dependencies[] = ctools
 dependencies[] = entityreference
 dependencies[] = features
+dependencies[] = og
 dependencies[] = og_ui
+dependencies[] = poll
 dependencies[] = radioactivity
 dependencies[] = strongarm
 dependencies[] = views
 dependencies[] = views_litepager
-dependencies[] = poll
 features[ctools][] = strongarm:strongarm:1
 features[ctools][] = views:views_default:3.0
 features[features_api][] = api:1
 features[field_instance][] = node-poll-body
-features[field_instance][] = node-poll-field_topics
-features[field_instance][] = node-poll-group_content_access
 features[og_features_permission][] = node:group:create poll content
 features[og_features_permission][] = node:group:delete any poll content
 features[og_features_permission][] = node:group:delete own poll content
 features[og_features_permission][] = node:group:update any poll content
 features[og_features_permission][] = node:group:update own poll content
+features[user_permission][] = cancel own vote
 features[user_permission][] = create poll content
 features[user_permission][] = delete any poll content
 features[user_permission][] = delete own poll content
 features[user_permission][] = edit any poll content
 features[user_permission][] = edit own poll content
+features[user_permission][] = vote on polls
 features[variable][] = comment_anonymous_poll
 features[variable][] = comment_default_mode_poll
 features[variable][] = comment_default_per_page_poll
@@ -45,9 +46,10 @@ features[variable][] = node_options_poll
 features[variable][] = node_preview_poll
 features[variable][] = node_submitted_poll
 features[views_view][] = commons_bw_polls
-; Information added by drupal.org packaging script on 2013-04-04
-version = "7.x-3.2"
+
+; Information added by drupal.org packaging script on 2013-08-09
+version = "7.x-3.3"
 core = "7.x"
 project = "commons_polls"
-datestamp = "1365038717"
+datestamp = "1376014384"
 

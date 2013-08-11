@@ -7,7 +7,8 @@
 /**
  * Implements hook_ctools_plugin_api().
  */
-function commons_activity_streams_ctools_plugin_api($module = NULL, $api = NULL) {
+function commons_activity_streams_ctools_plugin_api() {
+  list($module, $api) = func_get_args();
   if ($module == "strongarm" && $api == "strongarm") {
     return array("version" => "1");
   }
@@ -16,7 +17,7 @@ function commons_activity_streams_ctools_plugin_api($module = NULL, $api = NULL)
 /**
  * Implements hook_views_api().
  */
-function commons_activity_streams_views_api($module = NULL, $api = NULL) {
+function commons_activity_streams_views_api() {
   return array("api" => "3.0");
 }
 
@@ -31,21 +32,10 @@ function commons_activity_streams_default_message_type() {
     "argument_keys" : [],
     "argument" : [],
     "category" : "message_type",
-    "data" : {
-      "token options" : { "clear" : 0 },
-      "purge" : { "override" : 0, "enabled" : 0, "quota" : "", "days" : "" }
-    },
-    "language" : "pt-br",
+    "data" : { "purge" : { "override" : 0, "enabled" : 0, "quota" : "", "days" : "" } },
+    "language" : "",
     "arguments" : null,
-    "message_text" : {
-      "en" : [
-        {
-          "value" : "\\u003Cp\\u003E[message:user:picture:35x35]\\u003C\\/p\\u003E\\n",
-          "format" : "filtered_html",
-          "safe_value" : "\\u003Cp\\u003E[message:user:picture:35x35]\\u003C\\/p\\u003E"
-        }
-      ],
-      "und" : [
+    "message_text" : { "und" : [
         {
           "value" : "[message:user:picture:35x35]",
           "format" : "filtered_html",
@@ -61,18 +51,6 @@ function commons_activity_streams_default_message_type() {
           "format" : "full_html",
           "safe_value" : "[commons-groups:in-groups-text]"
         }
-      ],
-      "pt-br" : [
-        {
-          "value" : "[message:user:picture:35x35]",
-          "format" : "full_html",
-          "safe_value" : "[message:user:picture:35x35]"
-        },
-        {
-          "value" : "\\u003Ca href=\\u0022[message:user:url:absolute]\\u0022\\u003E[message:user:name]\\u003C\\/a\\u003E comentou em \\u003Ca href=\\u0022[message:field-target-nodes:0:url]\\u0022\\u003E[message:field-target-nodes:0:title]\\u003C\\/a\\u003E",
-          "format" : "full_html",
-          "safe_value" : "\\u003Ca href=\\u0022[message:user:url:absolute]\\u0022\\u003E[message:user:name]\\u003C\\/a\\u003E comentou em \\u003Ca href=\\u0022[message:field-target-nodes:0:url]\\u0022\\u003E[message:field-target-nodes:0:title]\\u003C\\/a\\u003E"
-        }
       ]
     },
     "rdf_mapping" : []
@@ -83,21 +61,10 @@ function commons_activity_streams_default_message_type() {
     "argument_keys" : [],
     "argument" : [],
     "category" : "message_type",
-    "data" : {
-      "token options" : { "clear" : 0 },
-      "purge" : { "override" : 0, "enabled" : 0, "quota" : "", "days" : "" }
-    },
-    "language" : "pt-br",
+    "data" : { "purge" : { "override" : 0, "enabled" : 0, "quota" : "", "days" : "" } },
+    "language" : "",
     "arguments" : null,
-    "message_text" : {
-      "en" : [
-        {
-          "value" : "\\u003Cp\\u003E[message:user:picture:35x35]\\u003C\\/p\\u003E\\r\\n",
-          "format" : "filtered_html",
-          "safe_value" : "\\u003Cp\\u003E[message:user:picture:35x35]\\u003C\\/p\\u003E"
-        }
-      ],
-      "und" : [
+    "message_text" : { "und" : [
         {
           "value" : "[message:user:picture:35x35]",
           "format" : "filtered_html",
@@ -107,23 +74,6 @@ function commons_activity_streams_default_message_type() {
           "value" : "\\u003Ca href=\\u0022[message:user:url:absolute]\\u0022\\u003E[message:user:name]\\u003C\\/a\\u003E created \\u003Ca href=\\u0022[message:field-target-nodes:0:url]\\u0022\\u003E[message:field-target-nodes:0:title]\\u003C\\/a\\u003E",
           "format" : "full_html",
           "safe_value" : "\\u003Ca href=\\u0022[message:user:url:absolute]\\u0022\\u003E[message:user:name]\\u003C\\/a\\u003E created \\u003Ca href=\\u0022[message:field-target-nodes:0:url]\\u0022\\u003E[message:field-target-nodes:0:title]\\u003C\\/a\\u003E"
-        },
-        {
-          "value" : "[commons-groups:in-groups-text]",
-          "format" : "full_html",
-          "safe_value" : "[commons-groups:in-groups-text]"
-        }
-      ],
-      "pt-br" : [
-        {
-          "value" : "[message:user:picture:35x35]\\r\\n",
-          "format" : "full_html",
-          "safe_value" : "[message:user:picture:35x35]\\n"
-        },
-        {
-          "value" : "\\u003Ca href=\\u0022[message:user:url:absolute]\\u0022\\u003E[message:user:name]\\u003C\\/a\\u003E criou \\u003Ca href=\\u0022[message:field-target-nodes:0:url]\\u0022\\u003E[message:field-target-nodes:0:title]\\u003C\\/a\\u003E\\r\\n",
-          "format" : "full_html",
-          "safe_value" : "\\u003Ca href=\\u0022[message:user:url:absolute]\\u0022\\u003E[message:user:name]\\u003C\\/a\\u003E criou \\u003Ca href=\\u0022[message:field-target-nodes:0:url]\\u0022\\u003E[message:field-target-nodes:0:title]\\u003C\\/a\\u003E\\n"
         },
         {
           "value" : "[commons-groups:in-groups-text]",
@@ -140,26 +90,10 @@ function commons_activity_streams_default_message_type() {
     "argument_keys" : [],
     "argument" : [],
     "category" : "message_type",
-    "data" : {
-      "token options" : { "clear" : 0 },
-      "purge" : { "override" : 0, "enabled" : 0, "quota" : "", "days" : "" }
-    },
-    "language" : "pt-br",
+    "data" : { "purge" : { "override" : 0, "enabled" : 0, "quota" : "", "days" : "" } },
+    "language" : "",
     "arguments" : null,
-    "message_text" : {
-      "en" : [
-        {
-          "value" : "\\u003Cp\\u003E[message:user:picture:35x35]\\u003C\\/p\\u003E\\r\\n",
-          "format" : "filtered_html",
-          "safe_value" : "\\u003Cp\\u003E[message:user:picture:35x35]\\u003C\\/p\\u003E"
-        },
-        {
-          "value" : "\\u003Cp\\u003E\\u003Ca href=\\u0022[message:user:url:absolute]\\u0022\\u003E[message:user:name]\\u003C\\/a\\u003E has an updated profile\\u003C\\/p\\u003E\\r\\n",
-          "format" : "filtered_html",
-          "safe_value" : "\\u003Cp\\u003E\\u003Ca href=\\u0022absolute]\\u0022\\u003E[message:user:name]\\u003C\\/a\\u003E has an updated profile\\u003C\\/p\\u003E"
-        }
-      ],
-      "und" : [
+    "message_text" : { "und" : [
         {
           "value" : "[message:user:picture:35x35]",
           "format" : "filtered_html",
@@ -169,18 +103,6 @@ function commons_activity_streams_default_message_type() {
           "value" : "\\u003Ca href=\\u0022[message:user:url:absolute]\\u0022\\u003E[message:user:name]\\u003C\\/a\\u003E has an updated profile",
           "format" : "full_html",
           "safe_value" : "\\u003Ca href=\\u0022[message:user:url:absolute]\\u0022\\u003E[message:user:name]\\u003C\\/a\\u003E has an updated profile"
-        }
-      ],
-      "pt-br" : [
-        {
-          "value" : "[message:user:picture:35x35]",
-          "format" : "full_html",
-          "safe_value" : "[message:user:picture:35x35]"
-        },
-        {
-          "value" : "\\u003Ca href=\\u0022[message:user:url:absolute]\\u0022\\u003E[message:user:name]\\u003C\\/a\\u003E atualizou o perfil",
-          "format" : "full_html",
-          "safe_value" : "\\u003Ca href=\\u0022[message:user:url:absolute]\\u0022\\u003E[message:user:name]\\u003C\\/a\\u003E atualizou o perfil"
         }
       ]
     },
