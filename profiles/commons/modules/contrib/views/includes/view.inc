@@ -614,6 +614,10 @@ class view extends views_db_object {
     $types = views_object_types();
     foreach ($types as $key => $info) {
       foreach ($this->display_handler->get_option($info['plural']) as $id => $options) {
+        // a atualização da view causou um erro onde o sistema tenta fixar uma tabela ou associação que não encontrei na view então vou usar esse teste para eviar esse erro
+        if(empty($options['table'])){
+          $options['table'] = null;
+        }
         $options['table'] = views_move_table($options['table']);
         $data = views_fetch_data($options['table'], FALSE);
 
@@ -626,6 +630,7 @@ class view extends views_db_object {
         if (!array_intersect($valid_bases, $base_tables)) {
           $missing_base_tables[$options['table']][] = array('type' => $key, 'id' => $id);
         }
+        
       }
     }
 
