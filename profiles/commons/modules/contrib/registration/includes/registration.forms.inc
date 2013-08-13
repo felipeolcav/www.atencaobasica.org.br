@@ -22,21 +22,22 @@ function registration_form($form, &$form_state, Registration $registration) {
 
   $who_options = registration_access_people($registration);
 
-  // default value for who is registering
+  // Default value for who is registering.
   $who_default = NULL;
   if (isset($registration->registration_id)) {
     $who_default = $registration->registrant_type($GLOBALS['user']);
   }
   elseif (count($who_options) == 1) {
-    $who_default = reset(array_keys($who_options));
+    $keys = array_keys($who_options);
+    $who_default = reset($keys);
   }
 
-  // show a message if there's only one option as we're going to hide the form
+  // Show a message if there's only one option as we're going to hide the form.
   if (count($who_options) == 1 && !user_is_anonymous()) {
     $form['who_message'] = array(
       '#markup' => '<div class="registration-who-msg">' .
-        t('You are registering: %who', array('%who' => current($who_options))) .
-        '</div>',
+      t('You are registering: %who', array('%who' => current($who_options))) .
+      '</div>',
     );
   }
 
@@ -46,7 +47,7 @@ function registration_form($form, &$form_state, Registration $registration) {
     '#options' => $who_options,
     '#default_value' => $who_default,
     '#required' => TRUE,
-    '#access' => (count($who_options) > 1)
+    '#access' => (count($who_options) > 1),
   );
 
   $form['user'] = array(
@@ -61,8 +62,8 @@ function registration_form($form, &$form_state, Registration $registration) {
     '#states' => array(
       'visible' => array(
         ':input[name="who_is_registering"]' => array('value' => REGISTRATION_REGISTRANT_TYPE_USER),
-      )
-    )
+      ),
+    ),
   );
 
   $form['anon_mail'] = array(
@@ -76,27 +77,40 @@ function registration_form($form, &$form_state, Registration $registration) {
     '#states' => array(
       'visible' => array(
         ':input[name="who_is_registering"]' => array('value' => REGISTRATION_REGISTRANT_TYPE_ANON),
-      )
-    )
+      ),
+    ),
   );
 
   $settings = registration_entity_settings($registration->entity_type, $registration->entity_id);
   $capacity = $settings['capacity'];
-  $remaining = 0;
-  $description = '';
-  if ($capacity) {
-    $remaining = $capacity - registration_event_count($registration->entity_type, $registration->entity_id);
-    $description = t('The number of slots you wish to reserve. @slots_remaining slots remaining.', array('@slots_remaining' => $remaining));
+  $limit = isset($settings['settings']['maximum_spaces']) ? $settings['settings']['maximum_spaces'] : 1;
+  $remaining = $capacity - registration_event_count($registration->entity_type, $registration->entity_id);
+  if ($capacity && $limit) {
+    $description = t('The number of spaces you wish to reserve. @spaces_remaining spaces remaining. You may register up to @max spaces.',
+      array(
+        '@spaces_remaining' => $remaining,
+        '@max' => min($limit, $remaining),
+      )
+    );
+  }
+  elseif ($capacity) {
+    $description = t('The number of spaces you wish to reserve. @spaces_remaining spaces remaining.', array('@spaces_remaining' => $remaining));
+  }
+  elseif ($limit) {
+    $description = t('The number of spaces you wish to reserve. You may register up to @max spaces.', array('@max' => $limit));
+  }
+  else {
+    $description = t('The number of spaces you wish to reserve.');
   }
 
   $form['count'] = array(
     '#type' => 'textfield',
-    '#title' => t('Slots'),
+    '#title' => t('Spaces'),
     '#description' => $description,
     '#default_value' => isset($registration->count) ? $registration->count : 1,
     '#size' => drupal_strlen($remaining),
-    '#access' => isset($settings['settings']['multiple_slots']) ? $settings['settings']['multiple_slots'] : FALSE,
-    '#element_validate' => array('element_validate_integer_positive')
+    '#access' => (isset($settings['settings']['maximum_spaces']) && $settings['settings']['maximum_spaces'] == 1) ? FALSE : TRUE,
+    '#element_validate' => array('element_validate_integer_positive', '_registration_validate_space_request'),
   );
 
   $default_state = registration_get_default_state();
@@ -108,7 +122,7 @@ function registration_form($form, &$form_state, Registration $registration) {
     '#description' => t('State of this registration'),
     '#default_value' => ($state ? $state->identifier() : $default_state->identifier()),
     '#options' => $states,
-    '#access' => !empty($states) && user_access('edit ' . $registration->type . ' registration state')
+    '#access' => !empty($states) && user_access('edit ' . $registration->type . ' registration state'),
   );
 
   field_attach_form('registration', $registration, $form, $form_state);
@@ -119,13 +133,13 @@ function registration_form($form, &$form_state, Registration $registration) {
     '#value' => t('Save Registration'),
   );
 
-  // add a delete button for existing registration
+  // Add a delete button for existing registration:
   if (isset($registration->registration_id) && entity_access('delete', 'registration', $registration)) {
     $form['actions']['delete'] = array(
       '#type' => 'submit',
       '#value' => t('Delete'),
       '#submit' => array('registration_form_delete_submit'),
-      "#limit_validation_errors" => array()
+      "#limit_validation_errors" => array(),
     );
   }
 
@@ -137,6 +151,7 @@ function registration_form($form, &$form_state, Registration $registration) {
       '#href' => $uri['path'],
     );
   }
+  $form['#registration_settings'] = $settings;
 
   return $form;
 }
@@ -166,7 +181,7 @@ function registration_form_validate($form, &$form_state) {
   else if (in_array($registration->state, registration_get_active_states())) {
     $has_room = registration_has_room($registration->entity_type, $registration->entity_id, $count, $registration->registration_id);
     if (!$has_room) {
-      form_set_error('', t('Sorry, unable to register for %label due to: insufficient slots remaining.',
+      form_set_error('', t('Sorry, unable to register for %label due to: insufficient spaces remaining.',
         array('%label' => $label)));
     }
   }
@@ -429,7 +444,7 @@ function registration_registrations_broadcast_form_submit($form, &$form_state) {
  */
 function registration_entity_settings_form($form, &$form_state, $settings, $entity_type = NULL, $entity_id = NULL) {
   if ($entity_id) {
-    // we'll need this info when we submit the form
+    // We'll need this info when we submit the form:
     $form_state['entity'] = array(
       'entity_id' => $entity_id,
       'entity_type' => $entity_type
@@ -507,7 +522,7 @@ function registration_entity_settings_form($form, &$form_state, $settings, $enti
     '#title' => t('Reminder'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
-    '#tree' => TRUE
+    '#tree' => TRUE,
   );
 
   $form['reminder']['send_reminder'] = array(
@@ -554,13 +569,13 @@ function registration_entity_settings_form($form, &$form_state, $settings, $enti
     '#description' => t('The reminder message sent to registrants. Tokens are supported if the module is enabled, E.g., [node:title].'),
   );
 
-  // add token support
+  // Add token support:
   if (module_exists('token')) {
     $form['reminder']['reminder_settings']['token_tree'] = array(
       '#theme' => 'token_tree',
       '#token_types' => array(
         $entity_type,
-        'registration'
+        'registration',
       ),
       '#global_types' => FALSE,
     );
@@ -571,14 +586,17 @@ function registration_entity_settings_form($form, &$form_state, $settings, $enti
     '#title' => t('Additional Settings'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
-    '#tree' => TRUE
+    '#tree' => TRUE,
   );
 
-  $form['settings']['multiple_slots'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Register for multiple slots'),
-    '#description' => t('If selected, users can register for more than one slot for this event in a single registration.'),
-    '#default_value' => isset($settings['settings']['multiple_slots']) ? $settings['settings']['multiple_slots'] : -1,
+  $form['settings']['maximum_spaces'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Spaces allowed'),
+    '#size' => 5,
+    '#maxlength' => 10,
+    '#required' => TRUE,
+    '#description' => t('The maximum number of spaces allowed for each registrations. For no limit, use 0. (Default is 1)'),
+    '#default_value' => isset($settings['settings']['maximum_spaces']) ? $settings['settings']['maximum_spaces'] : 1,
   );
 
   $form['settings']['multiple_registrations'] = array(
@@ -596,10 +614,10 @@ function registration_entity_settings_form($form, &$form_state, $settings, $enti
     '#default_value' => isset($settings['settings']['from_address']) ? $settings['settings']['from_address'] : variable_get('site_mail', ini_get('sendmail_from')),
   );
 
-  // allow other modules to add their own custom settings
+  // Allow other modules to add their own custom settings:
   $form['settings'] += module_invoke_all('registration_entity_settings', $settings);
 
-  // only show save if we're not on the field instance defaults
+  // Only show save if we're not on the field instance defaults:
   if ($entity_id) {
     $form['save'] = array(
       '#type' => 'submit',
@@ -617,23 +635,29 @@ function registration_entity_settings_form($form, &$form_state, $settings, $enti
  * @param array $form_state
  */
 function registration_entity_settings_form_validate($form, &$form_state) {
-  // ensure capacity is a positive integer
+  // Ensure capacity is a non-negative integer.
   $capacity = $form_state['values']['capacity'];
   if (!is_numeric($capacity) || ((int) $capacity != $capacity) || ($capacity < 0)) {
-    form_set_error('capacity', t('Capacity must be a positive integer.'));
+    form_set_error('capacity', t('"Capacity" must be a positive integer or 0 for unlimited.'));
   }
 
-  // validate from address
+  // Ensure slot limit is a non-negative integer.
+  $slot_limit = $form_state['values']['settings']['maximum_spaces'];
+  if (!is_numeric($slot_limit) || ((int) $slot_limit != $slot_limit) || ($slot_limit < 0)) {
+    form_set_error('maximum_spaces', t('"Spaces allowed" must be a positive integer or 0 for unlimited.'));
+  }
+
+  // Validate from address:
   if (!valid_email_address($form_state['values']['settings']['from_address'])) {
     form_set_error('settings][from_address', t('From email address is invalid.'));
   }
 
-  // Validate open date
+  // Validate open date:
   if (!empty($form_state['values']['scheduling']['open']) && strtotime($form_state['values']['scheduling']['open']) === FALSE) {
     form_set_error('scheduling][open', t('Date is invalid.'));
   }
 
-  // Validate close date
+  // Validate close date:
   if (!empty($form_state['values']['scheduling']['close']) && strtotime($form_state['values']['scheduling']['close']) === FALSE) {
     form_set_error('scheduling][close', t('Date is invalid.'));
   }
@@ -944,4 +968,13 @@ function theme_registration_state_overview_form($variables) {
 
   $output .= drupal_render_children($form);
   return $output;
+}
+
+/**
+ * Validation helper function to confirm the spaces requested are within limits.
+ */
+function _registration_validate_space_request($element, &$form_state, $form) {
+  if (isset($form_state['input']['count']) && $form_state['input']['count'] > $form['#registration_settings']['settings']['maximum_spaces']) {
+    form_error($element, t('You may not register for more than @count spaces.', array('@count' => $form['#registration_settings']['settings']['maximum_spaces'])));
+  };
 }

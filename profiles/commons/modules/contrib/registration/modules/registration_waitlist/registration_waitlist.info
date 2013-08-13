@@ -7,9 +7,9 @@ dependencies[] = registration
 
 files[] = registration_waitlist.test
 
-; Information added by drupal.org packaging script on 2013-06-05
-version = "7.x-1.1+5-dev"
+; Information added by drupal.org packaging script on 2013-08-13
+version = "7.x-1.1+24-dev"
 core = "7.x"
 project = "registration"
-datestamp = "1370448380"
+datestamp = "1376360823"
 
