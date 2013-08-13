@@ -55,3 +55,17 @@ div.entity-message .user-picture {
 .main-menu-comunidades a {
   background: url('images/icons/icon-groups.png') no-repeat center 10px;
 }
+
+.block-commons-utility-links {
+  margin-bottom: 2px;
+}
+
+.commons-bw-partial-node-form {
+  margin-left: 65px;
+}
+
+.commons-bw-partial-node-form div div.user-picture{
+  left: -65px;
+  margin-top: 5px;
+  position: absolute;
+}
