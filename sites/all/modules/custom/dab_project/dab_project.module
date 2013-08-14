@@ -32,4 +32,31 @@ function dab_project_user_registration_validate(&$form,&$form_state){
     }
 }
 
+
+
+/**
+ * Implementation of hook_menu.
+ */
+function dab_project_menu() {
+  $items = array();
+
+  $items['mostrasaude'] = array(
+    'page callback' => 'dab_project_mostrasaude_iframe_page',
+    'title' => 'IV Mostra',
+    'access callback' => TRUE,
+    'menu_name' => 'main-menu',
+    'type' => MENU_NORMAL_ITEM
+  );
+  return $items;
+}
+
+/**
+ * Page callback
+ */
+function dab_project_mostrasaude_iframe_page() {
+  drupal_set_title('IV Mostra Nacional de Experiências em Saúde da Família / Atenção Básica');
+  $output = '<iframe id="mostrasaude-iframe" width="940px" height="3000px" src="http://www.mostrasaude.net/"></iframe>';
+  return $output;
+}
+
 ?>
