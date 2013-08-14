@@ -69,3 +69,11 @@ div.entity-message .user-picture {
   margin-top: 5px;
   position: absolute;
 }
+
+.pane-user-login {
+  padding: 10px;
+  background-color: white;
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: 1px 1px 4px #858585;
+  margin: 10px 0;
+}
