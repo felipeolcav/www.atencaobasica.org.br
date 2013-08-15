@@ -70,6 +70,8 @@ div.entity-message .user-picture {
   position: absolute;
 }
 
+/* USER LOGIN BLOCK */
+
 .pane-user-login {
   padding: 10px;
   background-color: white;
@@ -77,6 +79,44 @@ div.entity-message .user-picture {
   box-shadow: 1px 1px 4px #858585;
   margin: 10px 0;
 }
+
+.pane-user-login h3 {
+  font-size: 20px;
+  line-height: 1.2em;
+  margin-bottom: 0.85em;
+}
+
+.pane-user-login label {
+  display: inline;
+
+}
+
+.pane-user-login input#edit-name,
+.pane-user-login input#edit-pass {
+   -moz-box-sizing: border-box;
+    border: 1px solid #B2B2B2;
+    border-radius: 6px 6px 6px 6px;
+    width: 75%;
+    float: right;
+    padding-left: 26px;
+
+}
+
+.pane-user-login input#edit-name {
+  background: url('images/icons/mail-icon-small.png') no-repeat scroll 5px ;
+
+}
+
+.pane-user-login input#edit-pass{
+  background: url('images/icons/key-icon-small.png') no-repeat scroll 5px;
+  padding-left: 28px;
+}
+
+.palette-black-blue-yellow h3 {
+    color: #353535;
+}
+
+/* MOSTRA IFRAME PAGE */
 
 #mostrasaude-iframe {
   border: none;
