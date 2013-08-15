@@ -40,7 +40,7 @@ function dab_project_user_registration_validate(&$form,&$form_state){
 function dab_project_menu() {
   $items = array();
 
-  $items['mostrasaude'] = array(
+  $items['mostra'] = array(
     'page callback' => 'dab_project_mostrasaude_iframe_page',
     'title' => 'IV Mostra',
     'access callback' => TRUE,
