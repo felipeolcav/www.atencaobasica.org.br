@@ -83,11 +83,11 @@ div.entity-message .user-picture {
 
 }
 
-.main-menu-mostrasaude a {
+.main-menu-mostra a {
   background: url('images/marca_ivmostra.png') no-repeat center 10px;
 }
 
-body.page-mostrasaude h2#page-title {
+body.page-mostra h2#page-title {
   display: none;
 
 }
