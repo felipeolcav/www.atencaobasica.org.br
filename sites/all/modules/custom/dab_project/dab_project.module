@@ -55,7 +55,7 @@ function dab_project_menu() {
  */
 function dab_project_mostrasaude_iframe_page() {
   drupal_set_title('IV Mostra Nacional de Experiências em Saúde da Família / Atenção Básica');
-  $output = '<iframe id="mostrasaude-iframe" width="940px" height="3000px" src="http://www.mostrasaude.net/"></iframe>';
+  $output = '<iframe id="mostrasaude-iframe" width="940px" height="2500px" src="http://www.mostrasaude.net/"></iframe>';
   return $output;
 }
 

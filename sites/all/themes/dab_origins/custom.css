@@ -87,7 +87,11 @@ div.entity-message .user-picture {
   background: url('images/marca_ivmostra.png') no-repeat center 10px;
 }
 
-body.page-mostra h2#page-title {
+body.page-mostra div#columns{
+  margin-top: -3px;
+}
+
+body.page-mostra div#page-top {
   display: none;
 
 }
