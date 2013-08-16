@@ -1,0 +1,12 @@
+name = DAB - Migração
+description = "Migração dos dados vindos do site antigo"
+package = DAB
+version = 7.x-1.0-dev
+core = 7.x
+
+dependencies[] = migrate (>=2.5)
+;dependencies[] = migrate_ui
+
+#  include the files that contain your Migrate classes 
+files[] = dab_migracao.migrate.inc
+files[] = includes/MigracaoUsuarioCSV.inc
