@@ -135,3 +135,22 @@ body.page-mostra div#page-top {
   display: none;
 
 }
+
+
+/* footer */
+
+#footer-logos {
+  text-align: center;
+}
+
+#footer-logos a{
+  padding: 3px;
+}
+
+#footer-logos a:hover img{
+  border-color: blue ;
+}
+#footer-logos img{
+  height: 40px;
+  border: 2px solid transparent;
+}
