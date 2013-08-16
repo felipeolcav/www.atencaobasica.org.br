@@ -52,7 +52,7 @@ function dab_migracao_migrate_api() {
       ),
       'CoordenacaoCuradoriaMostraNacionalABSF' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_Coordenação de Curadoria da IV Mostra Nacional de Atenção Básica Saúde da Família '
+        'file_name' => 'participantes_Coordenação de Curadoria da IV Mostra Nacional de Atenção Básica Saúde da Família'
       ),
       'CursoColaborativoDoencasCronicas' => array(
         'class_name' => 'UsuarioMigration',
@@ -176,7 +176,7 @@ function dab_migracao_migrate_api() {
       ),
       'PrescricaoTratamentoAdesao' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_O que existe entre a prescrição de um tratamento e a sua adesão.csv'
+        'file_name' => 'participantes_O que existe entre a prescrição de um tratamento e a sua adesão'
       ),
       'OncoDiscussoes' => array(
         'class_name' => 'UsuarioMigration',
