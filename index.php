@@ -1,5 +1,8 @@
 <?php
 
+// maximo de memoria para as páginas de admin
+ini_set('memory_limit', '300M');
+
 /**
  * @file
  * The PHP page that serves all page requests on a Drupal installation.
