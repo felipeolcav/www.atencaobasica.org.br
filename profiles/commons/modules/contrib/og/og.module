@@ -3528,7 +3528,7 @@ function og_features_pipe_alter(&$pipe, $data, $export) {
 /**
  * Implements hook_migrate_api().
  */
-function og_migrate_api() {
+function og_migrate_apiA() {
   $migrations = array();
   if (db_table_exists('d6_og')) {
     $migrations['OgMigrateAddFields'] = array('class_name' => 'OgMigrateAddFields');
