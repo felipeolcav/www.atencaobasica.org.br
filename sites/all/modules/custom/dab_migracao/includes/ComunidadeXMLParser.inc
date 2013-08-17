@@ -6,21 +6,33 @@ class ComunidadeXMLParser {
   private $caminho_completo_arquivo;
   private $pilha_tags;
   private $count_linhas;
+  private $linha_corrente;
+  private $linha_anterior;
 
   public function __construct($caminho_completo_arquivo) {
     $this->caminho_completo_arquivo = $caminho_completo_arquivo;
   }
 
   public function executar() {
-    $pilha_tags = array();
-    $count_linhas = 0;
+    $this->pilha_tags = array();
+    $this->linhas = array();
+    $this->count_linhas = 0;
 
     $this->file_handle = fopen($this->caminho_completo_arquivo, "r");
 
-    while ($this->file_handle && !feof($this->file_handle)) {
-      $linha = $this->avancarAteItem('global', NULL, 'module="communities.practice.content.CoP"'); //esse global já é dentro de um pickle
-      $linha = $this->avancarAteItem('pickle', TRUE); //aqui já é o segundo pickle
-      $this->processarDadosComunidade($linha);
+    try {
+
+      while ($this->file_handle && !feof($this->file_handle)) {
+        do {
+          $linha = $this->avancarAteItem('global', NULL, 'module="communities.practice.content.CoP"'); //esse global já é dentro de um pickle
+          $linha_anterior_pickle = $this->contemString($this->linha_anterior, '<pickle>');
+        } while (!feof($this->file_handle) && !$linha_anterior_pickle);
+
+        $linha = $this->avancarAteItem('pickle', TRUE); //aqui já é o segundo pickle
+        $this->processarDadosComunidade($linha);
+      }
+    } catch (Exception $e) {
+      print_r($e);
     }
     if ($this->file_handle) {
       fclose($this->file_handle);
@@ -33,61 +45,46 @@ class ComunidadeXMLParser {
     }
 
     $dados_comunidade = array();
+    $linha = $this->avancarAteItem('dictionary', TRUE);
+//começando do item 1
+//item 3 modification_date -> value > object > state > dictionary > *item (key/value)
+//item 6 subject VAZIO
+//item 12 title
+//item 13 twitter
+//item 24 _owner -> list(...)|string(karensathie@atencaobasica.org.br)
+//item 25 youtube
+//item 27 facebook
+//item 43 creation_date -> value > object > state > dictionary > *item (key/value)
 
-    //começando do item 1
-    //item 3 modification_date -> value > object > state > dictionary > *item (key/value)
-    //item 6 subject VAZIO
-    //item 12 title
-    //item 13 twitter
-    //item 24 _owner -> list(...)|string(karensathie@atencaobasica.org.br)
-    //item 25 youtube
-    //item 27 facebook
-    //item 43 creation_date -> value > object > state > dictionary > *item (key/value)
+    $linha = $this->getProximaLinha();
+    $linha = $this->avancarAteItem('item', TRUE);
+    while ((!$this->isTagTipo('dictionary', $linha))
+      || ($this->isTagAbertura($linha))) {
+      
+      $linha = $this->avancarAteItem('key', TRUE);
+      $key_dictionary = $this->extrairConteudoString($linha);
 
-    for ($i = 1; $i <= 45; $i++) {
-      $linha = $this->avancarAteItem('item', TRUE);
-
-      switch ($i) {
-        case 15://item 15 id
-          $dados_comunidade['id'] = $this->extrairStringValueFromStringKey('id');
-          break;
-        case 10://item 10 _Delete_objects_Permission
-        case 11://item 11 _View_Permission
-        case 18://item 18 _List_folder_contents_Permission
-        case 20://item 20 _Copy_or_Move_Permission
-        case 23://item 23 _Review_portal_content_Permission
-        case 26://item 26 _Add_portal_content_Permission
-        case 28://item 28 _Access_inactive_portal_content_Permission
-        case 29://item 29 _Modify_portal_content_Permission
-        case 37://item 37 _communities_practice__Add_CoPMenu_Permission
-        case 41://item 41 _Access_contents_information_Permission
-        case 44://item 44 _Ploneboard__Add_Forum_Permission
-          $permissao_papeis = $this->extrairPermissaoEPapeis();
-          $dados_comunidade['permissoes'][$permissao_papeis['permissao']] = $permissao_papeis['papeis'];
-          break;
-        case 45:
-          $dados_comunidade['participacoes'] = $this->extrairEmailsComPapeis();
-          break;
+      if ($key_dictionary == '__ac_local_roles__') {
+        $dados_comunidade['participacoes'] = $this->extrairEmailsComPapeis();
+      }
+      elseif ($this->contemString($linha, "_date")) {
+        $linha = $this->avancarAteItem('object', FALSE);
+      }
+      elseif ($key_dictionary == 'id') {
+        $linha = $this->avancarAteItem('value', TRUE);
+        $dados_comunidade['id'] = $this->extrairConteudoString($linha);
+      }
+      elseif ($this->contemString($linha, "_Permission")) {
+        $permissao_papeis = $this->extrairPermissaoEPapeis();
+        $dados_comunidade['permissoes'][$permissao_papeis['permissao']] = $permissao_papeis['papeis'];
       }
 
       $linha = $this->avancarAteItem('item', FALSE);
+      $linha = $this->getProximaLinha();
     }
-    print_r("\n\n");
-    print_r($dados_comunidade['id']);
-
-    print_r("\n\n-----------------------------------------------------------------");
-  }
-
-  private function extrairStringValueFromStringKey($key) {
-    $linha = $this->avancarAteItem('key');
-    $key2 = $this->extrairConteudoString($linha);
-
-    if ($key !== $key2) {
-      throw new Exception('Chave buscada: ' . $key . '. Chave encontrada:' . $key2);
-    }
-
-    $linha = $this->avancarAteItem('value');
-    return $this->extrairConteudoString($linha);
+    print_r("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
+    print_r($dados_comunidade);
+    print_r("\n");
   }
 
   private function extrairPermissaoEPapeis() {
@@ -123,7 +120,7 @@ class ComunidadeXMLParser {
       if (!empty($email)) {//pode ser vazio quando é um elemento do tipo 'reference' em vez de 'string'  
         $papeis = array();
 
-        //tem um <value> como pai do <list>
+//tem um <value> como pai do <list>
         $linha = $this->avancarAteItem('list', TRUE);
         $linha = $this->getProximaLinha();
         while (!($this->isTagTipo('list', $linha) && !$this->isTagAbertura($linha))) {//</list>
@@ -132,7 +129,7 @@ class ComunidadeXMLParser {
             $papeis[] = $papel;
           }
           else {
-            //TODO: tratar aquele caso de ser a tag 'reference' em vez de 'string' 
+//TODO: tratar aquele caso de ser a tag 'reference' em vez de 'string' 
           }
           $linha = $this->getProximaLinha();
         }
@@ -146,9 +143,7 @@ class ComunidadeXMLParser {
     return $emails_papeis;
   }
 
-  private function avancarAteItem($tipo_tag, $tagAbertura = NULL, $contendo = NULL, $print = FALSE) {
-
-    $count_empilhamento = 0;
+  private function avancarAteItem($tipo_tag_procurado, $tagAbertura = NULL, $contendo = NULL, $print = FALSE) {
 
     while ($this->file_handle && !feof($this->file_handle)) {
       $linha = $this->getProximaLinha();
@@ -158,8 +153,8 @@ class ComunidadeXMLParser {
 
       $is_abertura = $this->isTagAbertura($linha);
 
-      if ($this->isTagTipo($tipo_tag, $linha)) {
-        if ($tagAbertura == NULL) {
+      if ($this->isTagTipo($tipo_tag_procurado, $linha)) {
+        if (!isset($tagAbertura)) {
           if (empty($contendo) || $this->contemString($linha, $contendo)) {
             return $linha;
           }
@@ -171,8 +166,13 @@ class ComunidadeXMLParser {
           }
         }
         else {
-          if (!$is_abertura) {
+          if (isset($tagAbertura) && !$is_abertura) {
+
+//            $tipo_tag_real = $this->extrairTipoTag($linha);
+//            $ocorrencias = count(array_keys($this->pilha_tags, $tipo_tag_real));
+//            if ($ocorrencias == 1) {
             return $linha;
+//            }
           }
         }
       }
@@ -181,11 +181,25 @@ class ComunidadeXMLParser {
   }
 
   private function getProximaLinha() {
-    $linha = fgets($this->file_handle);
+    $this->linha_anterior = $this->linha_corrente;
+    $this->linha_corrente = fgets($this->file_handle);
     $this->count_linhas++;
-//    print_r("[".$this->count_linhas."]");
-//    print_r($linha);
-    return $linha;
+
+    $tipo_tag = $this->extrairTipoTag($this->linha_corrente);
+    if (!empty($tipo_tag)) {
+
+      $is_tag_abertura = $this->isTagAbertura($this->linha_corrente);
+      if ($is_tag_abertura) {
+        array_push($this->pilha_tags, $tipo_tag);
+      }
+      elseif (isset($is_tag_abertura)) {
+        array_pop($this->pilha_tags);
+      }
+    }
+    if ($this->count_linhas % 10000 == 0) {
+      print_r("[" . $this->count_linhas . "]");
+    }
+    return $this->linha_corrente;
   }
 
   private function extrairConteudoString($linha) {
@@ -225,14 +239,14 @@ class ComunidadeXMLParser {
   }
 
   private function extrairTipoTag($tag) {
-    $reg_abre = '\<([^\/][a-z]*).*[^\/]\>';
-    $reg_fecha = '\<\/([a-z]*).*[^\/]\>';
+    $reg_abre = '\<([^\/][a-z]*)[^\/]*\>';
+    $reg_fecha = '\<\/([a-z]*)[^\/]*\>';
     $reg_abre_fecha = '\<([^\/][a-z]*).*\/\>';
 
     $regex = "/" . $reg_abre_fecha . "|" . $reg_abre . "|" . $reg_fecha . "/";
 
     preg_match($regex, $tag, $output_array);
-    return $output_array[1];
+    return end($output_array);
   }
 
 }
