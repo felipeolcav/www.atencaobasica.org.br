@@ -15,9 +15,9 @@ features[ctools][] = page_manager:pages_default:1
 features[features_api][] = api:2
 features[page_manager_handlers][] = user_view_panel_context
 
-; Information added by drupal.org packaging script on 2013-08-09
-version = "7.x-3.3"
+; Information added by drupal.org packaging script on 2013-08-16
+version = "7.x-3.4"
 core = "7.x"
 project = "commons_user_profile_pages"
-datestamp = "1376014045"
+datestamp = "1376682401"
 

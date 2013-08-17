@@ -92,6 +92,14 @@ function commons_activity_streams_groups_views_default_views() {
   $handler->display->display_options['filters']['type_category']['value'] = array(
     'message_type' => 'message_type',
   );
+  /* Filter criterion: OG membership: Group_type */
+  $handler->display->display_options['filters']['group_type']['id'] = 'group_type';
+  $handler->display->display_options['filters']['group_type']['table'] = 'og_membership';
+  $handler->display->display_options['filters']['group_type']['field'] = 'group_type';
+  $handler->display->display_options['filters']['group_type']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['filters']['group_type']['value'] = array(
+    'node' => 'node',
+  );
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
@@ -116,6 +124,21 @@ function commons_activity_streams_groups_views_default_views() {
       'fixed' => '',
       'label' => 'OG membership: Group ID',
     ),
+  );
+  $translatables['activity_group'] = array(
+    t('Master'),
+    t('Recent activity in this group'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Content entity referenced from field_target_nodes'),
+    t('OG membership from node'),
+    t('All'),
+    t('Content pane'),
+    t('Commons'),
   );
   $export['activity_group'] = $view;
 
