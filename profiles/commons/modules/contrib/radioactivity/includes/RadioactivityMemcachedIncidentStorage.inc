@@ -17,12 +17,12 @@ class RadioactivityMemcachedIncidentStorage extends RadioactivityIncidentStorage
    * Connect to the memcache server
    */
   private function connect() {
-    $mc = null;
-    if (class_exists("Memcache")) { $mc = new Memcache(); }
-    if (class_exists("Memcached")) { $mc = new Memcached(); }
-    $mc->addServer(VAR_RADIOACTIVITY_MEMCACHED_HOST, VAR_RADIOACTIVITY_MEMCACHED_PORT);
-    if (@$mc->connect(VAR_RADIOACTIVITY_MEMCACHED_HOST, VAR_RADIOACTIVITY_MEMCACHED_PORT)) {
-      return $mc;
+    if (class_exists("Memcache")) {
+      $mc = new Memcache();
+      $mc->addServer(VAR_RADIOACTIVITY_MEMCACHED_HOST, VAR_RADIOACTIVITY_MEMCACHED_PORT);
+      if (@$mc->connect(VAR_RADIOACTIVITY_MEMCACHED_HOST, VAR_RADIOACTIVITY_MEMCACHED_PORT)) {
+        return $mc;
+      }
     }
     return FALSE;
   }

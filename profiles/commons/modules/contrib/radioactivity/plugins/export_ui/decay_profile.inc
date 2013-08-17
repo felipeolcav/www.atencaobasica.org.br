@@ -73,8 +73,7 @@ function radioactivity_admin_edit_profile_form(&$form, &$form_state) {
     $opts['Memcached'] = 'Memcached storage - write incidents to memcached';
   }
 
-  // Disabled since not ready yet
-  if (FALSE || module_exists('redis')) {
+  if (module_exists('redis')) {
     $opts['Redis'] = 'Redis storage - write incidents to a Redis db';
   }
 

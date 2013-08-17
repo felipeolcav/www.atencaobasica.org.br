@@ -6,6 +6,30 @@
  */
 
 /**
+ * Implements hook_requirements().
+ * Set minimum 'max_execution_time' requirement
+ */
+function commons_requirements($phase) {
+  $requirements = array();
+  // Ensure translations don't break during installation.
+  $t = get_t();
+  if($phase == 'install') {
+    // Test PHP minimum execution time
+    $requirements['php_max_execution_time'] = array(
+      'title' => $t('PHP Max Execution Time'),
+      'value' => ini_get('max_execution_time'),
+    );
+    $max_execution_time = (int)ini_get('max_execution_time');
+    // Don't set the error when max_execution_time is 0 (Infinite).
+    if ($max_execution_time && $max_execution_time < DRUPAL_MINIMUM_MAX_EXECUTION_TIME) {
+      $requirements['php_max_execution_time']['description'] = $t('Your PHP execution time is too low, please set it greater than or equal to %time seconds.', array('%time' => DRUPAL_MINIMUM_MAX_EXECUTION_TIME));
+      $requirements['php_max_execution_time']['severity'] = REQUIREMENT_ERROR;
+    }
+  }
+  return $requirements;
+}
+
+/**
  * Implements hook_install().
  *
  * Perform actions to set up the site for this profile.
@@ -15,10 +39,24 @@
 function commons_install() {
   // Enable the Origins theme and set it as the default.
   theme_enable(array('adaptivetheme', 'commons_origins', 'adaptivetheme_admin'));
+
+    // The Bartik theme is automatically enabled during installation. Disable it.
+  db_update('system')
+    ->fields(array('status' => 0))
+    ->condition('type', 'theme')
+    ->condition('name', 'bartik')
+    ->execute();
+
+  // Set the default and administration themes.
   variable_set('theme_default', 'commons_origins');
   // Set a default administrative theme:
   variable_set('admin_theme', 'adaptivetheme_admin');
   variable_set('node_admin_theme', FALSE);
+
+  // Do not use the administration theme when editing or creating content.
+  variable_set('node_admin_theme', '0');
+
+  // Set a default user avatar.
   commons_set_default_avatar();
 
   // Place site blocks in the menu_bar and header regions.
@@ -46,19 +84,6 @@ function commons_install() {
     'title' => '<none>',
   );
   drupal_write_record('block', $search_block);
-
-  $utility_links_block = array(
-    'module' => 'commons_utility_links',
-    'delta' => 'utility_links',
-    'theme' => 'commons_origins',
-    'visibility' => 0,
-    'region' => 'header',
-    'status' => 1,
-    'pages' => 0,
-    'weight' => 1,
-    'title' => '<none>',
-  );
-  drupal_write_record('block', $utility_links_block);
 
   // Create a default role for site administrators, with all available permissions assigned.
   $admin_role = new stdClass();
@@ -118,5 +143,58 @@ function commons_update_3102() {
   if($reset_avatar) {
     commons_set_default_avatar();
   }
+  return array();
+}
+
+/**
+ * Replace the Toolbar module with the Navbar module.
+ */
+function commons_update_3103() {
+  // Enable the Navbar module and its dependencies.
+  $module_list = array('breakpoints', 'navbar');
+  module_enable($module_list);
+
+  // Migrate permissions.
+  if (module_exists('toolbar')) {
+    $roles = user_roles(FALSE, 'access toolbar');
+    if (!empty($roles)) {
+      // Set permissions.
+      foreach ($roles as $rid => $role) {
+        user_role_grant_permissions($rid, array('access navbar'));
+      }
+    }
+  }
+
+  // Disable the Toolbar module.
+  $module_list = array('toolbar');
+  module_disable($module_list);
+
+  return array();
+}
+
+/**
+ * Enable the Paranoia module.
+ */
+function commons_update_3104() {
+  $module_list = array('paranoia');
+  module_enable($module_list);
+  return array();
+}
+
+/**
+ * Enable the Placeholder module.
+ */
+function commons_update_3105() {
+  $module_list = array('placeholder');
+  module_enable($module_list);
+  return array();
+}
+
+/**
+ * Enable the Addressfield and Addressfield tokens module.
+ */
+function commons_update_3106() {
+  $module_list = array('addressfield', 'addressfield_tokens');
+  module_enable($module_list);
   return array();
 }

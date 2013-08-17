@@ -803,7 +803,7 @@ function adaptivetheme_preprocess_comment(&$vars) {
     $vars['permalink'] = l(t('Permalink'), $uri['path'], $uri['options']);
   }
 
-  $vars['created'] = '<span class="date-time permalink">' . l($vars['created'], $uri['path'], $uri['options']) . '</span>';
+  $vars['created'] = '<span class="date-time">' . $vars['created'] . '</span>';
 
   $vars['datetime'] = format_date($vars['comment']->created, 'custom', 'Y-m-d\TH:i:s\Z'); // Generate the timestamp, PHP "c" format is wrong
 
