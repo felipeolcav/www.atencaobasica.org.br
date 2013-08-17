@@ -10,3 +10,4 @@ sites/*/private
 nbproject/*
 
 .gitignore
+sites/all/modules/custom/dab_migracao/xml/comunidades.xml 
