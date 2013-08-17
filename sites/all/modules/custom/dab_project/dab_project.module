@@ -59,4 +59,18 @@ function dab_project_mostrasaude_iframe_page() {
   return $output;
 }
 
+
+/**
+ * Implements hook_panels_pane_content_alter().
+ */
+function dab_project_panels_pane_content_alter($content, $pane, $args, $context) {
+
+  // traduzir todos os títulos de panels
+  if ($content->title) {
+    $content->title = t($content->title);
+  }
+  return $content;
+}
+
+
 ?>
