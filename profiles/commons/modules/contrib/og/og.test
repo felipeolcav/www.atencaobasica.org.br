@@ -1867,3 +1867,93 @@ class OgNonMembersPublishingContentTestCase extends DrupalWebTestCase {
     $this->assertText($this->group->title, 'The node is still referenced to the group.');
   }
 }
+
+/**
+ * Auto assign roles.
+ */
+class OgAutoAssignRoleTestCase extends DrupalWebTestCase {
+
+  public $roles;
+
+  public static function getInfo() {
+    return array(
+      'name' => 'OG auto assign role',
+      'description' => 'Auto assign role on the creation of a new group.',
+      'group' => 'Organic groups',
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('og');
+    // Create a group content type.
+    $this->drupalCreateContentType(array( 'name' => 'Group', 'type' => 'group'));
+    og_create_field(OG_GROUP_FIELD, 'node', 'group');
+    og_create_field(OG_DEFAULT_ACCESS_FIELD, 'node', 'group');
+
+    // Define the administer role to be assigned automatically.
+    $role = user_role_load_by_name('administrator');
+    variable_set('og_group_manager_default_rids_node_group', array($role->rid));
+
+    $this->roles = db_select('og_role', 'ogr')
+      ->fields('ogr')
+      ->execute()
+      ->fetchAllAssoc('rid');
+  }
+
+  /**
+   * Create a new group and verify that new OG roles has been created and
+   * attached to the group owner.
+   */
+  public function testAutoAssignNewRoles() {
+    // Create the group.
+    $node = entity_create('node', array(
+      'title' => $this->randomString(),
+      'type' => 'group',
+      'language' => LANGUAGE_NONE,
+      'uid' => 1,
+    ));
+    $wrapper = entity_metadata_Wrapper('node', $node);
+    $wrapper->{OG_GROUP_FIELD}->set(1);
+    $wrapper->{OG_DEFAULT_ACCESS_FIELD}->set(1);
+    $wrapper->save();
+
+    // Verify that the group received new roles.
+    $group_roles = db_select('og_users_roles', 'ogur')
+      ->fields('ogur')
+      ->condition('ogur.group_type', 'node')
+      ->condition('ogur.gid', $wrapper->getIdentifier())
+      ->condition('ogur.rid', array_keys($this->roles), 'NOT IN')
+      ->execute()
+      ->fetchAllAssoc('rid');
+
+    $this->assertTrue(!empty($group_roles), 'A new role has been automatically assigned to the group owner.');
+  }
+
+  /**
+   * Create a new group and verify that the basic OG roles has been assigned to
+   * the group owner.
+   */
+  public function testAutoAssignCurrentRoles() {
+    // Create the group.
+    $node = entity_create('node', array(
+      'title' => $this->randomString(),
+      'type' => 'group',
+      'language' => LANGUAGE_NONE,
+      'uid' => 1,
+    ));
+    $wrapper = entity_metadata_Wrapper('node', $node);
+    $wrapper->{OG_GROUP_FIELD}->set(1);
+    $wrapper->{OG_DEFAULT_ACCESS_FIELD}->set(0);
+    $wrapper->save();
+
+    $group_roles = db_select('og_users_roles', 'ogur')
+      ->fields('ogur')
+      ->condition('ogur.group_type', 'node')
+      ->condition('ogur.gid', $wrapper->getIdentifier())
+      ->condition('ogur.rid', array_keys($this->roles), 'IN')
+      ->execute()
+      ->fetchAllAssoc('rid');
+
+    $this->assertTrue(!empty($group_roles), 'The basic OG roles has been assigned to the group owner.');
+  }
+}

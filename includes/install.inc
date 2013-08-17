@@ -1173,6 +1173,9 @@ function drupal_check_profile($profile) {
 
   $info = install_profile_info($profile);
 
+  // Add the profile as a dependency itself, in order to see if it has requirements as well.
+  $info['dependencies'][] = $profile;
+
   // Collect requirement testing results.
   $requirements = array();
   foreach ($info['dependencies'] as $module) {
@@ -1290,6 +1293,7 @@ function install_profile_info($profile, $locale = 'en') {
       'version' => NULL,
       'hidden' => FALSE,
       'php' => DRUPAL_MINIMUM_PHP,
+      'php_memory_limit' => DRUPAL_MINIMUM_PHP_MEMORY_LIMIT,
     );
     $info = drupal_parse_info_file("profiles/$profile/$profile.info") + $defaults;
     $info['dependencies'] = array_unique(array_merge(
