@@ -2,18 +2,23 @@
 
 class ComunidadeXMLParser {
 
-  private $caminho_completo_arquivo;
   private $file_handle;
+  private $caminho_completo_arquivo;
+  private $pilha_tags;
+  private $count_linhas;
 
   public function __construct($caminho_completo_arquivo) {
     $this->caminho_completo_arquivo = $caminho_completo_arquivo;
   }
 
   public function executar() {
+    $pilha_tags = array();
+    $count_linhas = 0;
+
     $this->file_handle = fopen($this->caminho_completo_arquivo, "r");
 
     while ($this->file_handle && !feof($this->file_handle)) {
-      $linha = $this->avancarAteItem('global', TRUE, 'module="communities.practice.content.CoP"'); //esse global já é dentro de um pickle
+      $linha = $this->avancarAteItem('global', NULL, 'module="communities.practice.content.CoP"'); //esse global já é dentro de um pickle
       $linha = $this->avancarAteItem('pickle', TRUE); //aqui já é o segundo pickle
       $this->processarDadosComunidade($linha);
     }
@@ -174,9 +179,12 @@ class ComunidadeXMLParser {
     }
     return NULL;
   }
-  
-  private function getProximaLinha(){
+
+  private function getProximaLinha() {
     $linha = fgets($this->file_handle);
+    $this->count_linhas++;
+//    print_r("[".$this->count_linhas."]");
+//    print_r($linha);
     return $linha;
   }
 
@@ -186,7 +194,26 @@ class ComunidadeXMLParser {
   }
 
   private function isTagAbertura($tag) {
-    return !$this->contemString($tag, '</');
+    $reg_abre_fecha = '/\<([^\/][a-z]*).*\/\>/';
+    $is_abre_fecha = preg_match($reg_abre_fecha, $tag);
+    if ($is_abre_fecha) {
+      return NULL;
+    }
+
+    $reg_abre = '/\<([^\/][a-z]*).*[^\/]\>/';
+    $is_abre = preg_match($reg_abre, $tag);
+    if ($is_abre) {
+      return TRUE;
+    }
+
+    return FALSE;
+//    $reg_fecha = '/\<\/([a-z]*).*[^\/]\>/';
+//    $is_fecha = preg_match($reg_fecha, $tag);
+//    if ($is_fecha) {
+//      return FALSE;
+//    }
+//
+//    throw new Exception('Não é tag a linha ['.$this->count_linhas.']: ' . $tag);
   }
 
   private function contemString($texto, $valor_procurado) {
@@ -195,6 +222,17 @@ class ComunidadeXMLParser {
 
   private function isTagTipo($tipo_elemento, $linha) {
     return preg_match('/\<\/?' . $tipo_elemento . '(.*)\>/', $linha);
+  }
+
+  private function extrairTipoTag($tag) {
+    $reg_abre = '\<([^\/][a-z]*).*[^\/]\>';
+    $reg_fecha = '\<\/([a-z]*).*[^\/]\>';
+    $reg_abre_fecha = '\<([^\/][a-z]*).*\/\>';
+
+    $regex = "/" . $reg_abre_fecha . "|" . $reg_abre . "|" . $reg_fecha . "/";
+
+    preg_match($regex, $tag, $output_array);
+    return $output_array[1];
   }
 
 }
