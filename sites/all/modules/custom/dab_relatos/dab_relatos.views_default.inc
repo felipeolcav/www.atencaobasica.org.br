@@ -61,13 +61,11 @@ function dab_relatos_views_default_views() {
   $handler->display->display_options['fields']['field_experiencia_catespecificas']['field'] = 'field_experiencia_catespecificas';
   $handler->display->display_options['fields']['field_experiencia_catespecificas']['label'] = 'Cat. Específicas';
   $handler->display->display_options['fields']['field_experiencia_catespecificas']['type'] = 'taxonomy_term_reference_plain';
-  /* Campo: Conteúdo: Categorias gerais */
+  /* Campo: Handler quebrado ou não encontrado */
   $handler->display->display_options['fields']['field_experiencia_catgerais']['id'] = 'field_experiencia_catgerais';
   $handler->display->display_options['fields']['field_experiencia_catgerais']['table'] = 'field_data_field_experiencia_catgerais';
   $handler->display->display_options['fields']['field_experiencia_catgerais']['field'] = 'field_experiencia_catgerais';
   $handler->display->display_options['fields']['field_experiencia_catgerais']['label'] = 'Cat. gerais';
-  $handler->display->display_options['fields']['field_experiencia_catgerais']['type'] = 'taxonomy_term_reference_plain';
-  $handler->display->display_options['fields']['field_experiencia_catgerais']['delta_offset'] = '0';
   /* Campo: Conteúdo: Âmbito da experiência */
   $handler->display->display_options['fields']['field_experiencia_ambito']['id'] = 'field_experiencia_ambito';
   $handler->display->display_options['fields']['field_experiencia_ambito']['table'] = 'field_data_field_experiencia_ambito';
@@ -131,7 +129,7 @@ function dab_relatos_views_default_views() {
   $handler->display->display_options['filters']['field_experiencia_catespecificas_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_experiencia_catespecificas_tid']['vocabulary'] = 'experiencia_eixos';
   $handler->display->display_options['filters']['field_experiencia_catespecificas_tid']['hierarchy'] = 1;
-  /* Critério de filtragem: Conteúdo: Categorias gerais (field_experiencia_catgerais) */
+  /* Critério de filtragem: Handler quebrado ou não encontrado */
   $handler->display->display_options['filters']['field_experiencia_catgerais_tid']['id'] = 'field_experiencia_catgerais_tid';
   $handler->display->display_options['filters']['field_experiencia_catgerais_tid']['table'] = 'field_data_field_experiencia_catgerais';
   $handler->display->display_options['filters']['field_experiencia_catgerais_tid']['field'] = 'field_experiencia_catgerais_tid';
@@ -148,9 +146,6 @@ function dab_relatos_views_default_views() {
     5 => 0,
     4 => 0,
   );
-  $handler->display->display_options['filters']['field_experiencia_catgerais_tid']['type'] = 'select';
-  $handler->display->display_options['filters']['field_experiencia_catgerais_tid']['vocabulary'] = 'experiencia_categorias_gerais';
-  $handler->display->display_options['filters']['field_experiencia_catgerais_tid']['hierarchy'] = 1;
   /* Critério de filtragem: Conteúdo: Âmbito da experiência (field_experiencia_ambito) */
   $handler->display->display_options['filters']['field_experiencia_ambito_tid']['id'] = 'field_experiencia_ambito_tid';
   $handler->display->display_options['filters']['field_experiencia_ambito_tid']['table'] = 'field_data_field_experiencia_ambito';
