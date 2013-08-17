@@ -64,9 +64,9 @@ features[variable][] = show_preview_changes_wiki
 features[views_view][] = commons_bw_wikis
 features[views_view][] = commons_wikis_contributor_list
 
-; Information added by drupal.org packaging script on 2013-08-09
-version = "7.x-3.3"
+; Information added by drupal.org packaging script on 2013-08-16
+version = "7.x-3.4"
 core = "7.x"
 project = "commons_wikis"
-datestamp = "1376013893"
+datestamp = "1376677600"
 

@@ -14,11 +14,14 @@
 
     .header-color-row-one {
       background-color: $palette_color_dark;
-      border-top: 4px solid darken($palette_color_dark, 50%);
+      border-top: 1.5em solid darken($palette_color_dark, 50%);
+
+      @include respond(large) {
+        border-top: none;
+      }
 
       .boxshadow & {
         @include box-shadow($palette_color_dark 0px -1px 0px);
-        margin-top: 1px;
       }
     }
 
@@ -38,6 +41,12 @@
 
     a, .commons-bw-create-all-widget-types li a {
       color: $palette_color_light;
+    }
+
+    .select-status {
+      &:after {
+        border-top-color: $palette_color_light;
+      }
     }
 
     #menu-bar.nav ul.menu li:hover .arrow:before,
@@ -81,6 +90,10 @@
       }
     }
 
+    .partial-node-form-title {
+      color: $palette_btn_bottom;
+    }
+
     .block-search {
       background-color: darken($palette_color_light, 12%); // Old browsers
       @include filter-gradient(darken($palette_color_light, 12%), darken($palette_color_light, 6%), vertical); // IE6-9
@@ -105,21 +118,35 @@
       @include box-shadow(lighten($palette_color_dark, 6%) 1px 0px 0px);
     }
 
-    %btn-green {
-      box-shadow: 1px 1px 1px $palette_btn_top inset, 0 3px 3px rgba(#000, 0.09);
-      background-color: $palette_btn_top; // Old browsers
-      @include filter-gradient($palette_btn_top, $palette_btn_bottom, vertical); // IE6-9
-      @include background-image(linear-gradient(top,  $palette_btn_top 0%, $palette_btn_bottom 100%));
-      border: 1px solid $palette_btn_bottom;
-      color: $white;
+    // Generate a new invisible class and extend the default with the color
+    // scheme of the skin.
+    @include button($palette_color_class, $palette_btn_bottom);
+
+    %button-primary {
+      @extend %button-#{$palette_color_class};
     }
 
-    .selectBox-dropdown {
-      color: $palette_color_light;
+    @include button_with_icon((#{$palette_color_class}, $palette_btn_bottom), icon-search);
+
+    %button-#{$palette_color_class}-icon-search {
+      &,
+      &:hover,
+      &:active,
+      &:focus {
+        background-position: 1.5em center;
+      }
     }
 
+    %button-primary-icon-search {
+      @extend %button-#{$palette_color_class}-icon-search;
+    }
+
+    .notification-count {
+      background: $palette_btn_top;
+      @include background(linear-gradient($palette_btn_top darken($palette_btn_top, 20)));
+      @include box-shadow(0 0 2px $palette_color_dark);
+    }
   }
-
 }
 
 //Specific overrides
@@ -153,10 +180,6 @@
     @include filter-gradient(darken($palette_gray_light_gray_blue_dark, 1%), darken($palette_gray_light_gray_blue_dark, 10%), vertical); // IE6-9
     @include background-image(linear-gradient(top,  darken($palette_gray_light_gray_blue_dark, 1%) 0%,lighten($palette_gray_light_gray_blue_dark, 10%)100%));
   }
-
-  .selectBox-dropdown {
-    color: $palette_gray_light_gray_blue_btn_bottom;
-  }
 }
 
 .palette-black-white-red {
@@ -167,18 +190,10 @@
   a, .commons-bw-create-all-widget-types li a {
     color: $palette_black_white_red_btn_bottom;
   }
-
-  .selectBox-dropdown {
-    color: $palette_black_white_red_btn_bottom;
-  }
 }
 
 .palette-brown-burnt-orange {
   a, .commons-bw-create-all-widget-types li a {
-    color: $palette_brown_burnt_orange_btn_bottom;
-  }
-
-  .selectBox-dropdown {
     color: $palette_brown_burnt_orange_btn_bottom;
   }
 }

@@ -8,8 +8,25 @@ include_once 'commons_notify.features.inc';
 
 /**
  * Implements hook_node_insert().
+ * In order to respect node access restrictions, we register
+ * a shutdown function, because node access grants haven not been written
+ * by the time hook_node_insert() is invoked. For more background,
+ * see https://drupal.org/node/1918666.
+ * 
  */
 function commons_notify_node_insert($node) {
+  drupal_register_shutdown_function('commons_notify_send_message_on_shutdown', $node);
+}
+
+/**
+ * Send a notification for newly created nodes. 
+ * This function is registered as a shutdown function
+ * in commons_notify_node_insert.
+ * Note that shutdown functions run after drupal_set_message() messages are
+ * displayed, so you'll need to use another method such as watchdog() logging
+ * if you wish to add debugging messages to this function.
+ */
+function commons_notify_send_message_on_shutdown($node) {
   // Create a message when a user creates a new node.
   // Borrowed from message_example.module:
   // Save the message and assign it to the user realm. Since another user,
@@ -47,7 +64,7 @@ function commons_notify_node_insert($node) {
       'message_notify_email_body' => 'field_message_rendered_body',
     ),
   );
-  message_subscribe_process_message('node', $node, $message, array('email' => $options));
+  message_subscribe_send_message('node', $node, $message, array('email' => $options));
 }
 
 /**
@@ -83,5 +100,67 @@ function commons_notify_comment_insert($comment) {
       'message_notify_email_body' => 'field_message_rendered_body',
     ),
   );
-  message_subscribe_process_message('comment', $comment, $message, array('email' => $options));
+  message_subscribe_send_message('comment', $comment, $message, array('email' => $options));
+}
+
+/**
+ * Implements hook_commons_utility_links().
+ *
+ * Add unread-invitations and unread-messages notifications to utility links.
+ */
+function commons_notify_commons_utility_links_alter(&$links) {
+  global $user;
+
+  if (user_is_anonymous()) {
+    // Anonymous user.
+    return;
+  }
+
+  $new_links = array(
+    'name' => $links['name'],
+  );
+
+  $account = $user;
+
+  $unread_invitations = 0;
+  if (module_exists('commons_trusted_contacts')) {
+    $unread_invitations = count(commons_trusted_contacts_get_pending_invitations($account->uid));
+  }
+
+  $unread_messages = 0;
+  if (module_exists('privatemsg')) {
+    $unread_messages = privatemsg_unread_count($account);
+  }
+
+
+  if (empty($unread_invitations) && empty($unread_messages)) {
+    // Provide a default mailbox icon pointing to the private messages UI
+    // when there are no unread messages or invitations.
+    $new_links['no-unread-messages'] = array(
+      'href' => 'user/' . $user->uid . '/contacts',
+      'query' => array('qt-commons_trusted_contacts' => 'messages'),
+      'title' => t('No unread messages'),
+    );
+  }
+
+  if ($unread_invitations) {
+    $new_links['unread-invitations']= array(
+      'href' => 'user/' . $user->uid . '/contacts',
+      'query' => array('qt-commons_trusted_contacts' => 'invitations'),
+      'title' => format_plural($unread_invitations, '1 invitation', '@count invitations'),
+    );
+  }
+
+  if ($unread_messages) {
+    $new_links['unread-messages']= array(
+      'href' => 'user/' . $user->uid . '/contacts',
+      'query' => array('qt-commons_trusted_contacts' => 'messages'),
+      'title' => format_plural($unread_messages, '1 message', '@count messages'),
+    );
+  }
+
+  $new_links['logout'] = $links['logout'];
+  $new_links['settings'] = $links['settings'];
+
+  $links = $new_links;
 }
