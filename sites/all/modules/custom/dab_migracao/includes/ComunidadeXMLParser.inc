@@ -6,6 +6,7 @@ class ComunidadeXMLParser {
   private $caminho_completo_arquivo;
   private $pilha_tags;
   private $count_linhas;
+  private $count_comunidades;
   private $linha_corrente;
   private $linha_anterior;
 
@@ -15,8 +16,8 @@ class ComunidadeXMLParser {
 
   public function executar() {
     $this->pilha_tags = array();
-    $this->linhas = array();
     $this->count_linhas = 0;
+    $this->count_comunidades = 0;
 
     $this->file_handle = fopen($this->caminho_completo_arquivo, "r");
 
@@ -46,22 +47,22 @@ class ComunidadeXMLParser {
 
     $dados_comunidade = array();
     $linha = $this->avancarAteItem('dictionary', TRUE);
-//começando do item 1
-//item 3 modification_date -> value > object > state > dictionary > *item (key/value)
-//item 6 subject VAZIO
-//item 12 title
-//item 13 twitter
-//item 24 _owner -> list(...)|string(karensathie@atencaobasica.org.br)
-//item 25 youtube
-//item 27 facebook
-//item 43 creation_date -> value > object > state > dictionary > *item (key/value)
+    
+    //TODO:processar esses atributos quando for necessário
+    //modification_date -> value > object > state > dictionary > *item (key/value)
+    //subject VAZIO
+    //twitter
+    //_owner -> list(...)|string(karensathie@atencaobasica.org.br)
+    //youtube
+    //facebook
+    //creation_date -> value > object > state > dictionary > *item (key/value)
 
     $linha = $this->getProximaLinha();
     $linha = $this->avancarAteItem('item', TRUE);
     while ((!$this->isTagTipo('dictionary', $linha))
-      || ($this->isTagAbertura($linha))) {
-      
-      $linha = $this->avancarAteItem('key', TRUE);
+    || ($this->isTagAbertura($linha))) {
+
+      $linha = $this->avancarAteItem('key', NULL);
       $key_dictionary = $this->extrairConteudoString($linha);
 
       if ($key_dictionary == '__ac_local_roles__') {
@@ -74,6 +75,10 @@ class ComunidadeXMLParser {
         $linha = $this->avancarAteItem('value', TRUE);
         $dados_comunidade['id'] = $this->extrairConteudoString($linha);
       }
+      elseif ($key_dictionary == 'title') {
+        $linha = $this->avancarAteItem('value', TRUE);
+        $dados_comunidade['nome'] = $this->extrairConteudoString($linha);
+      }
       elseif ($this->contemString($linha, "_Permission")) {
         $permissao_papeis = $this->extrairPermissaoEPapeis();
         $dados_comunidade['permissoes'][$permissao_papeis['permissao']] = $permissao_papeis['papeis'];
@@ -82,9 +87,17 @@ class ComunidadeXMLParser {
       $linha = $this->avancarAteItem('item', FALSE);
       $linha = $this->getProximaLinha();
     }
+
+    $this->count_comunidades++;
     print_r("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
-    print_r($dados_comunidade);
+    print_r("\nTotal de Comunidades: " . $this->count_comunidades . "\n");
+    //print_r($dados_comunidade);
+    //TODO: agora que tem o objeto $dados_comunidade em mãos, nesse ponto deveremos escrever no xml
     print_r("\n");
+
+    if ($this->count_comunidades == 25) {//TODO: remover esse if inútil. Coloquei esse código só para ter onde colocar o breakpoint (situação estranha: ele processa 25 comunidades e depois fica procurando a tag 'global' durante um tempão, processando milhares de linhas)
+      $i++;
+    }
   }
 
   private function extrairPermissaoEPapeis() {
@@ -120,7 +133,6 @@ class ComunidadeXMLParser {
       if (!empty($email)) {//pode ser vazio quando é um elemento do tipo 'reference' em vez de 'string'  
         $papeis = array();
 
-//tem um <value> como pai do <list>
         $linha = $this->avancarAteItem('list', TRUE);
         $linha = $this->getProximaLinha();
         while (!($this->isTagTipo('list', $linha) && !$this->isTagAbertura($linha))) {//</list>
@@ -129,7 +141,7 @@ class ComunidadeXMLParser {
             $papeis[] = $papel;
           }
           else {
-//TODO: tratar aquele caso de ser a tag 'reference' em vez de 'string' 
+            //TODO: tratar aquele caso de ser a tag 'reference' em vez de 'string' 
           }
           $linha = $this->getProximaLinha();
         }
@@ -171,7 +183,7 @@ class ComunidadeXMLParser {
 //            $tipo_tag_real = $this->extrairTipoTag($linha);
 //            $ocorrencias = count(array_keys($this->pilha_tags, $tipo_tag_real));
 //            if ($ocorrencias == 1) {
-            return $linha;
+              return $linha;
 //            }
           }
         }
@@ -192,8 +204,10 @@ class ComunidadeXMLParser {
       if ($is_tag_abertura) {
         array_push($this->pilha_tags, $tipo_tag);
       }
-      elseif (isset($is_tag_abertura)) {
-        array_pop($this->pilha_tags);
+      else {
+        if (isset($is_tag_abertura)) {
+          array_pop($this->pilha_tags);
+        }
       }
     }
     if ($this->count_linhas % 10000 == 0) {
@@ -204,30 +218,25 @@ class ComunidadeXMLParser {
 
   private function extrairConteudoString($linha) {
     preg_match('/\<string.*\>(.+)\<\/string\>/', $linha, $matches);
-    return $matches[1];
+    $resultado = $matches[1];
+    if (empty($resultado)) {
+      preg_match('/\<unicode.*\>(.+)\<\/unicode>/', $linha, $matches);
+      $resultado = $matches[1];
+    }
+    return $resultado;
   }
 
   private function isTagAbertura($tag) {
-    $reg_abre_fecha = '/\<([^\/][a-z]*).*\/\>/';
-    $is_abre_fecha = preg_match($reg_abre_fecha, $tag);
-    if ($is_abre_fecha) {
+    $reg_abre = '/\<([a-z]+)\>|\<([a-z]+)[^\/]+\>/';
+    $is_abre = preg_match($reg_abre, $tag);
+
+    $reg_fecha = '/\<\/([a-z]+)\>|\<\/([a-z]+)[^\/]+\>/';
+    $is_fecha = preg_match($reg_fecha, $tag);
+
+    if (($is_abre && $is_fecha) || (!$is_abre && !$is_fecha)) {
       return NULL;
     }
-
-    $reg_abre = '/\<([^\/][a-z]*).*[^\/]\>/';
-    $is_abre = preg_match($reg_abre, $tag);
-    if ($is_abre) {
-      return TRUE;
-    }
-
-    return FALSE;
-//    $reg_fecha = '/\<\/([a-z]*).*[^\/]\>/';
-//    $is_fecha = preg_match($reg_fecha, $tag);
-//    if ($is_fecha) {
-//      return FALSE;
-//    }
-//
-//    throw new Exception('Não é tag a linha ['.$this->count_linhas.']: ' . $tag);
+    return $is_abre;
   }
 
   private function contemString($texto, $valor_procurado) {
@@ -239,9 +248,15 @@ class ComunidadeXMLParser {
   }
 
   private function extrairTipoTag($tag) {
-    $reg_abre = '\<([^\/][a-z]*)[^\/]*\>';
-    $reg_fecha = '\<\/([a-z]*)[^\/]*\>';
-    $reg_abre_fecha = '\<([^\/][a-z]*).*\/\>';
+    $reg_duas_tags = '/\<[a-z]+.*\>.*\<\/[a-z]+\>/';
+    $possui_duas_tags = preg_match($reg_duas_tags, $tag);
+    if($possui_duas_tags){
+      return NULL;
+    }
+    
+    $reg_abre = '(\<([a-z]*)\>|\<([a-z]*)[^\/]+\>)';
+    $reg_fecha = '\<\/([a-z]+)\>|\<\/([a-z]+)[^\/]+\>';
+    $reg_abre_fecha = '\<([a-z]*).*\/\>';
 
     $regex = "/" . $reg_abre_fecha . "|" . $reg_abre . "|" . $reg_fecha . "/";
 
