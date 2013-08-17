@@ -41,6 +41,10 @@ class ComunidadeXMLParser {
   }
 
   private function processarDadosComunidade($linha) {
+    if(!isset($linha)){
+      return;
+    }
+    
     if (!($this->isTagTipo('pickle', $linha) && $this->isTagAbertura($linha))) {//é esperado o segundo pickle do record que possua global com 'module="communities.practice.content.CoP"'
       throw new Exception('Era esperada uma tag de abertura do tipo pickle. Linha: ' . $linha);
     }
@@ -58,7 +62,6 @@ class ComunidadeXMLParser {
     //creation_date -> value > object > state > dictionary > *item (key/value)
 
     $linha = $this->getProximaLinha();
-    $linha = $this->avancarAteItem('item', TRUE);
     while ((!$this->isTagTipo('dictionary', $linha))
     || ($this->isTagAbertura($linha))) {
 
@@ -72,11 +75,11 @@ class ComunidadeXMLParser {
         $linha = $this->avancarAteItem('object', FALSE);
       }
       elseif ($key_dictionary == 'id') {
-        $linha = $this->avancarAteItem('value', TRUE);
+        $linha = $this->avancarAteItem('value', NULL);
         $dados_comunidade['id'] = $this->extrairConteudoString($linha);
       }
       elseif ($key_dictionary == 'title') {
-        $linha = $this->avancarAteItem('value', TRUE);
+        $linha = $this->avancarAteItem('value', NULL);
         $dados_comunidade['nome'] = $this->extrairConteudoString($linha);
       }
       elseif ($this->contemString($linha, "_Permission")) {
@@ -91,13 +94,9 @@ class ComunidadeXMLParser {
     $this->count_comunidades++;
     print_r("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
     print_r("\nTotal de Comunidades: " . $this->count_comunidades . "\n");
-    //print_r($dados_comunidade);
+//    print_r($dados_comunidade);
     //TODO: agora que tem o objeto $dados_comunidade em mãos, nesse ponto deveremos escrever no xml
     print_r("\n");
-
-    if ($this->count_comunidades == 25) {//TODO: remover esse if inútil. Coloquei esse código só para ter onde colocar o breakpoint (situação estranha: ele processa 25 comunidades e depois fica procurando a tag 'global' durante um tempão, processando milhares de linhas)
-      $i++;
-    }
   }
 
   private function extrairPermissaoEPapeis() {
