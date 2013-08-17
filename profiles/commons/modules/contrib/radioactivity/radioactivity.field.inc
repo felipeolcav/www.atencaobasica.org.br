@@ -12,8 +12,6 @@ function radioactivity_field_info() {
       ),
       'instance_settings' => array(
         'profile' => 'default',
-        'history' => 0,
-        'history_limit' => 8,
       ),
       'default_widget' => RADIOACTIVITY_BASIC_WIDGET,
       'default_formatter' => RADIOACTIVITY_COMBO_FORMATTER,
@@ -47,20 +45,6 @@ function radioactivity_field_instance_settings_form($field, $instance) {
       '#options' => $profiles,
     );
 
-    $form['history'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Enable history'),
-      '#default_value' => isset($settings['history']) ? $settings['history'] : 0,
-      '#description' => t('Enable history tracking for this field instance. You can view the history on the edit page or by changing the fields display type.'),
-    );
-
-    $form['history_limit'] = array(
-      '#type' => 'textfield',
-      '#title' => t('History limit'),
-      '#default_value' => isset($settings['history_limit']) ? $settings['history_limit'] : 8,
-      '#description' => t('For how many hours do you want to store the data for?'),
-    );
-
     if (isset($profiles['none'])) {
       $form['profile']['#disabled'] = TRUE;
       $form['profile']['#description'] = t(
@@ -76,7 +60,7 @@ function radioactivity_field_instance_settings_form($field, $instance) {
 }
 
 /**
- * Implements hook_field_widget_info().
+ * Implement hook_field_widget_info().
  */
 function radioactivity_field_widget_info() {
   return array(
@@ -87,9 +71,6 @@ function radioactivity_field_widget_info() {
   );
 }
 
-/**
- * Implements hook_field_formatter_info().
- */
 function radioactivity_field_formatter_info() {
   return array(
     RADIOACTIVITY_COMBO_FORMATTER => array(
@@ -205,17 +186,6 @@ function radioactivity_field_formatter_view($entity_type, $entity, $field, $inst
               );
             }
             break;
-
-          case 'history':
-            $data = _radioactivity_get_history_for_field_and_entity($instance['id'], $entity_id);
-            foreach ($items as $delta => $item) {
-              $energy          = $item[RADIOACTIVITY_FIELD_ENERGY];
-              $element[$delta] = array(
-                '#theme' => 'radioactivity_history',
-                '#dataset' => $data,
-              );
-            }
-            break;
         }
       }
     break; // case RADIOACTIVITY_COMBO_FORMATTER:
@@ -281,7 +251,6 @@ function radioactivity_combo_field_types() {
     'energy' => t('Raw numeric value'),
     'popularity' => t('Percentage'),
     'gauge' => t('Hotness gauge'),
-    'history' => t('History'),
   );
 }
 
@@ -445,27 +414,6 @@ function radioactivity_field_widget_form(&$form, &$form_state, $field, $instance
       '#default_value' => $timestamp,
     ),
   );
-
-  if ($instance['settings']['history']) {
-
-    drupal_add_js(drupal_get_path('module', 'radioactivity') . '/js/radioactivity-history.js');
-
-    $entity = &$form['#entity'];
-    $info = entity_get_info($instance['entity_type']);
-    $id = $info['entity keys']['id'];
-
-    if (isset($entity->{$id})) {
-      $entity_id = $entity->{$id};
-      $data = _radioactivity_get_history_for_field_and_entity($instance['id'], $entity_id);
-
-      $element += array(
-        RADIOACTIVITY_HISTORY_GRAPH => array(
-          '#theme' => 'radioactivity_history',
-          '#dataset' => $data,
-        ),
-      );
-    }
-  }
 
   return $element;
 }

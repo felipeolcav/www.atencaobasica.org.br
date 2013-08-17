@@ -11,7 +11,6 @@ define("RADIOACTIVITY_FIELD_ENERGY", "radioactivity_energy");
 define("RADIOACTIVITY_FIELD_TIMESTAMP", "radioactivity_timestamp");
 define("RADIOACTIVITY_COMBO_FORMATTER", "radioactivity_combo_formatter");
 define("RADIOACTIVITY_BASIC_WIDGET", "radioactivity_basic_widget");
-define("RADIOACTIVITY_HISTORY_GRAPH", "radioactivity_history_graph");
 
 include "radioactivity.field.inc";
 
@@ -39,9 +38,6 @@ function radioactivity_theme() {
     'radioactivity_gauge' => array(
       'variables' => array('energy' => 1, 'maximum' => 1),
     ),
-    'radioactivity_history' => array(
-      'variables' => array('dataset' => array(), 'cutoff' => 0),
-    ),
   );
 }
 
@@ -51,32 +47,6 @@ function radioactivity_theme() {
 function theme_radioactivity_gauge($vars) {
   $lvl = ceil(($vars['energy'] / $vars['maximum']) * 3);
   return '<span class="radioactivity-gauge lvl-' . $lvl . '"></span>';
-}
-
-/**
- * Theme callback
- */
-function theme_radioactivity_history($vars) {
-  
-  drupal_add_js(drupal_get_path('module', 'radioactivity') . '/js/jquery.sparkline.min.js');
-  drupal_add_js(drupal_get_path('module', 'radioactivity') . '/js/radioactivity-history.js');
-  drupal_add_css(drupal_get_path('module', 'radioactivity') . '/css/radioactivity.css');
-
-  $data = array(
-    'values' => array(),
-    'tooltips' => array(),
-    'cutoff' => $vars['cutoff'],
-    'tooltipFormat' => '<span style="color:{{color}}">&#9679;</span> {{value}} | {{offset:tooltips}}'
-  );
-  
-  foreach ($vars['dataset'] as $time => $value) {
-    $data['values'][] = round($value,2);
-    $data['tooltips'][] = format_date($time, 'short');
-  }
-
-
-
-  return '<div class="radioactivity-history">' . drupal_json_encode($data) . '</div>';
 }
 
 /**
@@ -288,19 +258,6 @@ function _radioactivity_get_field_maximum($field_id, $entity_type) {
 }
 
 /**
- * Get history data for the given field
- */
-function _radioactivity_get_history_for_field_and_entity($field_id, $entity_id) {
-  return db_select('radioactivity_history', 'rh')
-    ->fields('rh', array('time', 'energy'))
-    ->orderBy('rh.time', 'ASC')
-    ->condition('rh.field_instance_id', $field_id)
-    ->condition('rh.entity_id', $entity_id)
-    ->execute()
-    ->fetchAllKeyed();
-}
-
-/**
  * Get storage by key
  */
 function _radioactivity_get_storage($key) {
@@ -453,27 +410,6 @@ function radioactivity_cron() {
             ->condition($timestamp, REQUEST_TIME, '<')
             ->condition("deleted", "0")
             ->execute();
-
-          $field_info = field_info_instance($entity_type, $field_name, $bundle);
-
-          if ($field_info['settings']['history'] == 1) {
-           
-            db_query("INSERT INTO {radioactivity_history}"
-              . " (SELECT :id, entity_id, " . $timestamp . ", " . $energy
-              . " FROM " . $table_name
-              . " WHERE deleted = 0)",
-              array(':id' => $field_info['id'])
-            );
-
-            $time = REQUEST_TIME - ($field_info['settings']['history_limit'] * 60 * 60);
-
-            db_delete('radioactivity_history')
-              ->condition('time', $time, '<')
-              ->condition('field_instance_id', $field_info['id'])
-              ->execute();
-
-          }
-
         } // bundles
       } // entity types
     }
@@ -553,11 +489,7 @@ function radioactivity_decay_profile_export($profile) {
  */
 function radioactivity_decay_profile_save($profile) {
 
-  db_merge("radioactivity_decay_profile")
-    ->key(array("machine_name" => $profile->machine_name))
-    ->fields($profile)
-    ->execute();
-
+  db_merge("radioactivity_decay_profile")->key(array("machine_name" => $profile->machine_name))->fields($profile)->execute();
 }
 
 /**
@@ -565,25 +497,17 @@ function radioactivity_decay_profile_save($profile) {
  */
 function radioactivity_decay_profile_delete($machine_name) {
 
-  db_delete("radioactivity_decay_profile")
-    ->condition("machine_name", $machine_name)
-    ->execute();
-
+  db_delete("radioactivity_decay_profile")->condition("machine_name", $machine_name)->execute();
 }
 
 /**
  * Callback for testing if certain machine name already exists
  */
 function radioactivity_decay_profile_exists($machine_name) {
-  
-  $obj = db_select("radioactivity_decay_profile", "dcp")
-    ->fields("dcp", array("machine_name"))
-    ->condition("dcp.machine_name", $machine_name)
-    ->execute()
-    ->fetch();
-  
-  return $obj != NULL;
 
+  $obj = db_select("radioactivity_decay_profile", "dcp")->fields("dcp", array("machine_name"))->condition("dcp.machine_name", $machine_name)->execute()->fetch();
+
+  return $obj != NULL;
 }
 
 /**

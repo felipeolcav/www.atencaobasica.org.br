@@ -12,9 +12,10 @@ files[] = includes/RadioactivityFileIncidentStorage.inc
 files[] = includes/RadioactivityMemcachedIncidentStorage.inc
 files[] = includes/RadioactivityIncident.inc
 
-; Information added by drupal.org packaging script on 2013-05-25
-version = "7.x-2.8+5-dev"
+
+; Information added by drush on 2013-08-16
+version = "7.x-2.8+1-dev"
 core = "7.x"
 project = "radioactivity"
-datestamp = "1369451347"
+datestamp = "1376683315"
 

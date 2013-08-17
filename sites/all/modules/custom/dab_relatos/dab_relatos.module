@@ -1,0 +1,17 @@
+<?php
+/**
+ * @file
+ * Code for the Comunidade de Práticas - Relato de experiência feature.
+ */
+
+include_once 'dab_relatos.features.inc';
+
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function dab_relatos_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'addressfield') {
+    return 'plugins/' . $plugin;
+  }
+}
