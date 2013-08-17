@@ -9,14 +9,6 @@
  */
 function dab_relatos_taxonomy_default_vocabularies() {
   return array(
-    'experi_ncia_sub_eixo_18' => array(
-      'name' => 'Experiência - sub-eixo 18',
-      'machine_name' => 'experi_ncia_sub_eixo_18',
-      'description' => '',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-    ),
     'experiencia_cat' => array(
       'name' => 'Experiência - Categorias',
       'machine_name' => 'experiencia_cat',
@@ -24,6 +16,21 @@ function dab_relatos_taxonomy_default_vocabularies() {
       'hierarchy' => 0,
       'module' => 'taxonomy',
       'weight' => 0,
+      'rdf_mapping' => array(
+        'rdftype' => array(
+          0 => 'skos:ConceptScheme',
+        ),
+        'name' => array(
+          'predicates' => array(
+            0 => 'dc:title',
+          ),
+        ),
+        'description' => array(
+          'predicates' => array(
+            0 => 'rdfs:comment',
+          ),
+        ),
+      ),
     ),
     'experiencia_categoria_participantes' => array(
       'name' => 'Experiência - categoria dos participantes',
@@ -32,14 +39,21 @@ function dab_relatos_taxonomy_default_vocabularies() {
       'hierarchy' => 0,
       'module' => 'taxonomy',
       'weight' => 0,
-    ),
-    'experiencia_categorias_gerais' => array(
-      'name' => 'Experiência - Categorias gerais',
-      'machine_name' => 'experiencia_categorias_gerais',
-      'description' => '',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
+      'rdf_mapping' => array(
+        'rdftype' => array(
+          0 => 'skos:ConceptScheme',
+        ),
+        'name' => array(
+          'predicates' => array(
+            0 => 'dc:title',
+          ),
+        ),
+        'description' => array(
+          'predicates' => array(
+            0 => 'rdfs:comment',
+          ),
+        ),
+      ),
     ),
     'experiencia_eixos' => array(
       'name' => 'Experiência - eixos',
@@ -48,158 +62,21 @@ function dab_relatos_taxonomy_default_vocabularies() {
       'hierarchy' => 0,
       'module' => 'taxonomy',
       'weight' => 0,
-    ),
-    'experiencia_sub_eixo_1' => array(
-      'name' => 'Experiência - sub-eixo 1',
-      'machine_name' => 'experiencia_sub_eixo_1',
-      'description' => '',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-    ),
-    'experiencia_sub_eixo_10' => array(
-      'name' => 'Experiência - sub-eixo 10',
-      'machine_name' => 'experiencia_sub_eixo_10',
-      'description' => '',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-    ),
-    'experiencia_sub_eixo_11' => array(
-      'name' => 'Experiência - sub-eixo 11',
-      'machine_name' => 'experiencia_sub_eixo_11',
-      'description' => '',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-    ),
-    'experiencia_sub_eixo_12' => array(
-      'name' => 'Experiência - sub-eixo 12',
-      'machine_name' => 'experiencia_sub_eixo_12',
-      'description' => '',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-    ),
-    'experiencia_sub_eixo_13' => array(
-      'name' => 'Experiência - sub-eixo 13',
-      'machine_name' => 'experiencia_sub_eixo_13',
-      'description' => '',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-    ),
-    'experiencia_sub_eixo_14' => array(
-      'name' => 'Experiência - sub-eixo 14',
-      'machine_name' => 'experiencia_sub_eixo_14',
-      'description' => '',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-    ),
-    'experiencia_sub_eixo_15' => array(
-      'name' => 'Experiência - sub-eixo 15',
-      'machine_name' => 'experiencia_sub_eixo_15',
-      'description' => '',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-    ),
-    'experiencia_sub_eixo_16' => array(
-      'name' => 'Experiência - sub-eixo 16',
-      'machine_name' => 'experiencia_sub_eixo_16',
-      'description' => '',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-    ),
-    'experiencia_sub_eixo_17' => array(
-      'name' => 'Experiência - sub-eixo 17',
-      'machine_name' => 'experiencia_sub_eixo_17',
-      'description' => '',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-    ),
-    'experiencia_sub_eixo_19' => array(
-      'name' => 'Experiência - sub-eixo 19',
-      'machine_name' => 'experiencia_sub_eixo_19',
-      'description' => '',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-    ),
-    'experiencia_sub_eixo_2' => array(
-      'name' => 'Experiência - sub-eixo 2',
-      'machine_name' => 'experiencia_sub_eixo_2',
-      'description' => '',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-    ),
-    'experiencia_sub_eixo_20' => array(
-      'name' => 'Experiência - sub-eixo 20',
-      'machine_name' => 'experiencia_sub_eixo_20',
-      'description' => '',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-    ),
-    'experiencia_sub_eixo_3' => array(
-      'name' => 'Experiência - sub-eixo 3',
-      'machine_name' => 'experiencia_sub_eixo_3',
-      'description' => '',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-    ),
-    'experiencia_sub_eixo_4' => array(
-      'name' => 'Experiência - sub-eixo 4',
-      'machine_name' => 'experiencia_sub_eixo_4',
-      'description' => '',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-    ),
-    'experiencia_sub_eixo_5' => array(
-      'name' => 'Experiência - sub-eixo 5',
-      'machine_name' => 'experiencia_sub_eixo_5',
-      'description' => '',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-    ),
-    'experiencia_sub_eixo_6' => array(
-      'name' => 'Experiência - sub-eixo 6',
-      'machine_name' => 'experiencia_sub_eixo_6',
-      'description' => '',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-    ),
-    'experiencia_sub_eixo_7' => array(
-      'name' => 'Experiência - sub-eixo 7',
-      'machine_name' => 'experiencia_sub_eixo_7',
-      'description' => '',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-    ),
-    'experiencia_sub_eixo_8' => array(
-      'name' => 'Experiência - sub-eixo 8',
-      'machine_name' => 'experiencia_sub_eixo_8',
-      'description' => '',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-    ),
-    'experiencia_sub_eixo_9' => array(
-      'name' => 'Experiência - sub-eixo 9',
-      'machine_name' => 'experiencia_sub_eixo_9',
-      'description' => '',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
+      'rdf_mapping' => array(
+        'rdftype' => array(
+          0 => 'skos:ConceptScheme',
+        ),
+        'name' => array(
+          'predicates' => array(
+            0 => 'dc:title',
+          ),
+        ),
+        'description' => array(
+          'predicates' => array(
+            0 => 'rdfs:comment',
+          ),
+        ),
+      ),
     ),
   );
 }
