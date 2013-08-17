@@ -60,15 +60,6 @@ div.entity-message .user-picture {
   margin-bottom: 2px;
 }
 
-.commons-bw-partial-node-form {
-  margin-left: 65px;
-}
-
-.commons-bw-partial-node-form div div.user-picture{
-  left: -65px;
-  margin-top: 5px;
-  position: absolute;
-}
 
 /* USER LOGIN BLOCK */
 
@@ -135,3 +126,29 @@ body.page-mostra div#page-top {
   display: none;
 
 }
+
+
+/* footer */
+
+#footer-logos {
+  text-align: center;
+}
+
+#footer-logos a{
+  padding: 3px;
+}
+
+#footer-logos a:hover img{
+  border-color: blue ;
+}
+#footer-logos img{
+  height: 40px;
+  border: 2px solid transparent;
+}
+
+
+.pane-commons-groups-commons-groups-create-group {
+  position: relative;
+}
+
+
