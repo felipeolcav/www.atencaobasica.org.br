@@ -7,7 +7,7 @@ function dab_project_init(){
   drupal_add_js(drupal_get_path('module', 'dab_project') .'/dab-project.js');
 
   // commet chat css and js
-  drupal_add_js('/cometchat/cometchatjs.php', 'external');
+  drupal_add_js('/cometchat/cometchatjs.php?v=2', 'external');
   drupal_add_css( '/cometchat/cometchatcss.php', 'external');
 
 }
@@ -32,7 +32,7 @@ function dab_project_user_registration_validate(&$form,&$form_state){
 
     //if a result is returned, that means the $staff_id exists
     if (db_query($check_unique_query,array(':cpf'=>$cpf))->fetchField()){
-        form_set_error('cpf','This CPF is already in use');
+        form_set_error('cpf', t('This CPF is already in use'));
     }
 }
 
