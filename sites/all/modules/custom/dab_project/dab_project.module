@@ -1,11 +1,15 @@
 <?php
 
 /**
- *  Javascript for
+ *  Hook init
  */
-
 function dab_project_init(){
   drupal_add_js(drupal_get_path('module', 'dab_project') .'/dab-project.js');
+
+  // commet chat css and js
+  drupal_add_js('/cometchat/cometchatjs.php', 'external');
+  drupal_add_css( '/cometchat/cometchatcss.php', 'external');
+
 }
 
 
