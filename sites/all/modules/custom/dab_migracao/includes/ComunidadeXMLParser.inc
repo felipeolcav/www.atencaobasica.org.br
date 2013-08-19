@@ -27,6 +27,7 @@ class ComunidadeXMLParser {
         do {
           $linha = $this->avancarAteItem('global', NULL, 'module="communities.practice.content.CoP"'); //esse global já é dentro de um pickle
           $linha_anterior_pickle = $this->contemString($this->linha_anterior, '<pickle>');
+          //print_r("[" . $this->count_linhas . "] Linha Comunidade " . $this->count_comunidades . ": " . $linha);
         } while (!feof($this->file_handle) && !$linha_anterior_pickle);
 
         $linha = $this->avancarAteItem('pickle', TRUE); //aqui já é o segundo pickle
@@ -41,17 +42,17 @@ class ComunidadeXMLParser {
   }
 
   private function processarDadosComunidade($linha) {
-    if(!isset($linha)){
+    if (!isset($linha)) {
       return;
     }
-    
+
     if (!($this->isTagTipo('pickle', $linha) && $this->isTagAbertura($linha))) {//é esperado o segundo pickle do record que possua global com 'module="communities.practice.content.CoP"'
       throw new Exception('Era esperada uma tag de abertura do tipo pickle. Linha: ' . $linha);
     }
 
     $dados_comunidade = array();
     $linha = $this->avancarAteItem('dictionary', TRUE);
-    
+
     //TODO:processar esses atributos quando for necessário
     //modification_date -> value > object > state > dictionary > *item (key/value)
     //subject VAZIO
@@ -82,8 +83,8 @@ class ComunidadeXMLParser {
         $linha = $this->avancarAteItem('value', NULL);
         $dados_comunidade['nome'] = $this->extrairConteudoString($linha);
       }
-      elseif ($this->contemString($linha, "_Permission")) {
-        $permissao_papeis = $this->extrairPermissaoEPapeis();
+      elseif ($this->contemString($key_dictionary, "_Permission")) {
+        $permissao_papeis = $this->extrairPermissaoEPapeis($key_dictionary);
         $dados_comunidade['permissoes'][$permissao_papeis['permissao']] = $permissao_papeis['papeis'];
       }
 
@@ -92,17 +93,14 @@ class ComunidadeXMLParser {
     }
 
     $this->count_comunidades++;
-    print_r("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
-    print_r("\nTotal de Comunidades: " . $this->count_comunidades . "\n");
-//    print_r($dados_comunidade);
+//    print_r("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
+//    print_r("\nTotal de Comunidades: " . $this->count_comunidades . "\n");
+    print_r($dados_comunidade['id']);
     //TODO: agora que tem o objeto $dados_comunidade em mãos, nesse ponto deveremos escrever no xml
     print_r("\n");
   }
 
-  private function extrairPermissaoEPapeis() {
-    $linha = $this->avancarAteItem('key', NULL, '_Permission');
-    $permissao = $this->extrairConteudoString($linha);
-
+  private function extrairPermissaoEPapeis($permissao) {
     $papeis = array();
 
     $linha = $this->avancarAteItem('tuple', TRUE);
@@ -116,7 +114,6 @@ class ComunidadeXMLParser {
   }
 
   private function extrairEmailsComPapeis() {
-    $linha = $this->avancarAteItem('key', NULL, '__ac_local_roles__');
     $linha = $this->avancarAteItem('dictionary', TRUE);
 
     if (!$this->isTagTipo('dictionary', $linha) || !$this->isTagAbertura($linha)) {
@@ -161,7 +158,7 @@ class ComunidadeXMLParser {
       if ($print) {
         print_r($linha);
       }
-
+      
       $is_abertura = $this->isTagAbertura($linha);
 
       if ($this->isTagTipo($tipo_tag_procurado, $linha)) {
@@ -182,7 +179,7 @@ class ComunidadeXMLParser {
 //            $tipo_tag_real = $this->extrairTipoTag($linha);
 //            $ocorrencias = count(array_keys($this->pilha_tags, $tipo_tag_real));
 //            if ($ocorrencias == 1) {
-              return $linha;
+            return $linha;
 //            }
           }
         }
@@ -210,7 +207,7 @@ class ComunidadeXMLParser {
       }
     }
     if ($this->count_linhas % 10000 == 0) {
-      print_r("[" . $this->count_linhas . "]");
+      //print_r("[" . $this->count_linhas . "]");
     }
     return $this->linha_corrente;
   }
@@ -249,10 +246,10 @@ class ComunidadeXMLParser {
   private function extrairTipoTag($tag) {
     $reg_duas_tags = '/\<[a-z]+.*\>.*\<\/[a-z]+\>/';
     $possui_duas_tags = preg_match($reg_duas_tags, $tag);
-    if($possui_duas_tags){
+    if ($possui_duas_tags) {
       return NULL;
     }
-    
+
     $reg_abre = '(\<([a-z]*)\>|\<([a-z]*)[^\/]+\>)';
     $reg_fecha = '\<\/([a-z]+)\>|\<\/([a-z]+)[^\/]+\>';
     $reg_abre_fecha = '\<([a-z]*).*\/\>';
