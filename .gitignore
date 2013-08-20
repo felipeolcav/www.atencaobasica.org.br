@@ -11,3 +11,4 @@ nbproject/*
 
 .gitignore
 sites/all/modules/custom/dab_migracao/xml*
+.DS_Store

@@ -39,8 +39,16 @@ class ComunidadeXMLParser {
       }
       $xml = $this->gerarXML($comunidades);
       print_r("\n\n ===========================================================\n");
-      print_r($xml);
+      //print_r($xml);
       print_r("\n\n ===========================================================\n");
+
+      //file_put_contents("myxmlfile.xml", $xml);
+      $dom = new DOMDocument;
+      $dom->preserveWhiteSpace = FALSE;
+      $dom->loadXML($xml);
+      $dom->formatOutput = TRUE;
+      $dom->save("./sites/all/modules/custom/dab_migracao/xml/comunidades-processadas.xml");
+      
     } catch (Exception $e) {
       print_r($e);
     }
@@ -101,10 +109,7 @@ class ComunidadeXMLParser {
     }
 
     $this->count_comunidades++;
-//    print_r("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
-//    print_r("\nTotal de Comunidades: " . $this->count_comunidades . "\n");
     print_r($dados_comunidade['id']);
-    //TODO: agora que tem o objeto $dados_comunidade em mãos, nesse ponto deveremos escrever no xml
     print_r("\n");
     return $dados_comunidade;
   }
@@ -191,7 +196,8 @@ class ComunidadeXMLParser {
   }
 
   private function gerarTagsXML($xml_data) {
-    $xml = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?><root>";
+    $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+    $xml .= "<root>";
     foreach ($xml_data as $data) {
       $this->gerarTagXML($xml, $data);
     }
@@ -209,6 +215,7 @@ class ComunidadeXMLParser {
       }
     }
     $xml .= ">";
+    ;
 
     if (!empty($element['children'])) {
       foreach ($element['children'] as $child) {
@@ -218,8 +225,10 @@ class ComunidadeXMLParser {
 
     if (!empty($element['value'])) {
       $xml .= $element['value'];
+      ;
     }
     $xml .= "</" . $element['tag'] . ">";
+    ;
 
     return $xml;
   }
