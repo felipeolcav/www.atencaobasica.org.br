@@ -20,6 +20,7 @@ class MigracaoComunidadeXML extends XMLMigration {
     $source_fields = array(
       'id' => 'id',
       'nome' => 'nome',
+      'dono' => 'dono',
     );
 
     // The source ID here is the one retrieved from each data item in the XML file, and
@@ -53,46 +54,14 @@ class MigracaoComunidadeXML extends XMLMigration {
     $this->addFieldMapping('title_field', 'nome')
       ->xpath('nome');
 
-    // TIP: By default, term relationship are assumed to be passed by name.
-    // In this case, the source values are IDs, so we specify the relevant
-    // migration (so the tid can be looked up in the map), and tell the term
-    // field handler that it is receiving tids instead of names
-    $this->addFieldMapping('uid', 'dono')
+    $this->addFieldMapping('uid', 'Email')
       ->sourceMigration($this->getUserMigrations())
-      ->arguments(array('source_type' => 'Email'))
-      ->xpath('dono');
+      ->xpath('dono')
+      ->defaultValue(1);
 
     // Organic Groups
     $this->addFieldMapping('group_group')->defaultValue(1);
     $this->addFieldMapping('og_roles_permissions')->defaultValue(0);
-  }
-
-  public function prepareRow($row) {
-//    if (isset($row->xml->dono)) {
-//      $row->uid2 = $this->handleSourceMigration($this->getUserMigrations(), $row->xml->dono);
-//    }
-  }
-
-  public function prepare($entity, stdClass $row) {
-    if (isset($row->xml->dono)) {
-      $uid_dono = $this->buscarUID($row->xml->dono);
-      if (!empty($uid_dono)) {
-        $entity->uid = $uid_dono;
-      }
-    }
-    $i++;
-  }
-
-  private function buscarUID($email) {
-    $query = db_select('users', 'u')
-      ->fields('u', array('uid'))
-      ->condition('u.mail', $email, '=');
-    $results = $query->execute()->fetchField();
-    return $results;
-  }
-
-  public function complete($entity, stdClass $row) {
-    $i++;
   }
 
   private function getUserMigrations() {
