@@ -22,17 +22,25 @@ class ComunidadeXMLParser {
     $this->file_handle = fopen($this->caminho_completo_arquivo, "r");
 
     try {
+      $comunidades = array();
 
       while ($this->file_handle && !feof($this->file_handle)) {
         do {
           $linha = $this->avancarAteItem('global', NULL, 'module="communities.practice.content.CoP"'); //esse global já é dentro de um pickle
           $linha_anterior_pickle = $this->contemString($this->linha_anterior, '<pickle>');
-          //print_r("[" . $this->count_linhas . "] Linha Comunidade " . $this->count_comunidades . ": " . $linha);
         } while (!feof($this->file_handle) && !$linha_anterior_pickle);
 
         $linha = $this->avancarAteItem('pickle', TRUE); //aqui já é o segundo pickle
-        $this->processarDadosComunidade($linha);
+        $comunidades[] = $this->processarDadosComunidade($linha);
+
+        if ($this->count_comunidades >= 60) {//para não ficar processando o resto e não encontrar nada. Para rodar por completo, remover este código
+          break;
+        }
       }
+      $xml = $this->gerarXML($comunidades);
+      print_r("\n\n ===========================================================\n");
+      print_r($xml);
+      print_r("\n\n ===========================================================\n");
     } catch (Exception $e) {
       print_r($e);
     }
@@ -98,6 +106,122 @@ class ComunidadeXMLParser {
     print_r($dados_comunidade['id']);
     //TODO: agora que tem o objeto $dados_comunidade em mãos, nesse ponto deveremos escrever no xml
     print_r("\n");
+    return $dados_comunidade;
+  }
+
+  private function gerarXML($comunidades) {
+
+    $xml_data = array();
+    foreach ($comunidades as $comunidade) {
+      $xml_data[] = array(
+        'tag' => 'comunidade'
+        , 'children' => $this->gerarComunidadeXMLData($comunidade)
+      );
+    }
+    return $this->gerarTagsXML($xml_data);
+  }
+
+  private function gerarComunidadeXMLData($comunidade) {
+
+    /*
+     * <permissoes>
+      <permissao>
+      <id-permissao>permissao1</id-permissao>
+      <perfis>
+      <perfil>Owner</perfil>
+      </perfis>
+      </permissao>
+      </permissoes>
+     */
+    $tags_permissao = array();
+    foreach ($comunidade['permissoes'] as $permissao => $perfis) {
+      $tag_id_permissao = array('tag' => 'idPermissao', 'value' => $permissao);
+      $tags_perfil = array();
+      foreach ($perfis as $perfil) {
+        $tags_perfil[] = array('tag' => 'perfil', 'value' => $perfil);
+      }
+      $tag_perfis = array('tag' => 'perfis', 'children' => $tags_perfil);
+      $tags_idPermissao_e_perfis = array($tag_id_permissao, $tag_perfis);
+      $tags_permissao[] = array('tag' => 'permissao', 'children' => $tags_idPermissao_e_perfis);
+    }
+    $tag_permissoes = array('tag' => 'permissoes', 'children' => $tags_permissao);
+
+
+    /*
+      <membros>
+      <membro>
+      <email>membro1@dominio.com</email>
+      <papeis>
+      <papel>Moderador</papel>
+      </papeis>
+      </membro>
+      <membro>
+      <email>membro2@dominio.com</email>
+      <papeis>
+      <papel>Participante</papel>
+      <papel>Manager</papel>
+      <papel>Moderador_Master</papel>
+      </papeis>
+      </membro>
+      </membros>
+     */
+    $tags_membro = array();
+    foreach ($comunidade['participacoes'] as $email => $perfis_membro) {
+      $tag_email = array('tag' => 'email', 'value' => $email);
+      $tags_perfil_membro = array();
+
+      if (!empty($perfis_membro)) {
+        foreach ($perfis_membro as $perfil_membro) {
+          $tags_perfil_membro[] = array('tag' => 'perfilMembro', 'value' => $perfil_membro);
+        }
+        $tag_perfis_membro = array('tag' => 'perfisMembro', 'children' => $tags_perfil_membro);
+        $tags_email_e_perfis_membro = array($tag_email, $tag_perfis_membro);
+        $tags_membro[] = array('tag' => 'membro', 'children' => $tags_email_e_perfis_membro);
+      }
+    }
+    $tag_membros = array('tag' => 'membros', 'children' => $tags_membro);
+
+    $comunidade_xml_data = array();
+    $comunidade_xml_data[] = array('tag' => 'id', 'value' => $comunidade['id']);
+    $comunidade_xml_data[] = array('tag' => 'nome', 'value' => $comunidade['nome']);
+    $comunidade_xml_data[] = $tag_permissoes;
+    $comunidade_xml_data[] = $tag_membros;
+
+    return $comunidade_xml_data;
+  }
+
+  private function gerarTagsXML($xml_data) {
+    $xml = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?><root>";
+    foreach ($xml_data as $data) {
+      $this->gerarTagXML($xml, $data);
+    }
+    $xml .= "</root>";
+    return $xml;
+  }
+
+  private function gerarTagXML(&$xml, $element) {
+
+    $xml .= "<" . $element['tag'];
+
+    if (!empty($element['attributes'])) {
+      foreach ($element['attributes'] as $attribute => $attrib_value) {
+        $xml .= ' ' . $attribute . '="' . $attrib_value . '"';
+      }
+    }
+    $xml .= ">";
+
+    if (!empty($element['children'])) {
+      foreach ($element['children'] as $child) {
+        $this->gerarTagXML($xml, $child);
+      }
+    }
+
+    if (!empty($element['value'])) {
+      $xml .= $element['value'];
+    }
+    $xml .= "</" . $element['tag'] . ">";
+
+    return $xml;
   }
 
   private function extrairPermissaoEPapeis($permissao) {
@@ -158,7 +282,7 @@ class ComunidadeXMLParser {
       if ($print) {
         print_r($linha);
       }
-      
+
       $is_abertura = $this->isTagAbertura($linha);
 
       if ($this->isTagTipo($tipo_tag_procurado, $linha)) {
