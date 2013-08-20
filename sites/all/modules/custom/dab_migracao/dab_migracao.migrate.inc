@@ -8,207 +8,264 @@ function dab_migracao_migrate_api() {
     'migrations' => array(
       'APSSESMG' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_APS SES-MG- Nível Central e Regional'
+        'file_name' => 'participantes_APS SES-MG- Nível Central e Regional',
+        'group_name' => 'grupoUsuario',
       ),
       'AcademiaDaSaude' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_Academia da Saúde'
+        'file_name' => 'participantes_Academia da Saúde',
+        'group_name' => 'grupoUsuario',
       ),
       'AlimentaNutricaoSUS' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_Alimentação e Nutrição no SUS- Saberes e práticas'
+        'file_name' => 'participantes_Alimentação e Nutrição no SUS- Saberes e práticas',
+        'group_name' => 'grupoUsuario',
       ),
       'AssistenciaReabilitacaoComunidade' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_Assistência em Reabilitação na Comunidade'
+        'file_name' => 'participantes_Assistência em Reabilitação na Comunidade',
+        'group_name' => 'grupoUsuario',
       ),
       'AtividadeFisicaSaude' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_Atividade Física e Saúde'
+        'file_name' => 'participantes_Atividade Física e Saúde',
+        'group_name' => 'grupoUsuario',
       ),
       'BoasVindas' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_Boas vindas'
+        'file_name' => 'participantes_Boas vindas',
+        'group_name' => 'grupoUsuario',
       ),
       'CaminhosCuidadoApoioPedagogico' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_Caminhos do Cuidado - Apoio Pedagógico'
+        'file_name' => 'participantes_Caminhos do Cuidado - Apoio Pedagógico',
+        'group_name' => 'grupoUsuario',
       ),
       'CaminhosCuidadoCoordenacaoNacional' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_Caminhos do Cuidado - Coordenação Nacional'
+        'file_name' => 'participantes_Caminhos do Cuidado - Coordenação Nacional',
+        'group_name' => 'grupoUsuario',
       ),
       'CaminhosCuidadoEquipeComunicacao' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_Caminhos do Cuidado - Equipe de Comunicação'
+        'file_name' => 'participantes_Caminhos do Cuidado - Equipe de Comunicação',
+        'group_name' => 'grupoUsuario',
       ),
       'ConscienciaEmDia' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_Consciência em dia'
+        'file_name' => 'participantes_Consciência em dia',
+        'group_name' => 'grupoUsuario',
       ),
       'ConversacaoCoordenadoresCuradoresABSF' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_Conversação de Coordenadores e Curadores da IV Mostra AB-SF'
+        'file_name' => 'participantes_Conversação de Coordenadores e Curadores da IV Mostra AB-SF',
+        'group_name' => 'grupoUsuario',
       ),
       'CoordenacaoCuradoriaMostraNacionalABSF' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_Coordenação de Curadoria da IV Mostra Nacional de Atenção Básica Saúde da Família '
+        'file_name' => 'participantes_Coordenação de Curadoria da IV Mostra Nacional de Atenção Básica Saúde da Família',
+        'group_name' => 'grupoUsuario',
       ),
       'CursoColaborativoDoencasCronicas' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_Curso Colaborativo sobre Doenças Crônicas'
+        'file_name' => 'participantes_Curso Colaborativo sobre Doenças Crônicas',
+        'group_name' => 'grupoUsuario',
       ),
       'DesignComunidadePraticas' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_Design da Comunidade de Práticas'
+        'file_name' => 'participantes_Design da Comunidade de Práticas',
+        'group_name' => 'grupoUsuario',
       ),
       'EvolucaoParticipacaoDentistasSUS' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_Evolução da participação dos dentistas no SUS'
+        'file_name' => 'participantes_Evolução da participação dos dentistas no SUS',
+        'group_name' => 'grupoUsuario',
       ),
       'GTIF' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_GTIF - Grupo de Trabalho Intersetorial Federal'
+        'file_name' => 'participantes_GTIF - Grupo de Trabalho Intersetorial Federal',
+        'group_name' => 'grupoUsuario',
       ),
       'GrupoFacilitadoresComunidadePraticas' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_Grupo de Facilitadores da Comunidade de Práticas'
+        'file_name' => 'participantes_Grupo de Facilitadores da Comunidade de Práticas',
+        'group_name' => 'grupoUsuario',
       ),
       'HistoriasCcotidianoAtencaoBasica' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_Histórias do cotidiano na Atenção Básica'
+        'file_name' => 'participantes_Histórias do cotidiano na Atenção Básica',
+        'group_name' => 'grupoUsuario',
       ),
       'MostraEixoTematico1' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_IV Mostra - Eixo Temático 1'
+        'file_name' => 'participantes_IV Mostra - Eixo Temático 1',
+        'group_name' => 'grupoUsuario',
       ),
       'MostraEixoTematico10' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_IV Mostra - Eixo Temático 10'
+        'file_name' => 'participantes_IV Mostra - Eixo Temático 10',
+        'group_name' => 'grupoUsuario',
       ),
       'MostraEixoTematico11' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_IV Mostra - Eixo Temático 11'
+        'file_name' => 'participantes_IV Mostra - Eixo Temático 11',
+        'group_name' => 'grupoUsuario',
       ),
       'MostraEixoTematico12' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_IV Mostra - Eixo Temático 12'
+        'file_name' => 'participantes_IV Mostra - Eixo Temático 12',
+        'group_name' => 'grupoUsuario',
       ),
       'MostraEixoTematico13' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_IV Mostra - Eixo Temático 13'
+        'file_name' => 'participantes_IV Mostra - Eixo Temático 13',
+        'group_name' => 'grupoUsuario',
       ),
       'MostraEixoTematico14' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_IV Mostra - Eixo Temático 14'
+        'file_name' => 'participantes_IV Mostra - Eixo Temático 14',
+        'group_name' => 'grupoUsuario',
       ),
       'MostraEixoTematico15' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_IV Mostra - Eixo Temático 15'
+        'file_name' => 'participantes_IV Mostra - Eixo Temático 15',
+        'group_name' => 'grupoUsuario',
       ),
       'MostraEixoTematico16' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_IV Mostra - Eixo Temático 16'
+        'file_name' => 'participantes_IV Mostra - Eixo Temático 16',
+        'group_name' => 'grupoUsuario',
       ),
       'MostraEixoTematico17' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_IV Mostra - Eixo Temático 17'
+        'file_name' => 'participantes_IV Mostra - Eixo Temático 17',
+        'group_name' => 'grupoUsuario',
       ),
       'MostraEixoTematico18' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_IV Mostra - Eixo Temático 18'
+        'file_name' => 'participantes_IV Mostra - Eixo Temático 18',
+        'group_name' => 'grupoUsuario',
       ),
       'MostraEixoTematico19' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_IV Mostra - Eixo Temático 19'
+        'file_name' => 'participantes_IV Mostra - Eixo Temático 19',
+        'group_name' => 'grupoUsuario',
       ),
       'MostraEixoTematico2' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_IV Mostra - Eixo Temático 2'
+        'file_name' => 'participantes_IV Mostra - Eixo Temático 2',
+        'group_name' => 'grupoUsuario',
       ),
       'MostraEixoTematico20' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_IV Mostra - Eixo Temático 20'
+        'file_name' => 'participantes_IV Mostra - Eixo Temático 20',
+        'group_name' => 'grupoUsuario',
       ),
       'MostraEixoTematico3' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_IV Mostra - Eixo Temático 3'
+        'file_name' => 'participantes_IV Mostra - Eixo Temático 3',
+        'group_name' => 'grupoUsuario',
       ),
       'MostraEixoTematico4' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_IV Mostra - Eixo Temático 4'
+        'file_name' => 'participantes_IV Mostra - Eixo Temático 4',
+        'group_name' => 'grupoUsuario',
       ),
       'MostraEixoTematico5' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_IV Mostra - Eixo Temático 5'
+        'file_name' => 'participantes_IV Mostra - Eixo Temático 5',
+        'group_name' => 'grupoUsuario',
       ),
       'MostraEixoTematico6' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_IV Mostra - Eixo Temático 6'
+        'file_name' => 'participantes_IV Mostra - Eixo Temático 6',
+        'group_name' => 'grupoUsuario',
       ),
       'MostraEixoTematico7' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_IV Mostra - Eixo Temático 7'
+        'file_name' => 'participantes_IV Mostra - Eixo Temático 7',
+        'group_name' => 'grupoUsuario',
       ),
       'MostraEixoTematico8' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_IV Mostra - Eixo Temático 8'
+        'file_name' => 'participantes_IV Mostra - Eixo Temático 8',
+        'group_name' => 'grupoUsuario',
       ),
       'MostraEixoTematico9' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_IV Mostra - Eixo Temático 9'
+        'file_name' => 'participantes_IV Mostra - Eixo Temático 9',
+        'group_name' => 'grupoUsuario',
       ),
       'MelhorEmCasa' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_Melhor em Casa'
+        'file_name' => 'participantes_Melhor em Casa',
+        'group_name' => 'grupoUsuario',
       ),
       'MedicosNoro' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_Médicos Norô'
+        'file_name' => 'participantes_Médicos Norô',
+        'group_name' => 'grupoUsuario',
       ),
       'NASF' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_NASF - Núcleo de Apoio à Saúde da Família'
+        'file_name' => 'participantes_NASF - Núcleo de Apoio à Saúde da Família',
+        'group_name' => 'grupoUsuario',
       ),
       'UsuarioNosso' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_O Usuário é Nosso'
+        'file_name' => 'participantes_O Usuário é Nosso',
+        'group_name' => 'grupoUsuario',
       ),
       'PrescricaoTratamentoAdesao' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_O que existe entre a prescrição de um tratamento e a sua adesão.csv'
+        'file_name' => 'participantes_O que existe entre a prescrição de um tratamento e a sua adesão',
+        'group_name' => 'grupoUsuario',
       ),
       'OncoDiscussoes' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_Onco discussões'
+        'file_name' => 'participantes_Onco discussões',
+        'group_name' => 'grupoUsuario',
       ),
       'PMAQAcessoQualidadeAtencaoBasica' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_PMAQ - Acesso e Qualidade na Atenção Básica'
+        'file_name' => 'participantes_PMAQ - Acesso e Qualidade na Atenção Básica',
+        'group_name' => 'grupoUsuario',
       ),
       'PMAQ1' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_PMAQ1'
+        'file_name' => 'participantes_PMAQ1',
+        'group_name' => 'grupoUsuario',
       ),
       'PraticasIntegrativasComplementares' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_Práticas Integrativas e Complementares'
+        'file_name' => 'participantes_Práticas Integrativas e Complementares',
+        'group_name' => 'grupoUsuario',
       ),
       'SaudeNaEscola' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_Saúde na Escola'
+        'file_name' => 'participantes_Saúde na Escola',
+        'group_name' => 'grupoUsuario',
       ),
       'ESUS' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_e-SUS'
+        'file_name' => 'participantes_e-SUS',
+        'group_name' => 'grupoUsuario',
       ),
       'EmDesenvolvimento' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_em desenvolvimento'
+        'file_name' => 'participantes_em desenvolvimento',
+        'group_name' => 'grupoUsuario',
       ),
       'PMAQ' => array(
         'class_name' => 'UsuarioMigration',
-        'file_name' => 'participantes_pmaq'
+        'file_name' => 'participantes_pmaq',
+        'group_name' => 'grupoUsuario',
+      ),
+      'Comunidades' => array(
+        'class_name' => 'MigracaoComunidadeXML',
+        'dependencies' => array(
+          'grupoUsuario',
+        ),
       ),
       
       

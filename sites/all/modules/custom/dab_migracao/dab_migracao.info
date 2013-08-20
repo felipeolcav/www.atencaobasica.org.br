@@ -11,3 +11,4 @@ dependencies[] = migrate (>=2.5)
 files[] = dab_migracao.migrate.inc
 files[] = includes/MigracaoUsuarioCSV.inc
 files[] = includes/ComunidadeXMLParser.inc
+files[] = includes/MigracaoComunidadeXML.inc

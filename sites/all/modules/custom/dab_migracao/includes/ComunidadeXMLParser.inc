@@ -48,7 +48,6 @@ class ComunidadeXMLParser {
       $dom->loadXML($xml);
       $dom->formatOutput = TRUE;
       $dom->save("./sites/all/modules/custom/dab_migracao/xml/comunidades-processadas.xml");
-      
     } catch (Exception $e) {
       print_r($e);
     }
@@ -98,6 +97,17 @@ class ComunidadeXMLParser {
       elseif ($key_dictionary == 'title') {
         $linha = $this->avancarAteItem('value', NULL);
         $dados_comunidade['nome'] = $this->extrairConteudoString($linha);
+      }
+      elseif ($key_dictionary == '_owner') {
+        $linha = $this->avancarAteItem('value', TRUE);
+        $linha = $this->avancarAteItem('list', FALSE);
+        $linha = $this->getProximaLinha();
+        if ($this->isTagTipo('string', $linha)) {
+          $email_dono = $this->extrairConteudoString($linha);
+          if (!empty($email_dono)) {
+            $dados_comunidade['dono'] = $email_dono;
+          }
+        }
       }
       elseif ($this->contemString($key_dictionary, "_Permission")) {
         $permissao_papeis = $this->extrairPermissaoEPapeis($key_dictionary);
@@ -191,6 +201,10 @@ class ComunidadeXMLParser {
     $comunidade_xml_data[] = array('tag' => 'nome', 'value' => $comunidade['nome']);
     $comunidade_xml_data[] = $tag_permissoes;
     $comunidade_xml_data[] = $tag_membros;
+    
+    if (isset($comunidade['dono'])) {
+      $comunidade_xml_data[] = array('tag' => 'dono', 'value' => $comunidade['dono']);
+    }
 
     return $comunidade_xml_data;
   }
