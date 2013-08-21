@@ -48,7 +48,7 @@ function dab_relatos_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = 'group_terceira_etapa';
   $field_group->data = array(
-    'label' => 'Atores: quem participa(ou) da experiência?',
+    'label' => 'b. Atores: quem participa(ou) da experiência?',
     'weight' => '60',
     'children' => array(
       0 => 'field_experiencia_ator_categoria',
@@ -56,7 +56,7 @@ function dab_relatos_field_group_info() {
     ),
     'format_type' => 'field_group_multiple_table',
     'format_settings' => array(
-      'label' => 'Atores: quem participa(ou) da experiência?',
+      'label' => 'b. Atores: quem participa(ou) da experiência?',
       'instance_settings' => array(
         'required_fields' => 1,
         'classes' => '',
@@ -83,7 +83,7 @@ function dab_relatos_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = 'group_terceira_etapa';
   $field_group->data = array(
-    'label' => ' Autores do relato: quem inscreve e apresenta o relato de experiência',
+    'label' => 'Autores do relato',
     'weight' => '58',
     'children' => array(
       0 => 'field_experiencia_autorcat',
@@ -91,13 +91,13 @@ function dab_relatos_field_group_info() {
     ),
     'format_type' => 'field_group_multiple_table',
     'format_settings' => array(
-      'label' => ' Autores do relato: quem inscreve e apresenta o relato de experiência',
+      'label' => 'Autores do relato',
       'instance_settings' => array(
         'required_fields' => 1,
         'classes' => '',
         'description' => '',
         'parent_format_type' => 'fieldset',
-        'show_label' => '1',
+        'show_label' => '0',
         'label_element' => 'h3',
         'effect' => 'none',
         'speed' => 'fast',
@@ -116,28 +116,26 @@ function dab_relatos_field_group_info() {
   $field_group->entity_type = 'node';
   $field_group->bundle = 'experiencia';
   $field_group->mode = 'form';
-  $field_group->parent_name = 'group_etapas';
+  $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Primeira etapa',
-    'weight' => '1',
+    'weight' => '0',
     'children' => array(
       0 => 'field_experiencia_ambito',
       1 => 'field_experiencia_catespecificas',
-      2 => 'field_experiencia_descricao',
-      3 => 'field_imagem_de_destaque',
-      4 => 'field_info_1',
-      5 => 'field_topics',
-      6 => 'title',
+      2 => 'field_imagem_de_destaque',
+      3 => 'field_topics',
+      4 => 'title_field',
+      5 => 'field_descricao',
     ),
-    'format_type' => 'accordion-item',
+    'format_type' => 'fieldset',
     'format_settings' => array(
-      'label' => 'Primeira etapa',
+      'formatter' => 'collapsible',
       'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => '',
         'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
       ),
-      'formatter' => 'open',
     ),
   );
   $export['group_primeira_etapa|node|experiencia|form'] = $field_group;
@@ -150,10 +148,10 @@ function dab_relatos_field_group_info() {
   $field_group->entity_type = 'node';
   $field_group->bundle = 'experiencia';
   $field_group->mode = 'form';
-  $field_group->parent_name = 'group_etapas';
+  $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Segunda Etapa',
-    'weight' => '2',
+    'weight' => '1',
     'children' => array(
       0 => 'field_experiencia_desafios',
       1 => 'field_experiencia_desenvolvida',
@@ -161,17 +159,17 @@ function dab_relatos_field_group_info() {
       3 => 'field_experiencia_novidades',
       4 => 'field_experiencia_observacoes',
       5 => 'field_imagem',
-      6 => 'field_info_2',
-      7 => 'field_video',
+      6 => 'field_video',
     ),
-    'format_type' => 'accordion-item',
+    'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'closed',
+      'label' => 'Segunda Etapa',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => '',
         'required_fields' => 1,
+        'classes' => '',
+        'description' => '',
       ),
+      'formatter' => 'collapsed',
     ),
   );
   $export['group_segunda_etapa|node|experiencia|form'] = $field_group;
@@ -184,27 +182,26 @@ function dab_relatos_field_group_info() {
   $field_group->entity_type = 'node';
   $field_group->bundle = 'experiencia';
   $field_group->mode = 'form';
-  $field_group->parent_name = 'group_etapas';
+  $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Terceira etapa',
-    'weight' => '3',
+    'weight' => '2',
     'children' => array(
       0 => 'field_endereco',
       1 => 'field_experiencia_anexo',
       2 => 'field_experiencia_pontosequipes',
-      3 => 'field_label_group_1',
-      4 => 'field_label_group_2',
-      5 => 'group_experiencia_atores',
-      6 => 'group_experiencia_autores',
+      3 => 'group_experiencia_autores',
+      4 => 'group_experiencia_atores',
     ),
-    'format_type' => 'accordion-item',
+    'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'closed',
+      'label' => 'Terceira etapa',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => '',
         'required_fields' => 1,
+        'classes' => '',
+        'description' => '',
       ),
+      'formatter' => 'collapsed',
     ),
   );
   $export['group_terceira_etapa|node|experiencia|form'] = $field_group;

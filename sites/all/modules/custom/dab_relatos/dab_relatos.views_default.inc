@@ -55,7 +55,7 @@ function dab_relatos_views_default_views() {
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['date_format'] = 'custom';
   $handler->display->display_options['fields']['created']['custom_date_format'] = 'd/m - h:i';
-  /* Campo: Conteúdo: Categorias Específicas */
+  /* Campo: Conteúdo: Confirme o eixo temático */
   $handler->display->display_options['fields']['field_experiencia_catespecificas']['id'] = 'field_experiencia_catespecificas';
   $handler->display->display_options['fields']['field_experiencia_catespecificas']['table'] = 'field_data_field_experiencia_catespecificas';
   $handler->display->display_options['fields']['field_experiencia_catespecificas']['field'] = 'field_experiencia_catespecificas';
@@ -109,7 +109,7 @@ function dab_relatos_views_default_views() {
     5 => 0,
     4 => 0,
   );
-  /* Critério de filtragem: Conteúdo: Categorias Específicas (field_experiencia_catespecificas) */
+  /* Critério de filtragem: Conteúdo: Confirme o eixo temático (field_experiencia_catespecificas) */
   $handler->display->display_options['filters']['field_experiencia_catespecificas_tid']['id'] = 'field_experiencia_catespecificas_tid';
   $handler->display->display_options['filters']['field_experiencia_catespecificas_tid']['table'] = 'field_data_field_experiencia_catespecificas';
   $handler->display->display_options['filters']['field_experiencia_catespecificas_tid']['field'] = 'field_experiencia_catespecificas_tid';

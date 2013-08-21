@@ -99,7 +99,7 @@ function dab_relatos_strongarm() {
           'weight' => '65',
         ),
         'redirect' => array(
-          'weight' => '5',
+          'weight' => '6',
         ),
       ),
       'display' => array(),

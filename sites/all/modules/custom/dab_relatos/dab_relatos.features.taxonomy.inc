@@ -56,7 +56,7 @@ function dab_relatos_taxonomy_default_vocabularies() {
       ),
     ),
     'experiencia_eixos' => array(
-      'name' => 'Experiência - eixos',
+      'name' => 'Eixos Temáticos',
       'machine_name' => 'experiencia_eixos',
       'description' => '',
       'hierarchy' => 0,

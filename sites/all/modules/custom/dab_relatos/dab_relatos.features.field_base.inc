@@ -10,6 +10,33 @@
 function dab_relatos_field_default_field_bases() {
   $field_bases = array();
 
+  // Exported field_base: 'field_descricao'
+  $field_bases['field_descricao'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_descricao',
+    'foreign keys' => array(
+      'format' => array(
+        'columns' => array(
+          'format' => 'format',
+        ),
+        'table' => 'filter_format',
+      ),
+    ),
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'text_long',
+  );
+
   // Exported field_base: 'field_endereco'
   $field_bases['field_endereco'] = array(
     'active' => 1,
@@ -157,7 +184,7 @@ function dab_relatos_field_default_field_bases() {
   // Exported field_base: 'field_experiencia_autorcat'
   $field_bases['field_experiencia_autorcat'] = array(
     'active' => 1,
-    'cardinality' => 6,
+    'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_experiencia_autorcat',
@@ -191,7 +218,7 @@ function dab_relatos_field_default_field_bases() {
   // Exported field_base: 'field_experiencia_autornome'
   $field_bases['field_experiencia_autornome'] = array(
     'active' => 1,
-    'cardinality' => 6,
+    'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_experiencia_autornome',
@@ -258,33 +285,6 @@ function dab_relatos_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_experiencia_desafios',
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(),
-    'translatable' => 0,
-    'type' => 'text_long',
-  );
-
-  // Exported field_base: 'field_experiencia_descricao'
-  $field_bases['field_experiencia_descricao'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_experiencia_descricao',
     'foreign keys' => array(
       'format' => array(
         'columns' => array(
@@ -509,94 +509,10 @@ function dab_relatos_field_default_field_bases() {
     'type' => 'image',
   );
 
-  // Exported field_base: 'field_info_1'
-  $field_bases['field_info_1'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_info_1',
-    'foreign keys' => array(),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'markup',
-    'settings' => array(
-      'markup' => array(
-        'format' => 'formatacao_padrao',
-        'value' => '<h3>Identificação da Experiência</h3>',
-      ),
-    ),
-    'translatable' => 0,
-    'type' => 'markup',
-  );
-
-  // Exported field_base: 'field_info_2'
-  $field_bases['field_info_2'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_info_2',
-    'foreign keys' => array(),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'markup',
-    'settings' => array(
-      'markup' => array(
-        'format' => 'formatacao_padrao',
-        'value' => '<h3>O que e como você conta?</h3><div>Esta etapa tem como objetivo detalhar a experiência. Isso pode ser feito de mais de uma forma:</div><div>&nbsp;</div><div>I - respondendo a cada uma das questões;</div><div>&nbsp;</div><div>II – você pode utilizar diferentes linguagens, como por exemplo narrativas, poesias, cordel, etc. que contem da experiência usando o último campo para texto "outras observações / campo livre". Você também pode usar esse campo caso não tenha identificado onde inserir informações relevantes da experiência;&nbsp;</div><div>&nbsp;</div><div>III - Adicionando imagens, músicas e vídeos à Galeria Audiovisual da experiência. Isso ajudará a contar mais e melhor sobre como a experiência acontece!&nbsp;</div><div>&nbsp;</div><div>obs1.: é possível alterar / adicionar informações a estes campos até 20 de Outubro. A curadoria da mostra está à disposição para contribuir com a elaboração e detalhamento do relato.&nbsp;</div><div>&nbsp;</div><div>obs2.: nenhum dos campos é obrigatório, mas quanto mais campos forem preenchidos, mais o relato de experiência ficará completo, facilitando a compreensão de outras pessoas.</div>',
-      ),
-    ),
-    'translatable' => 0,
-    'type' => 'markup',
-  );
-
-  // Exported field_base: 'field_label_group_1'
-  $field_bases['field_label_group_1'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_label_group_1',
-    'foreign keys' => array(),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'markup',
-    'settings' => array(
-      'markup' => array(
-        'format' => 'formatacao_padrao',
-        'value' => '<h3>Quem participa, onde acontece?</h3><div><strong>Autores do relato: quem inscreve e apresenta o relato de experiência &nbsp;</strong></div><div>Máximo de 6 pessoas podem inscrever</div>',
-      ),
-    ),
-    'translatable' => 0,
-    'type' => 'markup',
-  );
-
-  // Exported field_base: 'field_label_group_2'
-  $field_bases['field_label_group_2'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_label_group_2',
-    'foreign keys' => array(),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'markup',
-    'settings' => array(
-      'markup' => array(
-        'format' => 'formatacao_padrao',
-        'value' => '<div><strong>Atores: quem participa(ou) da experiência?</strong></div><div>Máximo de 20 pessoas podem estar como participantes</div>',
-      ),
-    ),
-    'translatable' => 0,
-    'type' => 'markup',
-  );
-
   // Exported field_base: 'field_video'
   $field_bases['field_video'] = array(
     'active' => 1,
-    'cardinality' => 3,
+    'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_video',
