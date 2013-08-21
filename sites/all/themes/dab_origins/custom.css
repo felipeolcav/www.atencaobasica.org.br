@@ -36,22 +36,6 @@ div.entity-message .user-picture {
 
 }
 
-.view-commons-radioactivity-groups-most-active .type-Pergunta:before,
-.view-commons-groups-recent-content .type-Pergunta:before,
-.view-commons-radioactivity-groups-active-in-group .type-Pergunta:before,
-.view-commons-radioactivity-groups-most-active .type-Resposta:before,
-.view-commons-groups-recent-content .type-Resposta:before,
-.view-commons-radioactivity-groups-active-in-group .type-Resposta:before {
-  content: "";
-  background: url('images/icons/icon-gray-question.png') no-repeat;
-  width: 11px;
-  height: 11px;
-  display: inline-block;
-  position: relative;
-  top: 1px;
-  margin-right: 6px;
-}
-
 .main-menu-comunidades a {
   background: url('images/icons/icon-groups.png') no-repeat center 10px;
 }
