@@ -151,4 +151,15 @@ body.page-mostra div#page-top {
   position: relative;
 }
 
+/* css do bloco branco na página do usuário */
+
+#block-entity-field-17,
+.pane-user-field-formacao-profissional {
+  background-color: white;
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: 1px 1px 4px #858585;
+  margin: 10px 0;
+  padding: 10px;
+
+}
 
