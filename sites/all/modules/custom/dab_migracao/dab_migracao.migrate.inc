@@ -267,6 +267,13 @@ function dab_migracao_migrate_api() {
           'grupoUsuario',
         ),
       ),
+      'VinculoUsuarioComunidade' => array(
+        'class_name' => 'MigracaoVinculoUsuarioComunidadeXML',
+        'dependencies' => array(
+          'grupoUsuario',
+          'Comunidades',
+        ),
+      ),
       
       
     ),

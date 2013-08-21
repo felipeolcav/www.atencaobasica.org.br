@@ -37,17 +37,19 @@ class ComunidadeXMLParser {
           break;
         }
       }
-      $xml = $this->gerarXML($comunidades);
-      print_r("\n\n ===========================================================\n");
-      //print_r($xml);
-      print_r("\n\n ===========================================================\n");
+      $xml_comunidades = $this->gerarComunidadesXML($comunidades);
+      $dom_comunidades = new DOMDocument;
+      $dom_comunidades->preserveWhiteSpace = FALSE;
+      $dom_comunidades->loadXML($xml_comunidades);
+      $dom_comunidades->formatOutput = TRUE;
+      $dom_comunidades->save("./sites/all/modules/custom/dab_migracao/xml/comunidades-processadas.xml");
 
-      //file_put_contents("myxmlfile.xml", $xml);
-      $dom = new DOMDocument;
-      $dom->preserveWhiteSpace = FALSE;
-      $dom->loadXML($xml);
-      $dom->formatOutput = TRUE;
-      $dom->save("./sites/all/modules/custom/dab_migracao/xml/comunidades-processadas.xml");
+      $xml_vinculos = $this->gerarVinculosUsuariosComunidadesXMLData($comunidades);
+      $dom_vinculos = new DOMDocument;
+      $dom_vinculos->preserveWhiteSpace = FALSE;
+      $dom_vinculos->loadXML($xml_vinculos);
+      $dom_vinculos->formatOutput = TRUE;
+      $dom_vinculos->save("./sites/all/modules/custom/dab_migracao/xml/vinculos-usuarios-comunidades.xml");
     } catch (Exception $e) {
       print_r($e);
     }
@@ -124,16 +126,16 @@ class ComunidadeXMLParser {
     return $dados_comunidade;
   }
 
-  private function gerarXML($comunidades) {
+  private function gerarComunidadesXML($comunidades) {
 
-    $xml_data = array();
+    $comunidade_xml_data = array();
     foreach ($comunidades as $comunidade) {
-      $xml_data[] = array(
+      $comunidade_xml_data[] = array(
         'tag' => 'comunidade'
         , 'children' => $this->gerarComunidadeXMLData($comunidade)
       );
     }
-    return $this->gerarTagsXML($xml_data);
+    return $this->gerarTagsXML($comunidade_xml_data);
   }
 
   private function gerarComunidadeXMLData($comunidade) {
@@ -201,12 +203,35 @@ class ComunidadeXMLParser {
     $comunidade_xml_data[] = array('tag' => 'nome', 'value' => $comunidade['nome']);
     $comunidade_xml_data[] = $tag_permissoes;
     $comunidade_xml_data[] = $tag_membros;
-    
+
     if (isset($comunidade['dono'])) {
       $comunidade_xml_data[] = array('tag' => 'dono', 'value' => $comunidade['dono']);
     }
 
     return $comunidade_xml_data;
+  }
+
+  private function gerarVinculosUsuariosComunidadesXMLData($comunidades) {
+    $vinculos_xml_data = array();
+    foreach ($comunidades as $comunidade) {
+      foreach ($comunidade['participacoes'] as $email => $perfis_membro) {
+        /*
+         * <vinculo>
+         *    <id_vinculo>minha-comunidade_-_meuemail@dominio.com</id_vinculo>
+         *    <id_comunidade>minha-comunidade</id_comunidade>
+         *    <email>meuemail@dominio.com</email>
+         *    <papeis>Participante, Moderador</papeis>
+         * </vinculo>
+         */
+        $tag_key = array('tag' => 'id_vinculo', 'value' => $comunidade['id'] . '_-_' . $email);
+        $tag_id_comunidade = array('tag' => 'id_comunidade', 'value' => $comunidade['id']);
+        $tag_email = array('tag' => 'email', 'value' => $email);
+        $tag_papeis = array('tag' => 'papeis', 'value' => implode(',', $perfis_membro));
+        $tags_composicao_vinculo = array($tag_key,$tag_id_comunidade, $tag_email,$tag_papeis);
+        $vinculos_xml_data[] = array('tag' => 'vinculo', 'children' => $tags_composicao_vinculo);
+      }
+    }
+    return $this->gerarTagsXML($vinculos_xml_data);
   }
 
   private function gerarTagsXML($xml_data) {
