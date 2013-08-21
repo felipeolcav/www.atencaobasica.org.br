@@ -137,6 +137,10 @@ body.page-mostra div#page-top {
 
 /* css do bloco branco na página do usuário */
 
+
+.node-destacado-top,
+.region-three-33-top section.pane-node,
+.region-three-33-first section,
 #block-entity-field-17,
 .pane-user-field-formacao-profissional {
   background-color: white;
@@ -147,3 +151,10 @@ body.page-mostra div#page-top {
 
 }
 
+/* css do bloco de informação na home de usuário deslogado */
+
+.node-destacado-top,
+.region-three-33-top section.pane-node {
+  font-size: 14px;
+  line-height: normal;
+}
