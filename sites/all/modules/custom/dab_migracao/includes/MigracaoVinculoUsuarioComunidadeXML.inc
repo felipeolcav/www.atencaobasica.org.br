@@ -73,14 +73,25 @@ class MigracaoVinculoUsuarioComunidadeXML extends XMLMigration {
     if (parent::prepareRow($row) === FALSE) {
       return FALSE;
     }
-
+    
     if (!empty($row->xml->papeis)) {
-//      $row->xml->papeis = str_replace('Participante', OG_AUTHENTICATED_ROLE, $row->xml->papeis);//se necessário, fazer aqui as substituições dos papeis a serem criados pelos que são padrão 
+      if(strpos($row->xml->papeis, 'Owner') !== false){
+        //Papeis: Participante, Moderador, Aguardando, Owner, Bloqueado (regex para buscar no xml: <papeis>(?!Participante|Moderador|Aguardando|Bloqueado).*</papeis>)
+        return FALSE;//pular o Owner porque ele já veio na carga de Comunidade
+      }
+      
+      $row->xml->papeis = str_replace(array('Participante','Moderador'), array(OG_AUTHENTICATED_ROLE,OG_ADMINISTRATOR_ROLE), $row->xml->papeis);
       $group_roles = explode(',', $row->xml->papeis);
-      $og_roles = og_roles('node', 'group', $row->xml->gid, TRUE, TRUE);//se for trabalhar com os papeis gerais (que não são de um grupo), substituir '$row->xml->gid' e modificar os últimos parâmetros
+      
+      //$og_roles = og_roles('node', 'group', $row->xml->gid, TRUE, TRUE);
+      $og_roles = og_roles('node', 'group');
+      
+      
       foreach ($group_roles as $role) {
         if (!in_array($role, $og_roles)) {
-          $new_role = og_role_create($role, 'node', $row->xml->gid, 'group');//se o papel a ser criado não tiver que pertencer a uma comunidade específica, substituir '$row->xml->gid'
+          //$new_role = og_role_create($role, 'node', $row->xml->gid, 'group');
+          $new_role = og_role_create($role, 'node', 0, 'group');//gid como zero para não ser de uma comunidade espcífica
+          
           og_role_save($new_role);
         }
       }
