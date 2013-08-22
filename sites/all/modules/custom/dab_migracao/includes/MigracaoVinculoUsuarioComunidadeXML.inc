@@ -73,12 +73,25 @@ class MigracaoVinculoUsuarioComunidadeXML extends XMLMigration {
     if (parent::prepareRow($row) === FALSE) {
       return FALSE;
     }
+
+    if (!empty($row->xml->papeis)) {
+//      $row->xml->papeis = str_replace('Participante', OG_AUTHENTICATED_ROLE, $row->xml->papeis);//se necessário, fazer aqui as substituições dos papeis a serem criados pelos que são padrão 
+      $group_roles = explode(',', $row->xml->papeis);
+      $og_roles = og_roles('node', 'group', $row->xml->gid, TRUE, TRUE);//se for trabalhar com os papeis gerais (que não são de um grupo), substituir '$row->xml->gid' e modificar os últimos parâmetros
+      foreach ($group_roles as $role) {
+        if (!in_array($role, $og_roles)) {
+          $new_role = og_role_create($role, 'node', $row->xml->gid, 'group');//se o papel a ser criado não tiver que pertencer a uma comunidade específica, substituir '$row->xml->gid'
+          og_role_save($new_role);
+        }
+      }
+    }
   }
 
-  public function prepare($node, stdClass $row) {
+  public function prepare($membership, stdClass $row) {
     if (!empty($row->xml->papeis)) {
-      $papeis = str_replace('Participante', OG_AUTHENTICATED_ROLE, $row->xml->papeis);
-      $node->group_roles = explode(',', $papeis);
+      $membership->group_roles = explode(',', $row->xml->papeis);
+    }elseif (!is_array($row->xml->papeis)) {
+      $membership->group_roles = array();
     }
   }
 
