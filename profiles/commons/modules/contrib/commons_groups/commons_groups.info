@@ -74,9 +74,9 @@ features[views_view][] = commons_groups_recent_content
 features[views_view][] = commons_groups_user_groups
 features_exclude[field][node-group-group_group] = node-group-group_group
 features_exclude[field][node-group-group_access] = node-group-group_access
-; Information added by drupal.org packaging script on 2013-08-16
-version = "7.x-3.4"
+; Information added by drupal.org packaging script on 2013-08-19
+version = "7.x-3.5"
 core = "7.x"
 project = "commons_groups"
-datestamp = "1376681817"
+datestamp = "1376946996"
 
