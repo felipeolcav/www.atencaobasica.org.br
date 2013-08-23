@@ -1,0 +1,54 @@
+diff --git a/profiles/commons/modules/contrib/commons_topics/commons_topics.module b/profiles/commons/modules/contrib/commons_topics/commons_topics.module
+index 0b43123..41de7c9 100644
+--- a/profiles/commons/modules/contrib/commons_topics/commons_topics.module
++++ b/profiles/commons/modules/contrib/commons_topics/commons_topics.module
+@@ -29,21 +29,21 @@ function commons_topics_system_info_alter(&$info, $file, $type) {
+  * Implements hook_form_FORM_ID_alter();
+  */
+ function commons_topics_form_node_form_alter(&$form, &$form_state) {
+-  if (isset($form['field_topics'])) {
+-    $form['topics_wrapper'] = array(
+-      '#type' => 'fieldset',
+-      '#title' => t('Topics'),
+-      '#collapsible' => TRUE,
+-      '#collapsed' => FALSE,
+-      '#group' => 'additional_settings',
+-      '#weight' => -15,
+-    );
+-    $form['topics_wrapper']['field_topics'] = $form['field_topics'];
+-    $form['field_topics'] = array('#language' => NULL);
+-    $form['#attached']['js'] = array(
+-      drupal_get_path('module', 'commons_topics') . '/js/commons_topics.js',
+-    );
+-  }
++  // if (isset($form['field_topics'])) {
++  //   $form['topics_wrapper'] = array(
++  //     '#type' => 'fieldset',
++  //     '#title' => t('Topics'),
++  //     '#collapsible' => TRUE,
++  //     '#collapsed' => FALSE,
++  //     '#group' => 'additional_settings',
++  //     '#weight' => -15,
++  //   );
++  //   $form['topics_wrapper']['field_topics'] = $form['field_topics'];
++  //   $form['field_topics'] = array('#language' => NULL);
++  //   $form['#attached']['js'] = array(
++  //     drupal_get_path('module', 'commons_topics') . '/js/commons_topics.js',
++  //   );
++  // }
+ }
+ 
+ /**
+diff --git a/profiles/commons/themes/contrib/commons_origins/template.php b/profiles/commons/themes/contrib/commons_origins/template.php
+index 672c0af..ddd9688 100755
+--- a/profiles/commons/themes/contrib/commons_origins/template.php
++++ b/profiles/commons/themes/contrib/commons_origins/template.php
+@@ -888,7 +888,7 @@ function commons_origins_form_alter(&$form, &$form_state, $form_id) {
+     // Declare the fields to go into each column.
+     $supplementary = array(
+       'event_topics',
+-      'field_topics',
++      // 'field_topics',
+       'general_settings',
+     );
+ 

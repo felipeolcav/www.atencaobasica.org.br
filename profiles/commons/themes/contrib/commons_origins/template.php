@@ -888,7 +888,7 @@ function commons_origins_form_alter(&$form, &$form_state, $form_id) {
     // Declare the fields to go into each column.
     $supplementary = array(
       'event_topics',
-      'field_topics',
+      // 'field_topics',
       'general_settings',
     );
 
