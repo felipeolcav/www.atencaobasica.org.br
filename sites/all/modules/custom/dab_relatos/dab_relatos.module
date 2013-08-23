@@ -73,7 +73,7 @@ function dab_relatos_form_experiencia_node_form_alter(&$form, &$form_state) {
 
   if (isset($_GET['og_group_ref'])) {
     $eixo_tematico_tid = _dab_relatos_mapeamento_comunidades_eixo_tematico($_GET['og_group_ref']);
-    if (!empty($eixo_tematico_tid)) {
+    if ($eixo_tematico_tid) {
       $form['field_experiencia_catespecificas']['#type'] = 'hidden';
       $form['field_experiencia_catespecificas']['#value'] = $eixo_tematico_tid;
     }
@@ -133,5 +133,10 @@ function _dab_relatos_mapeamento_comunidades_eixo_tematico($nid) {
   $termos[122] = 58; // Eixo 18
   $termos[123] = 59; // Eixo 19
   $termos[125] = 60; // Eixo 20
-  return $termos[$nid];
+  if (isset($termos[$nid]) {
+    return $termos[$nid];
+  }
+  else {
+    return FALSE;
+  }
 }
