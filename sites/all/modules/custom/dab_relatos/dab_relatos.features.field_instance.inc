@@ -22,7 +22,7 @@ function dab_relatos_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 50,
+        'weight' => 2,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -37,6 +37,7 @@ function dab_relatos_field_default_field_instances() {
     'label' => 'Venda seu peixe!',
     'required' => 1,
     'settings' => array(
+      'exclude_cv' => FALSE,
       'text_processing' => 0,
       'user_register_form' => FALSE,
     ),
@@ -78,7 +79,7 @@ function dab_relatos_field_default_field_instances() {
           'use_widget_handlers' => 1,
         ),
         'type' => 'addressfield_default',
-        'weight' => 46,
+        'weight' => 20,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -97,6 +98,7 @@ function dab_relatos_field_default_field_instances() {
     'label' => 'Onde ocorre a experiência?',
     'required' => 1,
     'settings' => array(
+      'exclude_cv' => FALSE,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -133,7 +135,7 @@ function dab_relatos_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 2,
+        'weight' => 4,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -148,6 +150,7 @@ function dab_relatos_field_default_field_instances() {
     'label' => 'Âmbito da experiência',
     'required' => 1,
     'settings' => array(
+      'exclude_cv' => FALSE,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -172,7 +175,7 @@ function dab_relatos_field_default_field_instances() {
         'module' => 'file',
         'settings' => array(),
         'type' => 'file_default',
-        'weight' => 34,
+        'weight' => 15,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -193,6 +196,7 @@ function dab_relatos_field_default_field_instances() {
     'required' => 0,
     'settings' => array(
       'description_field' => 0,
+      'exclude_cv' => FALSE,
       'file_directory' => '',
       'file_extensions' => 'doc docx odf pdf zip',
       'filefield_paths' => array(
@@ -241,7 +245,7 @@ function dab_relatos_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 38,
+        'weight' => 19,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -260,6 +264,7 @@ function dab_relatos_field_default_field_instances() {
     'label' => 'Categoria',
     'required' => 0,
     'settings' => array(
+      'exclude_cv' => FALSE,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -286,7 +291,7 @@ function dab_relatos_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 37,
+        'weight' => 18,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -305,6 +310,7 @@ function dab_relatos_field_default_field_instances() {
     'label' => 'Nome',
     'required' => 0,
     'settings' => array(
+      'exclude_cv' => FALSE,
       'text_processing' => 0,
       'user_register_form' => FALSE,
     ),
@@ -333,7 +339,7 @@ function dab_relatos_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 36,
+        'weight' => 17,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -353,6 +359,7 @@ function dab_relatos_field_default_field_instances() {
     'label' => 'Categoria',
     'required' => 1,
     'settings' => array(
+      'exclude_cv' => FALSE,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -379,7 +386,7 @@ function dab_relatos_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 35,
+        'weight' => 16,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -399,6 +406,7 @@ function dab_relatos_field_default_field_instances() {
     'label' => 'Nome',
     'required' => 1,
     'settings' => array(
+      'exclude_cv' => FALSE,
       'text_processing' => 0,
       'user_register_form' => FALSE,
     ),
@@ -427,7 +435,7 @@ function dab_relatos_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 3,
+        'weight' => 5,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -443,6 +451,7 @@ function dab_relatos_field_default_field_instances() {
     'label' => 'Confirme o eixo temático',
     'required' => 1,
     'settings' => array(
+      'exclude_cv' => FALSE,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -468,7 +477,7 @@ function dab_relatos_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 27,
+        'weight' => 9,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -488,6 +497,7 @@ function dab_relatos_field_default_field_instances() {
     'label' => 'Desafios para o desenvolvimento',
     'required' => 0,
     'settings' => array(
+      'exclude_cv' => FALSE,
       'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
@@ -514,7 +524,7 @@ function dab_relatos_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 25,
+        'weight' => 7,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -534,6 +544,7 @@ function dab_relatos_field_default_field_instances() {
     'label' => 'Qual foi a experiência desenvolvida? Sobre o que foi?',
     'required' => 0,
     'settings' => array(
+      'exclude_cv' => FALSE,
       'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
@@ -560,7 +571,7 @@ function dab_relatos_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 26,
+        'weight' => 8,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -580,6 +591,7 @@ function dab_relatos_field_default_field_instances() {
     'label' => 'Como funciona(ou) a experiência?',
     'required' => 0,
     'settings' => array(
+      'exclude_cv' => FALSE,
       'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
@@ -606,7 +618,7 @@ function dab_relatos_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 28,
+        'weight' => 10,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -626,6 +638,7 @@ function dab_relatos_field_default_field_instances() {
     'label' => 'Quais as novidades?',
     'required' => 0,
     'settings' => array(
+      'exclude_cv' => FALSE,
       'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
@@ -652,7 +665,7 @@ function dab_relatos_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 29,
+        'weight' => 11,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -672,6 +685,7 @@ function dab_relatos_field_default_field_instances() {
     'label' => 'Outras observações/campo livre',
     'required' => 0,
     'settings' => array(
+      'exclude_cv' => FALSE,
       'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
@@ -698,7 +712,7 @@ function dab_relatos_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 33,
+        'weight' => 14,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -718,6 +732,7 @@ function dab_relatos_field_default_field_instances() {
     'label' => ' Envolve quais pontos / equipes da rede?',
     'required' => 1,
     'settings' => array(
+      'exclude_cv' => FALSE,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -745,7 +760,7 @@ function dab_relatos_field_default_field_instances() {
           'image_style' => 'large',
         ),
         'type' => 'image',
-        'weight' => 32,
+        'weight' => 13,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -766,6 +781,7 @@ function dab_relatos_field_default_field_instances() {
     'settings' => array(
       'alt_field' => 0,
       'default_image' => 0,
+      'exclude_cv' => FALSE,
       'file_directory' => '',
       'file_extensions' => 'png gif jpg jpeg',
       'filefield_paths' => array(
@@ -823,7 +839,7 @@ function dab_relatos_field_default_field_instances() {
           'image_style' => 'medium',
         ),
         'type' => 'image',
-        'weight' => 1,
+        'weight' => 3,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -845,6 +861,7 @@ function dab_relatos_field_default_field_instances() {
     'settings' => array(
       'alt_field' => 0,
       'default_image' => 0,
+      'exclude_cv' => FALSE,
       'file_directory' => '',
       'file_extensions' => 'png gif jpg jpeg',
       'filefield_paths' => array(
@@ -899,7 +916,7 @@ function dab_relatos_field_default_field_instances() {
           'video_style' => 'normal',
         ),
         'type' => 'video_embed_field',
-        'weight' => 31,
+        'weight' => 12,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -920,6 +937,7 @@ function dab_relatos_field_default_field_instances() {
     'required' => 0,
     'settings' => array(
       'description_field' => 0,
+      'exclude_cv' => FALSE,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
