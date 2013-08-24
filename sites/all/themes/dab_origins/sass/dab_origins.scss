@@ -1,0 +1,190 @@
+@import "compass/css3/border-radius";
+@import "compass/css3/box-shadow";
+@import "formularios";
+@import "relatodeexperiencia";
+$default-box-shadow-color: #858585;
+$default-box-shadow-blur: 4px;
+$default-box-shadow-h-offset: 1px;
+$default-box-shadow-v-offset: 1px;
+
+@mixin box-arredondado {
+  border: 1px solid #ccc;
+  @include border-radius(5px);
+  @include box-shadow();
+}
+
+h2#page-title {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+#block-system-main {
+  @include box-arredondado;
+  padding: 20px;
+  background: #fff;
+}
+.panels-ipe-portlet-content {
+  > .block {
+  }
+}
+// Zera a border padrão do Commons Origins
+// .commons-pod,
+.page-user .pane-views-panes,
+.front.not-logged-in .pane-views-panes,
+.front.not-logged-in .pane-views,
+.front.not-logged-in body.page-node .pane-views-panes,
+.page-events .view-commons-events-upcoming .view-content,
+.pane-commons-bw-group,
+.view-display-id-commons_events_upcoming_page .views-row,
+.view-commons-groups-directory > .view-content > .views-row,
+.view-commons-homepage-content .node-teaser.node-group > .view-content > .views-row,
+body.front.logged-in .view-commons-homepage-content > .view-content,
+body.front.logged-in #views-exposed-form-commons-homepage-content-panel-pane-1 .views-exposed-widgets.widgets-active,
+.page-events .region-three-25-50-25-third .pane-views-panes,
+.pane-search-result .block-content .search-results,
+.page-search-user .user-results {
+  background-color: white;
+  margin: 10px 0;
+  @include border-radius(0);
+  @include single-box-shadow(transparent, 0, 0, 0, 0, false);
+}
+.general-settings.commons-pod > .commons-pod {
+  padding: 20px 15px;
+  .fieldset-outer-wrapper {
+    margin-bottom: 10px;
+  }
+}
+
+div.entity-message .user-picture {
+  float: left;
+  margin-right: 10px;
+}
+.view-commons-radioactivity-groups-most-active .type-Pergunta:before,
+.view-commons-groups-recent-content .type-type-Pergunta:before,
+.view-commons-radioactivity-groups-active-in-group .type-Pergunta:before,
+.view-commons-radioactivity-groups-most-active .type-Resposta:before,
+.view-commons-groups-recent-content .type-type-Resposta:before,
+.view-commons-radioactivity-groups-active-in-group .type-Resposta:before  {
+  content: "";
+  background: url('../images/icons/icon-gray-question.png') no-repeat;
+  width: 11px;
+  height: 11px;
+  display: inline-block;
+  position: relative;
+  top: 1px;
+  margin-right: 6px;
+}
+.view-commons-radioactivity-groups-most-active .type-Enquete:before,
+.view-commons-groups-recent-content .type-Enquete:before,
+.view-commons-radioactivity-groups-active-in-group .type-Enquete:before {
+  content: "";
+  background: url('../images/icons/polls.png') no-repeat;
+  width: 11px;
+  height: 11px;
+  display: inline-block;
+  position: relative;
+  top: 1px;
+  margin-right: 6px;
+
+}
+.main-menu-comunidades a {
+  background: url('../images/icons/icon-groups.png') no-repeat center 10px;
+}
+.block-commons-utility-links {
+  margin-bottom: 2px;
+}
+
+/* USER LOGIN BLOCK */
+
+.pane-user-login {
+  padding: 10px;
+  background-color: white;
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: 1px 1px 4px #858585;
+  margin: 10px 0;
+  h3 {
+    font-size: 20px;
+    line-height: 1.2em;
+    margin-bottom: 0.85em;
+  }
+  label {
+    display: inline;
+  }
+  input#edit-name,
+  input#edit-pass {
+   -moz-box-sizing: border-box;
+    border: 1px solid #B2B2B2;
+    border-radius: 6px 6px 6px 6px;
+    width: 75%;
+    float: right;
+    padding-left: 26px;
+  }
+  input#edit-name {
+    background: url('../images/icons/mail-icon-small.png') no-repeat scroll 5px ;
+  }
+  input#edit-pass{
+    background: url('../images/icons/key-icon-small.png') no-repeat scroll 5px;
+    padding-left: 28px;
+  }
+}
+.palette-black-blue-yellow h3 {
+  color: #353535;
+}
+
+/* MOSTRA IFRAME PAGE */
+
+#mostrasaude-iframe {
+  border: none;
+}
+.main-menu-mostra a {
+  background: url('../images/marca_ivmostra.png') no-repeat center 10px;
+}
+body.page-mostra div#columns{
+  margin-top: -3px;
+}
+body.page-mostra div#page-top {
+  display: none;
+
+}
+
+/* footer */
+
+#footer-logos {
+  text-align: center;
+  img {
+    height: 40px;
+    border: 2px solid transparent;
+  }
+  a {
+    padding: 3px;
+    &:hover img {
+      border-color: blue ;
+    }
+  }
+}
+
+.pane-commons-groups-commons-groups-create-group {
+  position: relative;
+}
+
+/* css do bloco branco na página do usuário */
+
+.node-destacado-top,
+.region-three-33-top section.pane-node,
+.region-three-33-first section,
+#block-entity-field-17,
+.pane-user-field-formacao-profissional {
+  background-color: white;
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: 1px 1px 4px #858585;
+  margin: 10px 0;
+  padding: 10px;
+
+}
+
+/* css do bloco de informação na home de usuário deslogado */
+
+.node-destacado-top,
+.region-three-33-top section.pane-node {
+  font-size: 14px;
+  line-height: normal;
+}

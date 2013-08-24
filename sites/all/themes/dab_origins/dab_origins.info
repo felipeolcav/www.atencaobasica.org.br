@@ -3,7 +3,7 @@ description = Tema do sistema do dab baseado em commons origins
 base theme = commons_origins
 core = 7.x
 
-stylesheets[all][] = custom.css
+stylesheets[all][] = stylesheets/dab_origins.css
 regions[sidebar_first] = Sidebar first
 regions[sidebar_second] = Sidebar second
 regions[content] = Main Content

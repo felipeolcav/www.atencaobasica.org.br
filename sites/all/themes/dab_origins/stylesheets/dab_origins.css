@@ -1,0 +1,326 @@
+/* line 3, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form .fieldset-outer-wrapper {
+  border: 0;
+  padding: 0;
+}
+/* line 7, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form h3 {
+  margin: 0 0 20px;
+  font-size: 15px;
+  font-weight: normal;
+  text-transform: uppercase;
+  border-bottom: 1px solid black;
+}
+/* line 14, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form .description {
+  font-family: Verdana;
+  font-size: 11px;
+  font-weight: normal;
+  color: #666;
+  margin: 5px 0 20px;
+}
+/* line 22, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form #edit-field-experiencia-ambito-und label,
+#experiencia-node-form #edit-field-experiencia-pontosequipes-und label {
+  font-weight: normal;
+  padding-left: 10px;
+  border-left: none;
+}
+/* line 28, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form .form-item-field-experiencia-catespecificas-und > label,
+#experiencia-node-form .form-item-field-experiencia-ambito-und > label {
+  border-left: none;
+  padding-left: 0;
+}
+/* line 32, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form .form-item-field-experiencia-catespecificas-und {
+  margin-top: 10px;
+}
+/* line 35, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form #edit-field-experiencia-catespecificas-und {
+  width: 66.66%;
+}
+/* line 43, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form #edit-title-field label,
+#experiencia-node-form #edit-field-descricao label,
+#experiencia-node-form #edit-field-imagem-de-destaque label,
+#experiencia-node-form #edit-field-experiencia-pontosequipes > div > label,
+#experiencia-node-form #edit-field-experiencia-anexo-und .fieldset-legend,
+#experiencia-node-form #block-system-main .primary-fields h4 {
+  color: #000;
+  font-family: Helvetica;
+  font-weight: normal;
+  border-left: 10px solid #4995cb;
+  padding-left: 10px;
+  margin: 0 0 10px;
+  display: block;
+}
+/* line 52, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form #edit-field-descricao label {
+  margin-top: 10px;
+}
+/* line 55, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form #edit-field-topics input {
+  -webkit-border-radius: 2px 2px;
+  -moz-border-radius: 2px / 2px;
+  border-radius: 2px / 2px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-background-clip: padding;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  -webkit-appearance: none;
+  background-color: white;
+  border: 1px solid #cccccc;
+  color: black;
+  outline: 0;
+  margin: 0;
+  padding: .5em;
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.2em;
+}
+/* line 59, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form #field-video-values,
+#experiencia-node-form #field-video-values tr {
+  border: none;
+  background: #fff;
+}
+/* line 64, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form #field-video-values tbody,
+#experiencia-node-form #field-video-values tr .fieldset-outer-wrapper {
+  margin: 0;
+  border: none;
+}
+/* line 69, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form #field-video-values .field-label label,
+#experiencia-node-form #edit-field-imagem-und .fieldset-legend {
+  font-size: 14px;
+  color: #000;
+  font-weight: bold;
+}
+/* line 74, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form .form-item-field-endereco-und-0-locality {
+  margin-top: 0;
+}
+
+/* line 79, ../sass/_relatodeexperiencia.scss */
+.primary-fields .cke_browser_webkit {
+  width: 570px;
+}
+
+/* line 16, ../sass/dab_origins.scss */
+h2#page-title {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+/* line 20, ../sass/dab_origins.scss */
+#block-system-main {
+  border: 1px solid #cccccc;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 1px 1px 4px #858585;
+  -moz-box-shadow: 1px 1px 4px #858585;
+  box-shadow: 1px 1px 4px #858585;
+  padding: 20px;
+  background: #fff;
+}
+
+/* line 44, ../sass/dab_origins.scss */
+.page-user .pane-views-panes,
+.front.not-logged-in .pane-views-panes,
+.front.not-logged-in .pane-views,
+.front.not-logged-in body.page-node .pane-views-panes,
+.page-events .view-commons-events-upcoming .view-content,
+.pane-commons-bw-group,
+.view-display-id-commons_events_upcoming_page .views-row,
+.view-commons-groups-directory > .view-content > .views-row,
+.view-commons-homepage-content .node-teaser.node-group > .view-content > .views-row,
+body.front.logged-in .view-commons-homepage-content > .view-content,
+body.front.logged-in #views-exposed-form-commons-homepage-content-panel-pane-1 .views-exposed-widgets.widgets-active,
+.page-events .region-three-25-50-25-third .pane-views-panes,
+.pane-search-result .block-content .search-results,
+.page-search-user .user-results {
+  background-color: white;
+  margin: 10px 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
+  -webkit-box-shadow: 0 0 0 0 transparent;
+  -moz-box-shadow: 0 0 0 0 transparent;
+  box-shadow: 0 0 0 0 transparent;
+}
+
+/* line 50, ../sass/dab_origins.scss */
+.general-settings.commons-pod > .commons-pod {
+  padding: 20px 15px;
+}
+/* line 52, ../sass/dab_origins.scss */
+.general-settings.commons-pod > .commons-pod .fieldset-outer-wrapper {
+  margin-bottom: 10px;
+}
+
+/* line 57, ../sass/dab_origins.scss */
+div.entity-message .user-picture {
+  float: left;
+  margin-right: 10px;
+}
+
+/* line 66, ../sass/dab_origins.scss */
+.view-commons-radioactivity-groups-most-active .type-Pergunta:before,
+.view-commons-groups-recent-content .type-type-Pergunta:before,
+.view-commons-radioactivity-groups-active-in-group .type-Pergunta:before,
+.view-commons-radioactivity-groups-most-active .type-Resposta:before,
+.view-commons-groups-recent-content .type-type-Resposta:before,
+.view-commons-radioactivity-groups-active-in-group .type-Resposta:before {
+  content: "";
+  background: url("../images/icons/icon-gray-question.png") no-repeat;
+  width: 11px;
+  height: 11px;
+  display: inline-block;
+  position: relative;
+  top: 1px;
+  margin-right: 6px;
+}
+
+/* line 78, ../sass/dab_origins.scss */
+.view-commons-radioactivity-groups-most-active .type-Enquete:before,
+.view-commons-groups-recent-content .type-Enquete:before,
+.view-commons-radioactivity-groups-active-in-group .type-Enquete:before {
+  content: "";
+  background: url("../images/icons/polls.png") no-repeat;
+  width: 11px;
+  height: 11px;
+  display: inline-block;
+  position: relative;
+  top: 1px;
+  margin-right: 6px;
+}
+
+/* line 89, ../sass/dab_origins.scss */
+.main-menu-comunidades a {
+  background: url("../images/icons/icon-groups.png") no-repeat center 10px;
+}
+
+/* line 92, ../sass/dab_origins.scss */
+.block-commons-utility-links {
+  margin-bottom: 2px;
+}
+
+/* USER LOGIN BLOCK */
+/* line 98, ../sass/dab_origins.scss */
+.pane-user-login {
+  padding: 10px;
+  background-color: white;
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: 1px 1px 4px #858585;
+  margin: 10px 0;
+}
+/* line 104, ../sass/dab_origins.scss */
+.pane-user-login h3 {
+  font-size: 20px;
+  line-height: 1.2em;
+  margin-bottom: 0.85em;
+}
+/* line 109, ../sass/dab_origins.scss */
+.pane-user-login label {
+  display: inline;
+}
+/* line 113, ../sass/dab_origins.scss */
+.pane-user-login input#edit-name,
+.pane-user-login input#edit-pass {
+  -moz-box-sizing: border-box;
+  border: 1px solid #b2b2b2;
+  border-radius: 6px 6px 6px 6px;
+  width: 75%;
+  float: right;
+  padding-left: 26px;
+}
+/* line 121, ../sass/dab_origins.scss */
+.pane-user-login input#edit-name {
+  background: url("../images/icons/mail-icon-small.png") no-repeat scroll 5px;
+}
+/* line 124, ../sass/dab_origins.scss */
+.pane-user-login input#edit-pass {
+  background: url("../images/icons/key-icon-small.png") no-repeat scroll 5px;
+  padding-left: 28px;
+}
+
+/* line 129, ../sass/dab_origins.scss */
+.palette-black-blue-yellow h3 {
+  color: #353535;
+}
+
+/* MOSTRA IFRAME PAGE */
+/* line 135, ../sass/dab_origins.scss */
+#mostrasaude-iframe {
+  border: none;
+}
+
+/* line 138, ../sass/dab_origins.scss */
+.main-menu-mostra a {
+  background: url("../images/marca_ivmostra.png") no-repeat center 10px;
+}
+
+/* line 141, ../sass/dab_origins.scss */
+body.page-mostra div#columns {
+  margin-top: -3px;
+}
+
+/* line 144, ../sass/dab_origins.scss */
+body.page-mostra div#page-top {
+  display: none;
+}
+
+/* footer */
+/* line 151, ../sass/dab_origins.scss */
+#footer-logos {
+  text-align: center;
+}
+/* line 153, ../sass/dab_origins.scss */
+#footer-logos img {
+  height: 40px;
+  border: 2px solid transparent;
+}
+/* line 157, ../sass/dab_origins.scss */
+#footer-logos a {
+  padding: 3px;
+}
+/* line 159, ../sass/dab_origins.scss */
+#footer-logos a:hover img {
+  border-color: blue;
+}
+
+/* line 165, ../sass/dab_origins.scss */
+.pane-commons-groups-commons-groups-create-group {
+  position: relative;
+}
+
+/* css do bloco branco na página do usuário */
+/* line 175, ../sass/dab_origins.scss */
+.node-destacado-top,
+.region-three-33-top section.pane-node,
+.region-three-33-first section,
+#block-entity-field-17,
+.pane-user-field-formacao-profissional {
+  background-color: white;
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: 1px 1px 4px #858585;
+  margin: 10px 0;
+  padding: 10px;
+}
+
+/* css do bloco de informação na home de usuário deslogado */
+/* line 187, ../sass/dab_origins.scss */
+.node-destacado-top,
+.region-three-33-top section.pane-node {
+  font-size: 14px;
+  line-height: normal;
+}
