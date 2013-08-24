@@ -1,11 +1,5 @@
 <?php
 
-function dab_origins_preprocess_page(&$vars) {
-
-  $vars['breadcrumb'] = '';
-
-}
-
 /**
  * Melhorias de usabilidade nos formulários de Node em geral
  */
