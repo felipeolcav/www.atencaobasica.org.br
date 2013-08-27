@@ -4,13 +4,14 @@ class CrawlerConteudoComunidade {
 
   const URL_BASE = "http://www.atencaobasica.org.br/";
   const USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; rv:8.0) Gecko/20100101 Firefox/8.0";
-  const COOKIE_FILE = "cookie.txt";
   const URL_PESQUISA = "http://www.atencaobasica.org.br/@@search?advanced_search=False&sort_on=Date&SearchableText=&portal_type%3Alist=CoPDocument&portal_type%3Alist=CoPFile&portal_type%3Alist=CoPImage&portal_type%3Alist=CoPLink&created.query%3Arecord%3Alist%3Adate=1970-01-02&created.range%3Arecord=min";
 
 //const URL_PESQUISA = "http://www.atencaobasica.org.br/@@search?SearchableText=&sort_on=Date&b_start:int=0&advanced_search=False&sort_order=reverse&created.range:record=min&created.query:date:list:record=1970/01/02%2000%3A00%3A00%20GMT%2B0&portal_type:list=CoPDocument&portal_type:list=CoPFile&portal_type:list=CoPImage&portal_type:list=CoPLink";
 
   private $username;
   private $password;
+  private $count_item;
+  private $count_pagina;
 
   public function __construct($username, $password) {
     $this->username = $username;
@@ -21,22 +22,21 @@ class CrawlerConteudoComunidade {
     //LEMBRAR DE LIMPAR O CONTEÚDO DA PASTA '../files' ANTES DE EXECUTAR ESSE SCRIPT
 
     $url_pagina_corrente = self::URL_PESQUISA;
-    $count = 0;
-    $pagina = 0;
+    $this->count_item = 0;
+    $this->count_pagina = 0;
 
     while (!empty($url_pagina_corrente)) {
-      $pagina++;
+      $this->count_pagina++;
 
       print_r("\n===============================================================");
       print_r("\n==================== TROCANDO DE PÁGINA =======================");
       print_r("\n===============================================================");
-      print_r("\n [pag " . $pagina . "]: ");
 
       $pagina_pesquisa = $this->fazerRequisicaoWeb($url_pagina_corrente);
 
-      $div_search_results = htmlqp($pagina_pesquisa, '#search-results-wrapper')->html();
+      $div_search_results = @qp($pagina_pesquisa, '#search-results-wrapper', array('ignore_parser_warnings' => TRUE))->html();
       $link_proxima_pagina = htmlqp($pagina_pesquisa, 'div.listingBar span.next a');
-      
+
       if (count($link_proxima_pagina->html()) > 0) {
         $url_pagina_corrente = $link_proxima_pagina->attr("href");
       }
@@ -51,8 +51,7 @@ class CrawlerConteudoComunidade {
 
           if (preg_match('/\<dt.*\>/', $item_html)) {
             if (isset($elemento_corrente)) {
-              $count++;
-              print_r("\nCOUNT: " . $count);
+              $this->count_item++;
               $this->inserirElementoNoXML($elemento_corrente);
               $elemento_corrente = NULL;
             }
@@ -77,10 +76,11 @@ class CrawlerConteudoComunidade {
             if (count($div_descricao->html()) > 0) {
               $elemento_corrente['descricao'] = $div_descricao->text();
             }
-            
+
             $link_autor = htmlqp($item_html, 'span.discreet span.documentAuthor a');
             if (count($link_autor->html()) > 0) {
-              $elemento_corrente['autor_email'] = $link_autor->attr("href");
+              $url_email = $link_autor->attr("href");
+              $elemento_corrente['autor_email'] = end(split('/', $url_email));
               $elemento_corrente['autor_nome'] = $link_autor->text();
             }
           }
@@ -92,16 +92,12 @@ class CrawlerConteudoComunidade {
           $elemento_corrente = NULL;
         }
       }
-      else {
-        print_r("\n\n######################################################\n");
-        print_r("nao achou!!");
-        print_r($div_search_results);
-      }
     }
   }
 
   private function inserirElementoNoXML($elemento) {
     print_r("\n\n--------------------------------------------------------------\n");
+    print_r("\nElementos processados: " . $this->count_item . "\n");
     print_r($elemento);
   }
 
@@ -200,14 +196,15 @@ class CrawlerConteudoComunidade {
     curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-    curl_setopt($ch, CURLOPT_ENCODING, "");
     $resultado = curl_exec($ch);
     $final_url = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-    print_r($final_url);
     curl_close($ch);
 
+    print_r("\n [pag " . $this->count_pagina . "]: ");
+    print_r($final_url);
+
     return $resultado;
-//    return mb_convert_encoding($content, 'UTF-8', mb_detect_encoding($content, 'UTF-8, ISO-8859-1', true));
+//    return mb_convert_encoding($resultado, 'UTF-8', mb_detect_encoding($resultado, 'UTF-8, ISO-8859-1', true));
   }
 
 }
