@@ -14,6 +14,10 @@ function dab_migracao_drush_command() {
     'description' => 'Migração dos papeis dos usuários nas comunidades',
     'aliases' => array('dab-mpc'),
   );
+  $commands['dab-migracao-crawler-conteudo-comunidade'] = array(
+    'description' => 'Migração dos papeis dos usuários nas comunidades',
+    'aliases' => array('dab-ccc'),
+  );
 
   return $commands;
 }
@@ -28,5 +32,13 @@ function drush_dab_migracao_papel_comunidade() {
     . '/xml/comunidades.xml'; //arquivo xml gerado pelo plone/zope
   $parser = new ComunidadeXMLParser($caminho_completo_arquivo);
   $parser->executar();
+}
+
+function drush_dab_migracao_crawler_conteudo_comunidade() {
+  $username = $_SERVER['argv'][3];
+  $password = $_SERVER['argv'][4];
+
+  $crawler = new CrawlerConteudoComunidade($username, $password);
+  $crawler->executar();
 }
 

@@ -13,3 +13,4 @@ files[] = includes/MigracaoUsuarioCSV.inc
 files[] = includes/ComunidadeXMLParser.inc
 files[] = includes/MigracaoComunidadeXML.inc
 files[] = includes/MigracaoVinculoUsuarioComunidadeXML.inc
+files[] = includes/CrawlerConteudoComunidade.inc
