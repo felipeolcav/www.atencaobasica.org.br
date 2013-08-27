@@ -83,6 +83,14 @@ class CrawlerConteudoComunidade {
               $elemento_corrente['autor_email'] = end(split('/', $url_email));
               $elemento_corrente['autor_nome'] = $link_autor->text();
             }
+
+            $span_data_atualizacao = htmlqp($item_html, 'span.discreet span.documentModified');
+            if (count($span_data_atualizacao->html()) > 0) {
+              $regex_extrair_data = '/.*([0-9]{2}\/[0-9]{2}\/[0-9]{4} [0-9]{2}:[0-9]{2}).*/';
+              preg_match($regex_extrair_data, $span_data_atualizacao->text(), $match);
+              $data_atualizacao = end($match);
+              $elemento_corrente['data_ultima_atualizacao'] = $data_atualizacao;
+            }
           }
         }
         if (isset($elemento_corrente)) {
