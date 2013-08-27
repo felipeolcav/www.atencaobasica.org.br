@@ -11,8 +11,6 @@ class CrawlerConteudoComunidade {
 
   private $username;
   private $password;
-  private $ckfile;
-  private $ch;
 
   public function __construct($username, $password) {
     $this->username = $username;
@@ -36,15 +34,15 @@ class CrawlerConteudoComunidade {
 
       $pagina_pesquisa = $this->fazerRequisicaoWeb($url_pagina_corrente);
 
+      $div_search_results = htmlqp($pagina_pesquisa, '#search-results-wrapper')->html();
       $link_proxima_pagina = htmlqp($pagina_pesquisa, 'div.listingBar span.next a');
+      
       if (count($link_proxima_pagina->html()) > 0) {
         $url_pagina_corrente = $link_proxima_pagina->attr("href");
       }
       else {
         $url_pagina_corrente = NULL;
       }
-
-      $div_search_results = htmlqp($pagina_pesquisa, '#search-results-wrapper')->html();
 
       if (count($div_search_results) > 0) {
         $elemento_corrente = NULL;
@@ -78,6 +76,12 @@ class CrawlerConteudoComunidade {
             $div_descricao = htmlqp($item_html, 'div');
             if (count($div_descricao->html()) > 0) {
               $elemento_corrente['descricao'] = $div_descricao->text();
+            }
+            
+            $link_autor = htmlqp($item_html, 'span.discreet span.documentAuthor a');
+            if (count($link_autor->html()) > 0) {
+              $elemento_corrente['autor_email'] = $link_autor->attr("href");
+              $elemento_corrente['autor_nome'] = $link_autor->text();
             }
           }
         }
@@ -123,9 +127,15 @@ class CrawlerConteudoComunidade {
   private function salvarArquivo($url, $tipo) {
 
     $nome_arquivo = preg_replace('/.*\/comunidades\//', '', $url);
-    if (!preg_match('/.+\.[a-z]{3}/', $nome_arquivo)) {
-      if (strlen($tipo) == 3) {
+    if (!preg_match('/.+\.[a-z]{3,4}/', $nome_arquivo)) {
+
+      if (strlen($tipo) == 3 || strlen($tipo) == 4) {
         $nome_arquivo .= '.' . $tipo;
+      }
+      else {
+        if ($tipo == 'link_icon' || $tipo == 'document_icon') {
+          $nome_arquivo .= '.' . 'html';
+        }
       }
     }
 
@@ -190,6 +200,7 @@ class CrawlerConteudoComunidade {
     curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt($ch, CURLOPT_ENCODING, "");
     $resultado = curl_exec($ch);
     $final_url = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
     print_r($final_url);
