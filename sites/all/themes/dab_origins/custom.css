@@ -36,22 +36,6 @@ div.entity-message .user-picture {
 
 }
 
-.view-commons-radioactivity-groups-most-active .type-Pergunta:before,
-.view-commons-groups-recent-content .type-Pergunta:before,
-.view-commons-radioactivity-groups-active-in-group .type-Pergunta:before,
-.view-commons-radioactivity-groups-most-active .type-Resposta:before,
-.view-commons-groups-recent-content .type-Resposta:before,
-.view-commons-radioactivity-groups-active-in-group .type-Resposta:before {
-  content: "";
-  background: url('images/icons/icon-gray-question.png') no-repeat;
-  width: 11px;
-  height: 11px;
-  display: inline-block;
-  position: relative;
-  top: 1px;
-  margin-right: 6px;
-}
-
 .main-menu-comunidades a {
   background: url('images/icons/icon-groups.png') no-repeat center 10px;
 }
@@ -60,15 +44,6 @@ div.entity-message .user-picture {
   margin-bottom: 2px;
 }
 
-.commons-bw-partial-node-form {
-  margin-left: 65px;
-}
-
-.commons-bw-partial-node-form div div.user-picture{
-  left: -65px;
-  margin-top: 5px;
-  position: absolute;
-}
 
 /* USER LOGIN BLOCK */
 
@@ -134,4 +109,52 @@ body.page-mostra div#columns{
 body.page-mostra div#page-top {
   display: none;
 
+}
+
+
+/* footer */
+
+#footer-logos {
+  text-align: center;
+}
+
+#footer-logos a{
+  padding: 3px;
+}
+
+#footer-logos a:hover img{
+  border-color: blue ;
+}
+#footer-logos img{
+  height: 40px;
+  border: 2px solid transparent;
+}
+
+
+.pane-commons-groups-commons-groups-create-group {
+  position: relative;
+}
+
+/* css do bloco branco na página do usuário */
+
+
+.node-destacado-top,
+.region-three-33-top section.pane-node,
+.region-three-33-first section,
+#block-entity-field-17,
+.pane-user-field-formacao-profissional {
+  background-color: white;
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: 1px 1px 4px #858585;
+  margin: 10px 0;
+  padding: 10px;
+
+}
+
+/* css do bloco de informação na home de usuário deslogado */
+
+.node-destacado-top,
+.region-three-33-top section.pane-node {
+  font-size: 14px;
+  line-height: normal;
 }

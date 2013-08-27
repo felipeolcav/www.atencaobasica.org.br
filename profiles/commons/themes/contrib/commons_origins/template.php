@@ -17,8 +17,45 @@ function commons_origins_theme($existing, $type, $theme, $path) {
       'render element' => 'form',
       'path' => drupal_get_path('theme', 'commons_origins') . '/templates/form',
       'template' => 'form-content',
+      'pattern' => 'form_content__',
     ),
   );
+}
+
+/**
+ * Implements hook_commons_utility_links_alter().
+ */
+function commons_origins_commons_utility_links_alter(&$element) {
+  // Add wrappers to title elements in notification links so that they can be
+  // replaced with an icon.
+  $iconify = array(
+    'unread-invitations',
+    'unread-messages',
+  );
+  foreach ($iconify as $name) {
+    if (isset($element[$name])) {
+      $words = explode(' ', $element[$name]['title']);
+      foreach($words as &$word) {
+        if(is_numeric($word)) {
+          $word = '<span class="notification-count">' . $word . '</span>';
+        }
+        else {
+          $word = '<span class="notification-label element-invisible">' . $word . '</span>';
+        }
+      }
+      $element[$name]['title'] = implode(' ', $words);
+      $element[$name]['html'] = TRUE;
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_search_result().
+ */
+function commons_origins_preprocess_search_result(&$variables, $hook) {
+  $variables['title_attributes_array']['class'][] = 'title';
+  $variables['title_attributes_array']['class'][] = 'search-result-title';
+  $variables['content_attributes_array']['class'][] = 'search-result-content';
 }
 
 /**
@@ -47,6 +84,24 @@ function commons_origins_process_search_results(&$variables, $hook) {
 }
 
 /**
+ * Shows a groups of blocks for starting a search from a filter.
+ */
+function commons_origins_apachesolr_search_browse_blocks($vars) {
+  $result = '';
+  if ($vars['content']['#children']) {
+    $result .= '<div class="apachesolr-browse-blocks">' . "\n";
+    $result .= '  <h2 class="search-results-title">' . t('Browse available categories') . '</h2>' . "\n";
+    $result .= '  <div class="commons-pod">' . "\n";
+    $result .= '    <p>' . t('Pick a category to launch a search.') . '</p>' . "\n";
+    $result .= $vars['content']['#children'] . "\n";
+    $result .= '  </div>' . "\n";
+    $result .= '</div>';
+  }
+
+  return $result;
+}
+
+/**
  * Preprocess variables for the html template.
  */
 function commons_origins_preprocess_html(&$variables, $hook) {
@@ -54,11 +109,11 @@ function commons_origins_preprocess_html(&$variables, $hook) {
 
   $site_name = variable_get('site_name', 'Commons');
 
-  if (strlen($site_name) > 23) {
-    $variables['classes_array'][] = 'site-name-long-2-lines';
-  } else if (strlen($site_name) > 15) {
-    $variables['classes_array'][] = 'site-name-long';
+  // Add a class to the body so we can adjust styles for the new menu item.
+  if (module_exists('commons_search_solr_user')) {
+    $variables['classes_array'][] = 'people-search-active';
   }
+
   $palette = variable_get('commons_origins_palette', 'default');
   if ($palette != 'default') {
     $variables['classes_array'][] = 'palette-active';
@@ -69,6 +124,74 @@ function commons_origins_preprocess_html(&$variables, $hook) {
   // etc.
   $variables['classes_array'][] = css_browser_selector();
 
+}
+
+/**
+ * Implements hook_privatemsg_view_alter().
+ */
+function commons_origins_privatemsg_view_alter(&$elements) {
+  // Wrap the message view and reply form in a commons pod.
+  $elements['#theme_wrappers'][] = 'container';
+  $elements['#attributes']['class'][] = 'privatemsg-conversation';
+  $elements['#attributes']['class'][] = 'commons-pod';
+
+  // Knock the reply form title down an h-level.
+  if (isset($elements['reply']['reply']['#markup'])) {
+    $elements['reply']['reply']['#markup'] = str_replace('h2', 'h3', $elements['reply']['reply']['#markup']);
+  }
+
+  // Apply classes to the form actions and make sure the submit comes first.
+  if (isset($elements['reply']['actions']['submit'])) {
+    $elements['reply']['actions']['submit']['#attributes']['class'][] = 'action-item-primary';
+    $elements['reply']['actions']['submit']['#weight'] = 0;
+  }
+  if (isset($elements['reply']['actions']['cancel'])) {
+    $elements['reply']['actions']['cancel']['#attributes']['class'][] = 'action-item';
+    $elements['reply']['actions']['cancel']['#weight'] = 1;
+  }
+}
+
+/**
+ * Implements hook_privatemsg_message_view_alter().
+ */
+function commons_origins_privatemsg_message_view_alter(&$elements) {
+  if (isset($elements['message_actions'])) {
+    // Move the message links into a different variable and make it a renderable
+    // array. Privatemsg has the links hardcoded, so this is the only way to
+    // gain control and prevent extra processing.
+    $elements['message_links'] = array(
+      '#theme' => 'links__privatemsg_message',
+      '#links' => $elements['message_actions'],
+      '#attributes' => array(
+        'class' => array('privatemsg-message-links', 'links'),
+      ),
+    );
+    unset($elements['message_actions']);
+  }
+}
+
+/**
+ * Implements hook_preprocess_privatemsg_view().
+ */
+function commons_origins_preprocess_privatemsg_view(&$variables, $hook) {
+  // Make the template conform with Drupal standard attributes.
+  if (isset($variables['message_classes'])) {
+    $variables['classes_array'] = array_merge($variables['classes_array'], $variables['message_classes']);
+  }
+  $variables['classes_array'][] = 'clearfix';
+  $variables['attributes_array']['id'] = 'privatemsg-mid-' . $variables['mid'];
+  $variables['content_attributes_array']['class'][] = 'privatemsg-message-content';
+
+  // Add a distinct class to the "Delete" action.
+  if (isset($variables['message_links']['#links'])) {
+    foreach ($variables['message_links']['#links'] as &$link) {
+      // Due to the lack of a proper key-baed identifier, a string search is the
+      // only flexible way to sniff out the link.
+      if (strpos($link['href'], 'delete')) {
+        $link['attributes']['class'][] = 'message-delete';
+      }
+    }
+  }
 }
 
 /**
@@ -135,12 +258,20 @@ function commons_origins_preprocess_page(&$variables, $hook) {
       }
     }
   }
+
+  $variables['header_attributes_array']['class'][] = 'container';
+
+  $cf_pos = in_array('clearfix', $variables['branding_attributes_array']['class']);
+  unset($variables['branding_attributes_array']['class'][$cf_pos]);
 }
 
 /**
  * Override or insert variables into the node templates.
  */
 function commons_origins_preprocess_node(&$variables, $hook) {
+  $node = $variables['node'];
+  $wrapper = entity_metadata_wrapper('node', $node);
+
   // Append a feature label to featured node teasers.
   if ($variables['teaser'] && $variables['promote']) {
     $variables['submitted'] .= ' <span class="featured-node-tooltip">' . t('Featured') . ' ' . $variables['type'] . '</span>';
@@ -153,7 +284,7 @@ function commons_origins_preprocess_node(&$variables, $hook) {
     'page',
     'wiki',
   );
-  if (!$variables['teaser'] && in_array($variables['node']->type, $no_avatar)) {
+  if (!$variables['teaser'] && in_array($node->type, $no_avatar)) {
     $variables['user_picture'] = '';
   }
 
@@ -162,12 +293,50 @@ function commons_origins_preprocess_node(&$variables, $hook) {
     $variables['classes_array'][] = 'user-picture-available';
   }
 
+  // Style node links like buttons.
+  if (isset($variables['content']['links'])) {
+    foreach ($variables['content']['links'] as $type => &$linkgroup) {
+      // Button styling for the "rate" and "flag" types will be handled
+      // separately.
+      if ($type != 'rate' && $type != 'flag' && substr($type, 0, 1) != '#') {
+        foreach ($linkgroup['#links'] as $name => &$link) {
+          // Prevent errors when no classes have been defined.
+          if (!isset($link['attributes']['class'])) {
+            $link['attributes']['class'] = array();
+          }
+
+          // Apply button classes to everything but comment_forbidden.
+          if ($name != 'comment_forbidden' && $name != 'answer-add' && !is_string($link['attributes']['class'])) {
+            $link['attributes']['class'][] = 'action-item-small';
+            $link['attributes']['class'][] = 'action-item-inline';
+          }
+          elseif ($name != 'comment_forbidden' && $name != 'answer-add') {
+            $link['attributes']['class'] .= ' action-item-small action-item-inline';
+          }
+        }
+        // Clean the reference so it does not confuse things further down.
+        unset($link);
+      }
+    }
+  }
+
   // Add classes to render the comment-comments link as a button with a number
   // attached.
   if (!empty($variables['content']['links']['comment']['#links']['comment-comments'])) {
     $comments_link = &$variables['content']['links']['comment']['#links']['comment-comments'];
     $comments_link['attributes']['class'][] = 'link-with-counter';
-    $comments_link['title'] = str_replace($variables['comment_count'], '<span class="counter">' . $variables['comment_count'] . '</span>', $comments_link['title']);
+    $chunks = explode(' ', $comments_link['title']);
+
+    // Add appropriate classes to words in the title.
+    foreach ($chunks as &$chunk) {
+      if ($chunk == $variables['comment_count']) {
+        $chunk = '<span class="action-item-small-append">' . $variables['comment_count'] . '</span>';
+      }
+      else {
+        $chunk = '<span class="element-invisible">' . $chunk . '</span>';
+      }
+    }
+    $comments_link['title'] = implode(' ', $chunks);
   }
 
   // Push the reporting link to the end.
@@ -200,14 +369,22 @@ function commons_origins_preprocess_node(&$variables, $hook) {
 
   // Replace the submitted text on nodes with something a bit more pertinent to
   // the content type.
-  if (variable_get('node_submitted_' . $variables['node']->type, TRUE)) {
+  if (variable_get('node_submitted_' . $node->type, TRUE)) {
+    $node_type_info = node_type_get_type($variables['node']);
     $placeholders = array(
-      '!type' => '<span class="node-content-type">' . ucfirst($variables['node']->type) . '</span>',
+      '!type' => '<span class="node-content-type">' . check_plain($node_type_info->name) . '</span>',
       '!user' => $variables['name'],
       '!date' => $variables['date'],
+      '@interval' => format_interval(REQUEST_TIME - $node->created),
     );
 
-    $variables['submitted'] = t('!type created by !user on !date', $placeholders);
+    if (!empty($node->{OG_AUDIENCE_FIELD}) && $wrapper->{OG_AUDIENCE_FIELD}->count() == 1) {
+      $placeholders['!group'] = l($wrapper->{OG_AUDIENCE_FIELD}->get(0)->label(), 'node/' . $wrapper->{OG_AUDIENCE_FIELD}->get(0)->getIdentifier());
+      $variables['submitted'] = t('!type created @interval ago in the !group group by !user', $placeholders);
+    }
+    else {
+      $variables['submitted'] = t('!type created @interval ago by !user', $placeholders);
+    }
   }
 
   // Add a class to the node when there is a logo image.
@@ -219,7 +396,7 @@ function commons_origins_preprocess_node(&$variables, $hook) {
   if ($variables['node']->type == 'question' && !empty($variables['content']['links']['answer'])) {
     $variables['content']['answer'] = $variables['content']['links']['answer'];
     $variables['content']['answer']['#attributes']['class'][] = 'node-actions';
-    $variables['content']['answer']['#links']['answer-add']['attributes']['class'][] = 'button-alert';
+    $variables['content']['answer']['#links']['answer-add']['attributes']['class'][] = 'action-item-primary';
     $variables['content']['answer']['#weight'] = -100;
     $variables['content']['links']['answer']['#access'] = FALSE;
   }
@@ -251,6 +428,52 @@ function commons_origins_preprocess_node(&$variables, $hook) {
     $variables['content_attributes_array']['class'][] = 'has-rate-widget';
     $variables['content']['rate_commons_answer']['#weight'] = 999;
   }
+
+  // Add a general class to the node links.
+  if (!empty($variables['content']['links'])) {
+    $variables['content']['links']['#attributes']['class'][] = 'node-action-links';
+
+    // For some reason, the node links processing is not always added and
+    // multiple ul elements are output instead of a single.
+    if (!isset($variables['content']['links']['#pre_render']) || !in_array('drupal_pre_render_links', $variables['content']['links']['#pre_render'])) {
+      $variables['content']['links']['#pre_render'][] = 'drupal_pre_render_links';
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_comment_wrapper().
+ */
+function commons_origins_preprocess_comment_wrapper(&$variables, $hook) {
+  // Change things around to use the attribute arrays for the titles.
+  $variables['title_attributes_array']['class'][] = 'comments-title';
+  $variables['form_title_attributes_array'] = array(
+    'class' => array('comment-title', 'title', 'comment-form', 'comment-form-title')
+  );
+}
+
+/**
+ * Implements hook_process_comment_wrapper().
+ */
+function commons_origins_process_comment_wrapper(&$variables, $hook) {
+  // Make sure the form_title_attributes_array is rendered into a single string.
+  $variables['form_title_attributes'] = drupal_attributes($variables['form_title_attributes_array']);
+}
+
+/**
+ * Implements hook_preprocess_flag().
+ */
+function commons_origins_preprocess_flag(&$variables, $hook) {
+  if (strpos($variables['flag_name_css'], 'inappropriate-') !== 0) {
+    // Style the flag links like buttons.
+    if ($variables['last_action'] == 'flagged') {
+      $variables['flag_classes_array'][] = 'action-item-small-active';
+    }
+    else {
+      $variables['flag_classes_array'][] = 'action-item-small';
+    }
+    $variables['flag_classes'] = implode(' ', $variables['flag_classes_array']);
+  }
 }
 
 /**
@@ -277,6 +500,20 @@ function commons_origins_preprocess_three_25_50_25(&$variables, $hook) {
 }
 
 /**
+ * Implements hook_preprocess_panelizer_view_mode().
+ */
+function commons_origins_preprocess_panelizer_view_mode(&$variables, $hook) {
+  // Add classed to identity the entity type being overridden.
+  $variables['classes_array'][] = drupal_html_class('panelizer-' . $variables['element']['#entity_type']);
+  $variables['title_attributes_array']['class'][] = drupal_html_class($variables['element']['#entity_type'] . '-title');
+  $variables['title_attributes_array']['class'][] = drupal_html_class('panelizer-' . $variables['element']['#entity_type'] . '-title');
+
+  // Add some extra theme hooks for the subthemers.
+  $variables['hook_theme_suggestions'][] = $hook . '__' . $variables['element']['#entity_type'];
+  $variables['hook_theme_suggestions'][] = $hook . '__' . $variables['element']['#entity_type'] . '__' . $variables['element']['#bundle'];
+}
+
+/**
  * Implements hook_preprocess_panels_pane().
  */
 function commons_origins_preprocess_panels_pane(&$variables, $hook) {
@@ -292,6 +529,39 @@ function commons_origins_preprocess_panels_pane(&$variables, $hook) {
   if (($pane->panel == 'two_66_33_second' && !in_array($pane->subtype, $not_pods)) || in_array($pane->subtype, $content_pods)) {
     $variables['attributes_array']['class'][] = 'commons-pod';
   }
+
+  // Mimic the class for the facetapi blocks on the panel variant.
+  if (strpos($pane->subtype, 'facetapi-') === 0) {
+    $variables['attributes_array']['class'][] = 'block-facetapi';
+  }
+
+  // Hide the pane title for the group contributor count.
+  if ($pane->subtype == 'node:commons-groups-group-contributors-count-topics') {
+    $variables['title_attributes_array']['class'][] = 'element-invisible';
+  }
+
+  // Apply common classes to the recent items related to a group.
+  static $recent_count = 0;
+  if ($pane->subtype == 'commons_groups_recent_content' || $pane->subtype == 'commons_contributors_group-panel_pane_1') {
+    $variables['attributes_array']['class'][] = 'group-recent-data';
+    $variables['attributes_array']['class'][] = $recent_count % 2 == 0 ? 'group-recent-data-even' : 'group-recent-data-odd';
+    $recent_count++;
+  }
+
+  // Hide the groups view title since it is redundant.
+  if ($pane->subtype == 'commons_groups_directory-panel_pane_1') {
+    $variables['title_attributes_array']['class'][] = 'element-invisible';
+  }
+}
+
+/**
+ * Overrides theme_panels_default_style_render_region();
+ */
+function commons_origins_panels_default_style_render_region($variables) {
+  $output = '';
+  // Remove the empty panels-separator div.
+  $output .= implode("\n", $variables['panes']);
+  return $output;
 }
 
 /**
@@ -308,23 +578,49 @@ function commons_origins_preprocess_views_view(&$variables, $hook) {
 
   // Style some views without bottom borders and padding.
   $plain = array(
-    'commons_bw_all' => array('default'),
-    'commons_bw_polls' => array('default'),
-    'commons_bw_posts' => array('default'),
-    'commons_bw_q_a' => array('default'),
-    'commons_bw_wikis' => array('default'),
-    'commons_events_upcoming' => array('panel_pane_2'),
-    'commons_featured' => array('panel_pane_1'),
     'commons_groups_directory' => array('panel_pane_1'),
     'commons_groups_recent_content' => array('block'),
     'commons_groups_user_groups' => array('panel_pane_1'),
-    'commons_homepage_content' => array('panel_pane_1'),
     'commons_radioactivity_groups_active_in_group' => array('panel_pane_1'),
-    'commons_radioactivity_groups_most_active' => array('panel_pane_1'),
   );
   if (isset($plain[$variables['name']]) && in_array($variables['display_id'], $plain[$variables['name']])) {
     $variables['classes_array'][] = 'view-plain';
   }
+}
+
+/**
+ * Implements hook_preprocess_views_view_unformatted().
+ */
+function commons_origins_preprocess_views_view_unformatted(&$variables, $hook) {
+  $view = $variables['view'];
+
+  // Prevent the avatars in the activity stream blocks from bleeding into the
+  // rows below them.
+  if ($view->name == 'commons_activity_streams_activity') {
+    foreach ($variables['classes_array'] as &$classes) {
+      $classes .= ' clearfix';
+    }
+  }
+
+  // Add a class to rows designating the node type for the rows that give us the
+  // node type information.
+  foreach ($view->result as $id => $result) {
+    if (isset($result->node_type)) {
+      $variables['classes_array'][$id] .= ' ' . drupal_html_class('row-type-' . $result->node_type);
+    }
+    else if (($view->name == 'commons_events_upcoming' && $view->override_path != 'events') || $view->name == 'commons_events_user_upcoming_events') {
+      $variables['classes_array'][$id] .= ' ' . drupal_html_class('row-type-event');
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_pager().
+ */
+function commons_origins_preprocess_pager_link (&$variables, $hook) {
+  // Style pager links like buttons.
+  $variables['attributes']['class'][] = 'action-item';
+  $variables['attributes']['class'][] = 'action-item-inline';
 }
 
 /**
@@ -347,19 +643,56 @@ function commons_origins_preprocess_form(&$variables, $hook) {
   }
   $variables['attributes_array'] = $element['#attributes'];
 
-  // Give the search form on the search page pod styling.
-  if (isset($element['#search_page']) || (isset($element['module']) && ($element['module']['#value'] == 'search_facetapi' || $element['module']['#value'] == 'user'))) {
-    $variables['attributes_array']['class'][] = 'commons-pod';
+  // Roll the classes into the attributes.
+  if (empty($variables['attributes_array']['class'])) {
+    $variables['attributes_array']['class'] = $variables['classes_array'];
+  }
+  else {
+    $variables['attributes_array']['class'] = array_merge($variables['attributes_array']['class'], $variables['classes_array']);
   }
 
+  // Give the search form on the search page pod styling.
+  if (isset($element['#search_page']) || (isset($element['module']) && ($element['module']['#value'] == 'search_facetapi' || $element['module']['#value'] == 'user'))) {
+    $variables['attributes_array']['class'][] = 'search-form-page';
+    $variables['attributes_array']['class'][] = 'commons-pod';
+    $variables['attributes_array']['class'][] = 'clearfix';
+  }
+
+  // Wrap some forms in the commons pod styling.
   $pods = array(
     'user-login',
     'user-pass',
     'user-register-form',
   );
-
   if (in_array($element['#id'], $pods)) {
     $variables['attributes_array']['class'][] = 'commons-pod';
+  }
+
+  // Give the dynamic filters a special class to target.
+  if (strpos($element['#id'], 'views-exposed-form-commons-homepage-content') === 0 || strpos($element['#id'], 'views-exposed-form-commons-events-upcoming') === 0 || strpos($element['#id'], 'views-exposed-form-commons-bw') === 0) {
+    $variables['attributes_array']['class'][] = 'dynamic-filter-lists';
+  }
+
+  // Give the keyword filter a pod wrapper.
+  if (strpos($element['#id'], 'views-exposed-form-commons-groups') === 0) {
+    $variables['attributes_array']['class'][] = 'keyword-filter';
+    $variables['attributes_array']['class'][] = 'commons-pod';
+  }
+
+  // Set an identifying class to the event attendance form.
+  if(strpos($element['#id'], 'commons-events-attend-event-form') === 0) {
+    $variables['attributes_array']['class'][] = 'node-actions';
+  }
+
+  // Make sure the bottom of the partial node form clears all content.
+  if (strpos($element['#form_id'], 'commons_bw_partial_node_form_') === 0) {
+    $variables['attributes_array']['class'][] = 'user-picture-available';
+    $variables['attributes_array']['class'][] = 'clearfix';
+  }
+
+  // Place the user avatar to the left of the private message form content.
+  if ($variables['element']['#form_id'] == 'commons_trusted_contacts_messages_popup') {
+    $variables['content_attributes_array']['class'][] = 'user-picture-available';
   }
 }
 
@@ -389,6 +722,54 @@ function commons_origins_preprocess_form_content(&$variables, $hook) {
       }
     }
   }
+
+  // The buttons for toggling event attendance should be large and noticeable.
+  // These forms have a varying form id, so check for if the id contains a
+  // string instead of the whole thing.
+  if (strpos($variables['form']['#form_id'], 'commons_events_attend_event_form') === 0) {
+    $variables['form']['submit']['#attributes']['class'][] = 'action-item-primary';
+  }
+  if (strpos($variables['form']['#form_id'], 'commons_events_cancel_event_form') === 0) {
+    $variables['form']['submit']['#attributes']['class'][] = 'action-item-active';
+  }
+
+  // Make the "Save" button more noticeable.
+  if (isset($variables['form']['#node_edit_form']) && $variables['form']['#node_edit_form']) {
+    $variables['form']['actions']['submit']['#attributes']['class'][] = 'action-item-primary';
+  }
+
+  // Make the comment form "Save" button more noticeable.
+  if ($variables['form']['#id'] == 'comment-form') {
+    $variables['form']['actions']['submit']['#attributes']['class'][] = 'action-item-primary';
+  }
+
+  // Hide the label and make the search button primary.
+  if (isset($variables['form']['#search_page']) || (isset($variables['form']['module']) && ($variables['form']['module']['#value'] == 'search_facetapi' || $variables['form']['module']['#value'] == 'user'))) {
+    $variables['form']['basic']['keys']['#title_display'] = 'invisible';
+    $variables['form']['basic']['submit']['#attributes']['class'][] = 'action-item-search';
+  }
+
+  // Make the partial post form submit button a primary action and give some
+  // theme hook suggestions for easy overriding.
+  if (strpos($variables['form']['#form_id'], 'commons_bw_partial_node_form_') === 0) {
+    $variables['form']['actions']['submit']['#attributes']['class'][] = 'action-item-primary';
+    $variables['form']['title']['#markup'] = str_replace('<h3>', '<h3 class="partial-node-form-title">', $variables['form']['title']['#markup']);
+  }
+
+  // Make the links and buttons on the private message forms have the
+  // appropriate styles.
+  if ($variables['form']['#form_id'] == 'commons_trusted_contacts_messages_popup' || $variables['form']['#form_id'] == 'privatemsg_new') {
+    if (isset($variables['form']['actions']['submit'])) {
+      $variables['form']['actions']['submit']['#attributes']['class'][] = 'action-item-primary';
+    }
+    if (isset($variables['form']['actions']['full_form'])) {
+      $variables['form']['actions']['full_form']['#attributes']['class'][] = 'action-item';
+    }
+    if (isset($variables['form']['actions']['cancel'])) {
+      $variables['form']['actions']['cancel']['#attributes']['class'][] = 'action-item';
+      $variables['form']['actions']['cancel']['#weight'] = $variables['form']['actions']['submit']['#weight'] + 1;
+    }
+  }
 }
 
 /**
@@ -400,15 +781,56 @@ function commons_origins_process_form_content(&$variables, $hook) {
 }
 
 /**
- * Implements hook_preprocess_views_view_unformatted().
+ * Implements hook_preprocess_rate_template_commons_like().
  */
-function commons_origins_preprocess_views_view_unformatted(&$variables, $hook) {
-  // Prevent the avatars in the activity stream blocks from bleeding into the
-  // rows below them.
-  if ($variables['view']->name == 'commons_activity_streams_activity') {
-    foreach ($variables['classes_array'] as &$classes) {
-      $classes .= ' clearfix';
-    }
+function commons_origins_preprocess_rate_template_commons_like(&$variables, $hook) {
+  // Roll the content into a renderable array to make the template simpler.
+  $variables['content'] = array(
+    'link' => array(
+      '#theme' => 'rate_button__commons_like',
+      '#text' => $variables['links'][0]['text'],
+      '#href' => $variables['links'][0]['href'],
+      '#class' => 'rate-commons-like-btn action-item-small action-item-merge',
+    ),
+    'count' => array(
+      '#theme' => 'html_tag',
+      '#tag' => 'span',
+      '#value' => $variables['results']['count'],
+      '#attributes' => array(
+        'class' => array(
+          'rate-commons-like-count',
+          'action-item-small-append',
+          'action-item-merge',
+        ),
+      ),
+    ),
+  );
+}
+
+/**
+ * Overrides hook_rate_button() for commons_like.
+ */
+function commons_origins_rate_button__commons_like($variables) {
+  $text = $variables['text'];
+  $href = $variables['href'];
+  $class = $variables['class'];
+  static $id = 0;
+  $id++;
+
+  $classes = 'rate-button';
+  if ($class) {
+    $classes .= ' ' . $class;
+  }
+  if (empty($href)) {
+    // Widget is disabled or closed.
+    return '<span class="' . $classes . '" id="rate-button-' . $id . '">' .
+      '<span class="element-invisible">' . check_plain($text) . '</span>' .
+      '</span>';
+  }
+  else {
+    return '<a class="' . $classes . '" id="rate-button-' . $id . '" rel="nofollow" href="' . htmlentities($href) . '" title="' . check_plain($text) . '">' .
+      '<span class="element-invisible">' . check_plain($text) . '</span>' .
+      '</a>';
   }
 }
 
@@ -484,11 +906,30 @@ function commons_origins_form_alter(&$form, &$form_state, $form_id) {
 }
 
 /**
+ * Implements hook_views_bulk_operations_form_Alter().
+ */
+function commons_origins_views_bulk_operations_form_alter(&$form, $form_state, $vbo) {
+  // change the buttons' fieldset wrapper to a div and push it to the bottom of
+  // the form.
+  $form['select']['#type'] = 'container';
+  $form['select']['#weight'] = 9999;
+}
+
+/**
  * Implements hook_css_alter().
  */
 function commons_origins_css_alter(&$css) {
-  if (isset($css['profiles/commons/modules/contrib/rich_snippets/rich_snippets.css'])) {
-    unset($css['profiles/commons/modules/contrib/rich_snippets/rich_snippets.css']);
+  // Remove preset styles that interfere with theming.
+  $unset = array(
+    drupal_get_path('module', 'search') . '/search.css',
+    drupal_get_path('module', 'rich_snippets') . '/rich_snippets.css',
+    drupal_get_path('module', 'commons_like') . '/commons-like.css',
+    drupal_get_path('module', 'panels') . '/css/panels.css',
+  );
+  foreach ($unset as $path) {
+    if (isset($css[$path])) {
+      unset($css[$path]);
+    }
   }
 }
 
@@ -576,6 +1017,34 @@ function commons_origins_links($variables) {
 }
 
 /**
+ * Overrides theme_fieldset().
+ *
+ * Add another div wrapper around fieldsets for styling purposes.
+ */
+function commons_origins_fieldset($variables) {
+  $element = $variables['element'];
+  element_set_attributes($element, array('id'));
+  _form_set_class($element, array('form-wrapper'));
+
+  $output = '<fieldset' . drupal_attributes($element['#attributes']) . '>';
+  if (!empty($element['#title'])) {
+    // Always wrap fieldset legends in a SPAN for CSS positioning.
+    $output .= '<legend><span class="fieldset-legend">' . $element['#title'] . '</span></legend>';
+  }
+  $output .= '<div class="fieldset-wrapper">';
+  if (!empty($element['#description'])) {
+    $output .= '<div class="fieldset-description">' . $element['#description'] . '</div>';
+  }
+  $output .= $element['#children'];
+  if (isset($element['#value'])) {
+    $output .= $element['#value'];
+  }
+  $output .= '</div>';
+  $output .= "</fieldset>\n";
+  return '<div class="fieldset-outer-wrapper">' . $output . '</div>';
+}
+
+/**
  * Process an address to add microformat structure and remove &nbsp;
  * characters.
  */
@@ -608,6 +1077,88 @@ function _commons_origins_format_address(&$address) {
 }
 
 /**
+ * Implements hook_preprocess_field().
+ */
+function commons_origins_preprocess_field(&$variables, $hook) {
+  // Style the trusted contact link like a button.
+  if ($variables['element']['#formatter'] == 'trusted_contact') {
+    foreach ($variables['items'] as &$item) {
+      if (isset($item['#options'])) {
+        $item['#options']['attributes']['class'][] = 'action-item-small';
+      }
+      if (isset($item['#href']) && strpos($item['#href'], 'messages')) {
+        $item['#options']['attributes']['class'][] = 'message-contact';
+      }
+      elseif (isset($item['#href'])) {
+        $item['#options']['attributes']['class'][] = 'trusted-status-request';
+      }
+    }
+  }
+}
+
+/**
+ * Override theme_html_tag__request_pending().
+ */
+function commons_origins_html_tag__request_pending($variables) {
+  $element = $variables['element'];
+  $element['#attributes']['class'][] = 'action-item-small-active';
+  $element['#attributes']['class'][] = 'trusted-status-pending';
+  $attributes = drupal_attributes($element['#attributes']);
+
+  if (!isset($element['#value'])) {
+    return '<' . $element['#tag'] . $attributes . " />\n";
+  }
+  else {
+    $output = '<' . $element['#tag'] . $attributes . '>';
+    if (isset($element['#value_prefix'])) {
+      $output .= $element['#value_prefix'];
+    }
+    $output .= $element['#value'];
+    if (isset($element['#value_suffix'])) {
+      $output .= $element['#value_suffix'];
+    }
+    $output .= '</' . $element['#tag'] . ">\n";
+    return $output;
+  }
+}
+
+/**
+ * Overrides theme_field() for group fields.
+ *
+ * This will apply button styling to the links for leaving and joining a group.
+ */
+function commons_origins_field__group_group__group($variables) {
+  $output = '';
+
+  // Render the label, if it's not hidden.
+  if (!$variables['label_hidden']) {
+    $output .= '<div class="field-label"' . $variables['title_attributes'] . '>' . $variables['label'] . ':&nbsp;</div>';
+  }
+
+  // Render the items.
+  $output .= '<div class="field-items"' . $variables['content_attributes'] . '>';
+  foreach ($variables['items'] as $delta => $item) {
+    if (isset($item['#type']) && $item['#type'] == 'link') {
+      if (strpos($item['#href'], '/subscribe')) {
+        $item['#options']['attributes']['class'][] = 'action-item-primary';
+      }
+      else {
+        $item['#options']['attributes']['class'][] = 'action-item';
+      }
+    }
+
+    $classes = 'field-item ' . ($delta % 2 ? 'odd' : 'even');
+    $output .= '<div class="' . $classes . '"' . $variables['item_attributes'][$delta] . '>' . drupal_render($item) . '</div>';
+  }
+  $output .= '</div>';
+
+  // Render the top-level DIV.
+  $output = '<div class="' . $variables['classes'] . '"' . $variables['attributes'] . '>' . $output . '</div>';
+
+  return $output;
+}
+
+/**
  * Overrides theme_field__addressfield().
  */
 function commons_origins_field__addressfield($variables) {
@@ -617,7 +1168,7 @@ function commons_origins_field__addressfield($variables) {
   foreach($variables['items'] as &$address) {
     // Only display an address if it has been populated. We determine this by
     // validating that the administrative area has been populated.
-    if ($address['#address']['administrative_area']) {
+    if (!empty($address['#address']['administrative_area'])) {
       _commons_origins_format_address($address);
     }
     else {
@@ -667,4 +1218,55 @@ function commons_origins_preprocess_views_view_field(&$variables, $hook) {
     // The output will need rebuilt to get the changes applied.
     $variables['output'] = $variables['field']->advanced_render($variables['row']);
   }
+}
+
+/**
+ * Implements hook_preprocess_user_profile().
+ */
+function commons_origins_preprocess_user_profile(&$variables, $hook) {
+  if (in_array('user_profile__search_results', $variables['theme_hook_suggestions'])) {
+    // Give the profile a distinctive class to target and wrap the display in
+    // pod styling.
+    $variables['classes_array'][] = 'profile-search-result';
+    $variables['classes_array'][] = 'commons-pod';
+
+    // Wrap the group list and related title in a div.
+    if (isset($variables['user_profile']['group_membership'])) {
+      $variables['user_profile']['group_membership']['#theme_wrappers'][] = 'container';
+      $variables['user_profile']['group_membership']['#attributes']['class'][] = 'profile-groups';
+    }
+
+    // Group actionable items together in a container.
+    $variables['user_profile']['user_actions'] = array();
+    $user_actions = array(
+      'flags',
+      'privatemsg_send_new_message',
+      'group_group',
+    );
+    foreach ($user_actions as $action) {
+      if (isset($variables['user_profile'][$action])) {
+        $variables['user_profile']['user_actions'][$action] = $variables['user_profile'][$action];
+        $variables['user_profile'][$action]['#access'] = FALSE;
+      }
+    }
+    if (!module_exists('commons_trusted_contacts') && isset(  $variables['user_profile']['user_actions']['group_group'])) {
+      $variables['user_profile']['user_actions']['group_group']['#access'] = FALSE;
+    }
+    if (!empty($variables['user_profile']['user_actions'])) {
+      $variables['user_profile']['user_actions'] += array(
+        '#theme_wrappers' => array('container'),
+        '#attributes' => array(
+          'class' => array('profile-actions'),
+        ),
+      );
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_commons_search_solr_user_results().
+ */
+function commons_origins_preprocess_commons_search_solr_user_results(&$variables, $hook) {
+  // Hide the results title.
+  $variables['title_attributes_array']['class'][] = 'element-invisible';
 }

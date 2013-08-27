@@ -1,0 +1,69 @@
+<?php
+/**
+ * @file
+ * Code for the Comunidade de Práticas - Relato de experiência feature.
+ */
+
+include_once 'dab_relatos.features.inc';
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function dab_relatos_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'addressfield') {
+    return 'plugins/' . $plugin;
+  }
+}
+
+/**
+ * Implements hook_block_info()
+ */
+function dab_relatos_block_info() {
+  $blocks = array();
+  $blocks['adicionar_relato'] = array(
+    'info' => 'Inscreva seu relato',
+    'cache' => DRUPAL_CACHE_PER_PAGE,
+  );
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view()
+ */
+function dab_relatos_block_view($delta = '') {
+
+  switch ($delta) {
+    case 'adicionar_relato':
+      drupal_add_library('qtip', 'qtip');
+      $block['subject'] = 'Inscreva seu relato';
+      $block['content'] = l('Adicionar Relato de Experiência', 'node/add/experiencia', array(
+        'query' => array(
+          drupal_get_destination(),
+          'og_group_ref' => arg(1)
+      )));
+    break;
+  }
+  return $block;
+}
+
+function dab_relatos_form_experiencia_node_form_alter(&$form, &$form_state) {
+
+  drupal_add_css(drupal_get_path('module', 'dab_relatos') . '/assets/stylesheets/relatos.css');
+
+  /**** Colocar textos informativos e letras como ordenadores nos campos ****/
+  $form['title_field']['#prefix'] = '<h3>1 - Identificação da Experiência</h3>';
+  $form['field_experiencia_desenvolvida']['#prefix'] = '<h3>2 - O que e como você conta?</h3><p>Esta etapa tem como objetivo detalhar a experiência. Isso pode ser feito de mais de uma forma:</p><p>I - respondendo a cada uma das questões;</p><p>II – você pode utilizar diferentes linguagens, como por exemplo narrativas, poesias, cordel, etc. que contem da experiência usando o último campo para texto "outras observações / campo livre". Você também pode usar esse campo caso não tenha identificado onde inserir informações relevantes da experiência;</p><p>III - Adicionando imagens, músicas e vídeos à Galeria Audiovisual da experiência. Isso ajudará a contar mais e melhor sobre como a experiência acontece!</p><p>obs1.: é possível alterar / adicionar informações a estes campos até 20 de Outubro. A curadoria da mostra está à disposição para contribuir com a elaboração e detalhamento do relato.</p><p>obs2.: nenhum dos campos é obrigatório, mas quanto mais campos forem preenchidos, mais o relato de experiência ficará completo, facilitando a compreensão de outras pessoas.</p><h4>a. Detalhando a experiência</h4>';
+  $form['fgm_node_experiencia_form_group_experiencia_autores']['#prefix'] = '<h3>3 - Quem participa, onde acontece?</h3><h4>a. Autores do relato: quem inscreve e apresenta o relato de experiência</h4><p>Máximo de 6 pessoas podem inscrever</p>' . $form['fgm_node_experiencia_form_group_experiencia_autores']['#prefix'];
+  $form['fgm_node_experiencia_form_group_experiencia_atores']['#prefix'] = '<h4>b. Atores: quem participa(ou) da experiência?</h4><p>Máximo de 20 pessoas podem estar como participantes</p>' . $form['fgm_node_experiencia_form_group_experiencia_atores']['#prefix'];
+  $form['field_video']['#prefix'] = '<h4>b. Galeria audiovisual</h4>';
+  $form['title_field'][LANGUAGE_NONE][0]['value']['#title'] = 'a. ' . $form['title_field'][LANGUAGE_NONE][0]['value']['#title'];
+  $form['field_descricao'][LANGUAGE_NONE][0]['value']['#title'] = 'b. ' . $form['field_descricao'][LANGUAGE_NONE][0]['value']['#title'];
+  $form['field_imagem_de_destaque'][LANGUAGE_NONE][0]['#title'] = 'c. ' . $form['field_imagem_de_destaque'][LANGUAGE_NONE][0]['#title'];
+  $form['field_experiencia_ambito'][LANGUAGE_NONE]['#prefix'] = '<h4>d. Escolha as categorias adequadas à experiência</h4>';
+  $form['field_experiencia_pontosequipes'][LANGUAGE_NONE]['#title'] = 'c. ' . $form['field_experiencia_pontosequipes'][LANGUAGE_NONE]['#title'];
+  $form['field_endereco'][LANGUAGE_NONE]['#title'] = 'd. ' . $form['field_endereco'][LANGUAGE_NONE]['#title'];
+  $form['field_experiencia_anexo'][LANGUAGE_NONE]['#title'] = 'e. ' . $form['field_experiencia_anexo'][LANGUAGE_NONE]['#title'];
+  /**** Colocar textos informativos e letras como ordenadores nos campos - FIM ****/
+
+}

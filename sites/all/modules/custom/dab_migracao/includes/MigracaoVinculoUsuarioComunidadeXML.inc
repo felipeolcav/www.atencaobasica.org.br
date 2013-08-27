@@ -56,7 +56,7 @@ class MigracaoVinculoUsuarioComunidadeXML extends XMLMigration {
     // User reference
     $this->addFieldMapping('entity_type')->defaultValue('user');
     $this->addFieldMapping('etid', 'Email')//Email: usado no MigrateSQLMap desse sourceMigration
-      ->sourceMigration($this->getUserMigrations())
+      ->sourceMigration('ConsolidadoDeUsuariosDoPlone')
       ->xpath('email');
 
     // Other membership properties
@@ -104,62 +104,6 @@ class MigracaoVinculoUsuarioComunidadeXML extends XMLMigration {
     }elseif (!is_array($row->xml->papeis)) {
       $membership->group_roles = array();
     }
-  }
-
-  private function getUserMigrations() {
-    return array(
-      'APSSESMG',
-      'AcademiaDaSaude',
-      'AlimentaNutricaoSUS',
-      'AssistenciaReabilitacaoComunidade',
-      'AtividadeFisicaSaude',
-      'BoasVindas',
-      'CaminhosCuidadoApoioPedagogico',
-      'CaminhosCuidadoCoordenacaoNacional',
-      'CaminhosCuidadoEquipeComunicacao',
-      'ConscienciaEmDia',
-      'ConversacaoCoordenadoresCuradoresABSF',
-      'CoordenacaoCuradoriaMostraNacionalABSF',
-      'CursoColaborativoDoencasCronicas',
-      'DesignComunidadePraticas',
-      'EvolucaoParticipacaoDentistasSUS',
-      'GTIF',
-      'GrupoFacilitadoresComunidadePraticas',
-      'HistoriasCcotidianoAtencaoBasica',
-      'MostraEixoTematico1',
-      'MostraEixoTematico10',
-      'MostraEixoTematico11',
-      'MostraEixoTematico12',
-      'MostraEixoTematico13',
-      'MostraEixoTematico14',
-      'MostraEixoTematico15',
-      'MostraEixoTematico16',
-      'MostraEixoTematico17',
-      'MostraEixoTematico18',
-      'MostraEixoTematico19',
-      'MostraEixoTematico2',
-      'MostraEixoTematico20',
-      'MostraEixoTematico3',
-      'MostraEixoTematico4',
-      'MostraEixoTematico5',
-      'MostraEixoTematico6',
-      'MostraEixoTematico7',
-      'MostraEixoTematico8',
-      'MostraEixoTematico9',
-      'MelhorEmCasa',
-      'MedicosNoro',
-      'NASF',
-      'UsuarioNosso',
-      'OncoDiscussoes',
-      'PMAQAcessoQualidadeAtencaoBasica',
-      'PMAQ1',
-      'PraticasIntegrativasComplementares',
-      'SaudeNaEscola',
-      'ESUS',
-      'EmDesenvolvimento',
-      'PMAQ'
-      )
-    ;
   }
 
 }

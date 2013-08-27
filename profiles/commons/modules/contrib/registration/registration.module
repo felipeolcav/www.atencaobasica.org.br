@@ -384,18 +384,24 @@ function registration_user_cancel($edit, $account, $method) {
  */
 function registration_user_delete($account) {
   if (isset($account->uid)) {
-    db_delete('registration')
-      ->condition('author_uid', $account->uid)
+    $query = new EntityFieldQuery();
+    $result = $query
+      ->entityCondition('entity_type', 'registration')
+      ->propertyCondition('author_uid', $account->uid)
       ->execute();
 
-    // Users associated with {registration}.user_uid do not own the
-    // registration. Simply disassociate the user with the registration.
-    db_update('registration')
-      ->fields(array(
-      'user_uid' => NULL,
-    ))
-      ->condition('user_uid', $account->uid)
-      ->execute();
+    if ($result) {
+      registration_delete_multiple(array_keys($result['registration']));
+
+      // Users associated with {registration}.user_uid do not own the
+      // registration. Simply disassociate the user with the registration.
+      db_update('registration')
+        ->fields(array(
+          'user_uid' => NULL,
+        ))
+        ->condition('user_uid', $account->uid)
+        ->execute();
+    }
   }
 }
 
@@ -408,8 +414,8 @@ function registration_user_delete($account) {
  * @return array
  *   Renderable elements.
  */
-function registration_view(Registration $registration) {
-  return $registration->view();
+function registration_view(Registration $registration, $view_mode = 'full') {
+  return $registration->view($view_mode);
 }
 
 /**
@@ -965,7 +971,7 @@ function registration_send_broadcast($entity_type, $entity_id, $subject, $messag
         $message = token_replace($message_template, array(
           $entity_type => $entity,
           'registration' => $registration
-        ));
+        ), array('clear' => TRUE));
       }
       $params['message'] = $message;
 
@@ -1087,6 +1093,12 @@ function registration_status($entity_type, $entity_id, $reset = FALSE, $spaces =
 
   $entity = entity_load_single($entity_type, $entity_id);
   $registration_type = registration_get_entity_registration_type($entity_type, $entity);
+
+  // The host entity does not have registrations enabled.
+  if (!$registration_type) {
+    return FALSE;
+  }
+
   // bypass further access checks if user can administer registration
   if (user_access('administer registration') || user_access("administer $registration_type registration")) {
     return TRUE;
@@ -1661,8 +1673,8 @@ function registration_save(Registration $registration) {
  *
  * @param string $op
  *   Operation user wishes to perform.
- * @param object $registration
- *   A Fully loaded registration object.
+ * @param Registration $registration
+ *   (optional) A fully loaded registration object.
  * @param object $account
  *   (optional) An user object, or omit for logged in user.
  *
@@ -1670,12 +1682,18 @@ function registration_save(Registration $registration) {
  *
  * @see registration_entity_info()
  */
-function registration_access($op, $registration, $account = NULL) {
+function registration_access($op, Registration $registration = NULL, $account = NULL) {
   $account = isset($account) ? $account : $GLOBALS['user'];
-  $type = $registration->type;
+  $admin = user_access('administer registration', $account);
+
+  if (!isset($registration)) {
+    return $admin;
+  }
+
+  $type = $registration->bundle();
 
   // bypass further access checks if user can administer registration
-  if (user_access('administer registration', $account) || user_access("administer $type registration", $account)) {
+  if ($admin || user_access("administer $type registration", $account)) {
     return TRUE;
   }
 

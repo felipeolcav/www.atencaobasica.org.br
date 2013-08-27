@@ -16,10 +16,10 @@ function commons_follow_node_views_api() {
  */
 function commons_follow_node_flag_default_flags() {
   $flags = array();
-  // Exported flag: "Outros conteúdos que you follow".
+  // Exported flag: "Other content you follow".
   $flags['commons_follow_node'] = array(
     'content_type' => 'node',
-    'title' => 'Outros conte&uacute;dos',
+    'title' => 'Other content',
     'global' => '0',
     'types' => array(
     ),

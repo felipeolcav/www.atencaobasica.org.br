@@ -273,6 +273,25 @@ function commons_groups_commons_entity_integration() {
   );
 }
 
+/**
+ * Implements hook_views_pre_view().
+ * By default, all views should have a group_type filter that looks at only nodes.
+ * This function allows those views to also show group content on the front page
+ * regardless of their entity type.
+ * See https://drupal.org/node/2037417 for more info.
+ */
+function commons_groups_views_pre_view(&$view, &$display_id, &$args) {
+  // We check to see if a group id argument is set in the view, and if no arguments
+  // are being passed to the view. If so, the group_type filter is irrelevant.
+  if (isset($view->display_handler->options['arguments']['gid']) && empty($args)) {
+    if (isset($view->display_handler->options['filters']['group_type'])) {
+      $filters = $view->display_handler->get_option('filters');
+      unset($filters['group_type']);
+      $view->display_handler->override_option('filters', $filters);
+    }
+  }
+}
+
 function commons_groups_group_contributors_count_topics($group) {
   // Format the count of contributors.
   $output = '';
@@ -370,6 +389,11 @@ function commons_groups_form_alter(&$form, &$form_state, $form_id) {
       $message = 'In addition to the permissions listed here, the Commons Groups module grants non-group members the ability to post content into groups where content in the group is public.';
       drupal_set_message(t($message), 'warning');
     }
+  }
+  // Hide the "Group privacy" field that can be added
+  // (but not automatically removed) by the Commons Trusted Contacts module.
+  if (($form_id == 'user_register_form' || $form_id == 'edit_profile_user_profile_form') && isset($form['group_access'])) {
+    $form['group_access']['#access'] = FALSE;
   }
 }
 

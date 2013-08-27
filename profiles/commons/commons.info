@@ -3,6 +3,7 @@ project = commons
 distribution_name = "Drupal Commons"
 description = Ready-to-use solution for building communities.
 core = 7.x
+php_memory_limit = 128M
 
 ; Core modules.
 dependencies[] = block
@@ -20,9 +21,11 @@ dependencies[] = path
 dependencies[] = search
 dependencies[] = shortcut
 dependencies[] = taxonomy
-dependencies[] = toolbar
 
 ; Contributed modules.
+dependencies[] = addressfield
+dependencies[] = addressfield_tokens
+dependencies[] = breakpoints
 dependencies[] = ctools
 dependencies[] = custom_search
 dependencies[] = diff
@@ -40,9 +43,13 @@ dependencies[] = message_notify
 dependencies[] = message_subscribe
 dependencies[] = metatag
 dependencies[] = module_filter
+dependencies[] = navbar
 dependencies[] = og
 dependencies[] = panels
+dependencies[] = paranoia
 dependencies[] = pathauto
+dependencies[] = placeholder
+dependencies[] = privatemsg
 dependencies[] = quicktabs
 dependencies[] = r4032login
 dependencies[] = libraries
@@ -95,10 +102,11 @@ dependencies[] = commons_misc
 dependencies[] = commons_location
 dependencies[] = commons_wysiwyg
 dependencies[] = commons_social_sharing
+dependencies[] = commons_trusted_contacts
 
-; Information added by drupal.org packaging script on 2013-04-04
-version = "7.x-3.2"
+; Information added by drupal.org packaging script on 2013-08-19
+version = "7.x-3.3"
 core = "7.x"
 project = "commons"
-datestamp = "1365041413"
+datestamp = "1376951283"
 

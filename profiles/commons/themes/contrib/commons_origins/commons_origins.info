@@ -2,7 +2,7 @@
 ;----------// Theme Information
 
   name        = Commons Origins
-  description = Copy this subtheme to get started - see the <b><a href="http://adaptivethemes.com/documentation/adaptivethemes-documentation" target="_blank" title="Adaptivethemes.com - Rocking the hardest since 2006">documentation</a></b> for guidence or the included README. Drush users can generate a new theme using the command: drush adaptivetheme. If you need help please use the <b><a href="http://drupal.org/project/issues/adaptivetheme" target="_blank">issue queue</a></b> or ask in the IRC channel: <b><a href="irc://irc.freenode.net/drupal-adaptivetheme">#drupal-adaptivetheme</a></b>.
+  description = The default theme for <a href="http://drupal.org/project/commons">Drupal Commons 3.x</a>.
   core        = 7.x
   base theme  = adaptivetheme
   release     = 7.x-3.x
@@ -60,8 +60,6 @@
 
   scripts[] = scripts/modernizr.js
   scripts[] = scripts/syze.min.js
-  scripts[] = scripts/jquery.formalize.min.js
-  scripts[] = scripts/jquery.selectBox.min.js
   scripts[] = scripts/commons_origins.js
 
   ; Internet Explorer Scripts
@@ -89,7 +87,6 @@
   regions[secondary_content] = Secondary
   regions[tertiary_content]  = Tertiary
   regions[footer]            = Footer
-  regions[leaderboard]       = Leaderboard
   regions[header]            = Header
   regions[menu_bar]          = Menu Bar
   regions[help]              = Help
@@ -407,8 +404,8 @@
   settings[adaptivetheme_meta_mobileoptimized]  = 'width'
   settings[adaptivetheme_meta_handheldfriendly] = 'true'
   settings[adaptivetheme_meta_apple_mobile_web_app_capable] = 'yes'
-  settings[chrome_edge] = 0
-  settings[clear_type]  = 0
+  settings[chrome_edge] = 1
+  settings[clear_type]  = 1
 
 
   ; Touch icons
@@ -421,9 +418,11 @@
   ; Custom CSS
   settings[custom_css] = ''
 
-; Information added by drupal.org packaging script on 2013-04-04
-version = "7.x-3.2"
+  ;
+
+; Information added by drupal.org packaging script on 2013-08-16
+version = "7.x-3.4"
 core = "7.x"
 project = "commons_origins"
-datestamp = "1365037516"
+datestamp = "1376676695"
 

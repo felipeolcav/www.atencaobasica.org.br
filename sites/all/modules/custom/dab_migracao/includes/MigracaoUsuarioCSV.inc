@@ -10,9 +10,8 @@ class UsuarioMigration extends Migration {
     self::popularMapaEstadoUF();
 
     $this->machineName = $arguments['machine_name'];
-
     $this->description = t('Import an CSV-file (only "Account"-fields)');
-    //Nome,Email,Estado,Municipio,Populacao
+    
     $columns = array(
       // "Source": ('Fieldname', 'Description')
       0 => array('Nome', 'Nome do usuário'),
@@ -23,7 +22,7 @@ class UsuarioMigration extends Migration {
     );
     $this->source = new MigrateSourceCSV(DRUPAL_ROOT . '/'
         . drupal_get_path('module', 'dab_migracao')
-        . '/csv/' . $arguments['file_name'] . '.csv', $columns, array('header_rows' => 1));
+        . '/csv/' . $arguments['file_name'] . '.csv', $columns);
     $this->destination = new MigrateDestinationUser();
     $this->map = new MigrateSQLMap($this->machineName,
         array('Email' => array(
@@ -38,8 +37,8 @@ class UsuarioMigration extends Migration {
     //Nome,Email,Estado,Municipio,Populacao
     // Mapped fields
     $this->addFieldMapping('field_name_first', 'Nome');
-    $this->addFieldMapping('name', 'Email');
-    $this->addFieldMapping('mail', 'Email');
+    $this->addFieldMapping('name', 'Email')->dedupe('users', 'name');
+    $this->addFieldMapping('mail', 'Email')->dedupe('users', 'mail');;
     $this->addFieldMapping('field_estado', 'Estado');
     $this->addFieldMapping('field_cidade', 'Municipio');
 

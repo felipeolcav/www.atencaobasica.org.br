@@ -4,6 +4,11 @@
  * Enables modules and site configuration for a Commons site installation.
  */
 
+/*
+ * Define commons minimum execution time required to operate.
+ */
+define('DRUPAL_MINIMUM_MAX_EXECUTION_TIME', 120);
+
 /**
  * Implements hook_admin_paths_alter().
  */
@@ -110,15 +115,12 @@ function commons_update_projects_alter(&$projects) {
  * Allows the user to set a welcome message for anonymous users
  */
 function commons_install_tasks() {
+  // Suppress any status messages generated during batch install.
+  commons_clear_messages();
 
   //make sure we have more memory than 196M. if not lets try to increase it.
-  if (ini_get('memory_limit') != '-1' && ini_get('memory_limit') <= '196M') {
+  if (ini_get('memory_limit') != '-1' && ini_get('memory_limit') <= '196M' && ini_get('memory_limit') >= '128M') {
     ini_set('memory_limit', '196M');
-  }
-
-  //make sure we have more memory than 196M. if not lets try to increase it.
-  if ((int)ini_get('max_execution_time') != -1 && (int)ini_get('max_execution_time') != 0 && (int)ini_get('max_execution_time') <= 120) {
-    ini_set('max_execution_time', 120);
   }
 
   $demo_content = variable_get('commons_install_example_content', FALSE);
@@ -205,7 +207,7 @@ function commons_create_first_group() {
   $form['commons_first_group_body'] = array(
     '#type' => 'textarea',
     '#title' => st('Group description'),
-    '#description' => st("This text will appear on the group's homepage and helps new contirbutors to become familiar with the purpose of the group. You can always change this text or add another group later."),
+    '#description' => st("This text will appear on the group's homepage and helps new contributors to become familiar with the purpose of the group. You can always change this text or add another group later."),
     '#required' => TRUE,
     '#default_value' => st('The online home for our Engineering team'),
   );
@@ -245,6 +247,7 @@ function commons_revert_features() {
   // Revert Features components to ensure that they are in their default states.
   $revert = array(
     'commons_groups' => array('field_instance'),
+    'commons_trusted_contacts' => array('field_instance'),
     'commons_wikis' => array('og_features_permission'),
     'commons_wysiwyg' => array('user_permission', 'ckeditor_profile'),
   );
@@ -515,6 +518,12 @@ function commons_demo_content() {
 
   // Delete the demo content variable
   variable_del('commons_install_example_content');
+
+  // Make sure the admin user is also a group.
+  // @todo: Move to a better place.
+  $wrapper = entity_metadata_wrapper('user', 1);
+  $wrapper->{OG_GROUP_FIELD}->set(TRUE);
+  $wrapper->save();
 }
 
 function commons_add_user_avatar($account) {

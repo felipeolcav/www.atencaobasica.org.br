@@ -1,11 +1,15 @@
 <?php
 
 /**
- *  Javascript for
+ *  Hook init
  */
-
 function dab_project_init(){
   drupal_add_js(drupal_get_path('module', 'dab_project') .'/dab-project.js');
+
+  // commet chat css and js
+  drupal_add_js('/cometchat/cometchatjs.php?v=2', 'external');
+  drupal_add_css( '/cometchat/cometchatcss.php', 'external');
+
 }
 
 
@@ -14,12 +18,10 @@ function dab_project_init(){
  */
 function dab_project_form_user_register_form_alter(&$form, &$form_state, $form_id){
     $form['#validate'][] = 'dab_project_user_registration_validate';
-
 }
 
-
 /**
- *
+ * User registration Validade
  */
 function dab_project_user_registration_validate(&$form,&$form_state){
     $cpf = $form_state['values']['field_cpf']['und'][0]['value'];
@@ -28,11 +30,35 @@ function dab_project_user_registration_validate(&$form,&$form_state){
 
     //if a result is returned, that means the $staff_id exists
     if (db_query($check_unique_query,array(':cpf'=>$cpf))->fetchField()){
-        form_set_error('cpf','This CPF is already in use');
+        form_set_error('cpf', t('This CPF is already in use'));
     }
 }
 
+/**
+ * @param $form
+ * @param $form_state
+ * @param $form_id
+ */
+function dab_project_form_user_profile_form_alter(&$form){
 
+  // esconde o campo de estado do usuário
+  $form['field_estado']['#access'] = false;
+  $form['#validate'][] = 'dab_project_form_user_profile_form_validate';
+}
+
+/**
+ * User profile Validade
+ */
+function dab_project_form_user_profile_form_validate(&$form, &$form_state){
+
+  // muda os valores do field_estado com a sigla no field_cidade.
+  if( !empty( $form_state['values']['field_cidade']['und'][0]['value'] )){
+    preg_match('#\((.*?)\)#', $form_state['values']['field_cidade']['und'][0]['value'], $match);
+    $form_state['values']['field_estado']['und'][0]['value'] = $match[1];
+
+  }
+
+}
 
 /**
  * Implementation of hook_menu.
@@ -58,5 +84,19 @@ function dab_project_mostrasaude_iframe_page() {
   $output = '<iframe id="mostrasaude-iframe" width="940px" height="2500px" src="http://www.mostrasaude.net/"></iframe>';
   return $output;
 }
+
+
+/**
+ * Implements hook_panels_pane_content_alter().
+ */
+function dab_project_panels_pane_content_alter($content, $pane, $args, $context) {
+
+  // traduzir todos os títulos de panels
+  if ($content->title) {
+    $content->title = t($content->title);
+  }
+  return $content;
+}
+
 
 ?>

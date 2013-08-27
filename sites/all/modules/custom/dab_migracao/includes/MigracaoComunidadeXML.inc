@@ -54,70 +54,17 @@ class MigracaoComunidadeXML extends XMLMigration {
     $this->addFieldMapping('title_field', 'nome')
       ->xpath('nome');
 
-    $this->addFieldMapping('uid', 'Email')
-      ->sourceMigration($this->getUserMigrations())
-      ->xpath('dono')
-      ->defaultValue(1);
+    // $this->addFieldMapping('uid', 'Email')
+    //   ->sourceMigration('ConsolidadoDeUsuariosDoPlone')
+    //   ->xpath('dono')
+    //   ->defaultValue(1);
+    $this->addFieldMapping('uid')->defaultValue(1);
+      
+    $this->addFieldMapping('status')->defaultValue(1);
 
     // Organic Groups
     $this->addFieldMapping('group_group')->defaultValue(1);
     $this->addFieldMapping('og_roles_permissions')->defaultValue(0);
-  }
-
-  private function getUserMigrations() {
-    return array(
-      'APSSESMG',
-      'AcademiaDaSaude',
-      'AlimentaNutricaoSUS',
-      'AssistenciaReabilitacaoComunidade',
-      'AtividadeFisicaSaude',
-      'BoasVindas',
-      'CaminhosCuidadoApoioPedagogico',
-      'CaminhosCuidadoCoordenacaoNacional',
-      'CaminhosCuidadoEquipeComunicacao',
-      'ConscienciaEmDia',
-      'ConversacaoCoordenadoresCuradoresABSF',
-      'CoordenacaoCuradoriaMostraNacionalABSF',
-      'CursoColaborativoDoencasCronicas',
-      'DesignComunidadePraticas',
-      'EvolucaoParticipacaoDentistasSUS',
-      'GTIF',
-      'GrupoFacilitadoresComunidadePraticas',
-      'HistoriasCcotidianoAtencaoBasica',
-      'MostraEixoTematico1',
-      'MostraEixoTematico10',
-      'MostraEixoTematico11',
-      'MostraEixoTematico12',
-      'MostraEixoTematico13',
-      'MostraEixoTematico14',
-      'MostraEixoTematico15',
-      'MostraEixoTematico16',
-      'MostraEixoTematico17',
-      'MostraEixoTematico18',
-      'MostraEixoTematico19',
-      'MostraEixoTematico2',
-      'MostraEixoTematico20',
-      'MostraEixoTematico3',
-      'MostraEixoTematico4',
-      'MostraEixoTematico5',
-      'MostraEixoTematico6',
-      'MostraEixoTematico7',
-      'MostraEixoTematico8',
-      'MostraEixoTematico9',
-      'MelhorEmCasa',
-      'MedicosNoro',
-      'NASF',
-      'UsuarioNosso',
-      'OncoDiscussoes',
-      'PMAQAcessoQualidadeAtencaoBasica',
-      'PMAQ1',
-      'PraticasIntegrativasComplementares',
-      'SaudeNaEscola',
-      'ESUS',
-      'EmDesenvolvimento',
-      'PMAQ'
-      )
-    ;
   }
 
 }

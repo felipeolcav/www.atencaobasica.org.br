@@ -16,9 +16,10 @@ features[field][] = "message-comment_insert-field_message_rendered_subject"
 features[message_type][] = "comment_insert"
 features[views_view][] = "message_notify_example"
 
-; Information added by drupal.org packaging script on 2013-04-22
-version = "7.x-2.5"
+
+; Information added by drush on 2013-08-19
+version = "7.x-2.5+0-dev"
 core = "7.x"
 project = "message_notify"
-datestamp = "1366630876"
+datestamp = "1376951296"
 
