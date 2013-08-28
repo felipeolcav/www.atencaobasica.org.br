@@ -8,9 +8,36 @@ function dab_project_init(){
 
   // commet chat css and js
   // TODO mover isso para uma configuração
-  drupal_add_js('/cometchat/cometchatjs.php?v=2', 'external');
-  drupal_add_css( '/cometchat/cometchatcss.php', 'external');
+  drupal_add_js(  variable_get('dab_cometchat_js', '/cometchat/cometchatjs.php'), 'external');
+  drupal_add_css(  variable_get('dab_cometchat_js', '/cometchat/cometchatcss.php'), 'external');
 
+}
+
+/**
+ * Implementation of hook_menu.
+ */
+function dab_project_menu() {
+  $items = array();
+
+  $items['mostra'] = array(
+    'page callback' => 'dab_project_mostrasaude_iframe_page',
+    'title' => 'IV Mostra',
+    'access callback' => TRUE,
+    'menu_name' => 'main-menu',
+    'type' => MENU_NORMAL_ITEM
+  );
+
+  $items['admin/config/system/dab_project'] = array(
+    'title' => 'DAB - Configuração do modulo dab_project',
+    'description' => 'Página de configuração da rede do DAB',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('dab_project_admin_settings'),
+    'access arguments' => array('administer site settings'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'dab_project.admin.inc',
+   );
+
+  return $items;
 }
 
 
@@ -66,22 +93,6 @@ function dab_project_form_user_profile_form_validate(&$form, &$form_state){
 }
 
 /**
- * Implementation of hook_menu.
- */
-function dab_project_menu() {
-  $items = array();
-
-  $items['mostra'] = array(
-    'page callback' => 'dab_project_mostrasaude_iframe_page',
-    'title' => 'IV Mostra',
-    'access callback' => TRUE,
-    'menu_name' => 'main-menu',
-    'type' => MENU_NORMAL_ITEM
-  );
-  return $items;
-}
-
-/**
  * Page callback
  * Pagina com o Iframe do evento da mostra
  */
@@ -105,5 +116,3 @@ function dab_project_panels_pane_content_alter($content, $pane, $args, $context)
   return $content;
 }
 
-
-?>

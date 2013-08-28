@@ -1,5 +1,9 @@
 name = DAB Project
+description = Modulo para adicionar as configurações e reursos expesíficos da rede http://www.atencaobasica.org.br/
 core = 7.x
 package = DAB
-version = 7.x-0.1
 project = dab_project
+
+files[] = dab_project.module
+files[] = dab_project.install
+version = 7.x-0.2
