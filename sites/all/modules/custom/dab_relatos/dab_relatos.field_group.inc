@@ -49,7 +49,7 @@ function dab_relatos_field_group_info() {
   $field_group->parent_name = 'group_terceira_etapa';
   $field_group->data = array(
     'label' => 'b. Atores: quem participa(ou) da experiência?',
-    'weight' => '60',
+    'weight' => '66',
     'children' => array(
       0 => 'field_experiencia_ator_categoria',
       1 => 'field_experiencia_ator_nome',
@@ -84,7 +84,7 @@ function dab_relatos_field_group_info() {
   $field_group->parent_name = 'group_terceira_etapa';
   $field_group->data = array(
     'label' => 'Autores do relato',
-    'weight' => '58',
+    'weight' => '64',
     'children' => array(
       0 => 'field_experiencia_autorcat',
       1 => 'field_experiencia_autornome',
@@ -190,8 +190,10 @@ function dab_relatos_field_group_info() {
       0 => 'field_endereco',
       1 => 'field_experiencia_anexo',
       2 => 'field_experiencia_pontosequipes',
-      3 => 'group_experiencia_autores',
-      4 => 'group_experiencia_atores',
+      3 => 'field_exp_info_a',
+      4 => 'field_field_exp_info_b',
+      5 => 'group_experiencia_atores',
+      6 => 'group_experiencia_autores',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

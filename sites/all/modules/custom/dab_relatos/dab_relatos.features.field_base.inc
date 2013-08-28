@@ -449,6 +449,30 @@ function dab_relatos_field_default_field_bases() {
     'type' => 'list_integer',
   );
 
+  // Exported field_base: 'field_field_exp_info_b'
+  $field_bases['field_field_exp_info_b'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_field_exp_info_b',
+    'foreign keys' => array(),
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'markup',
+    'settings' => array(
+      'markup' => array(
+        'format' => 'filtered_html',
+        'value' => '<h4>b. Atores: quem participa(ou) da experiência?</h4>
+
+<p>Máximo de 20 pessoas podem estar como participantes</p>
+',
+      ),
+    ),
+    'translatable' => 0,
+    'type' => 'markup',
+  );
+
   // Exported field_base: 'field_imagem'
   $field_bases['field_imagem'] = array(
     'active' => 1,

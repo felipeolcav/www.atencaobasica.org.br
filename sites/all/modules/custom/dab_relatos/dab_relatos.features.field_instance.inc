@@ -119,7 +119,48 @@ function dab_relatos_field_default_field_instances() {
         'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
       ),
       'type' => 'addressfield_standard',
-      'weight' => 62,
+      'weight' => 68,
+    ),
+  );
+
+  // Exported field_instance: 'node-experiencia-field_exp_info_a'
+  $field_instances['node-experiencia-field_exp_info_a'] = array(
+    'bundle' => 'experiencia',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'markup',
+        'settings' => array(),
+        'type' => 'markup_default',
+        'weight' => 22,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'display_in_partial_form' => 0,
+    'entity_type' => 'node',
+    'exclude_cv' => 0,
+    'field_name' => 'field_exp_info_a',
+    'label' => 'exp_info_a',
+    'required' => 0,
+    'settings' => array(
+      'exclude_cv' => FALSE,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'markup',
+      'settings' => array(
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+      ),
+      'type' => 'markup',
+      'weight' => 63,
     ),
   );
 
@@ -229,7 +270,7 @@ function dab_relatos_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 63,
+      'weight' => 69,
     ),
   );
 
@@ -254,15 +295,17 @@ function dab_relatos_field_default_field_instances() {
         'weight' => 0,
       ),
     ),
+    'display_in_partial_form' => 0,
     'ds_extras_field_template' => '',
     'entity_type' => 'node',
+    'exclude_cv' => 0,
     'extra_description' => array(
       'multiple' => 0,
       'over_description' => '',
     ),
     'field_name' => 'field_experiencia_ator_categoria',
     'label' => 'Categoria',
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'exclude_cv' => FALSE,
       'user_register_form' => FALSE,
@@ -300,15 +343,17 @@ function dab_relatos_field_default_field_instances() {
         'weight' => 0,
       ),
     ),
+    'display_in_partial_form' => 0,
     'ds_extras_field_template' => '',
     'entity_type' => 'node',
+    'exclude_cv' => 0,
     'extra_description' => array(
       'multiple' => 0,
       'over_description' => '',
     ),
     'field_name' => 'field_experiencia_ator_nome',
     'label' => 'Nome',
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'exclude_cv' => FALSE,
       'text_processing' => 0,
@@ -370,7 +415,7 @@ function dab_relatos_field_default_field_instances() {
         'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
       ),
       'type' => 'options_select',
-      'weight' => 62,
+      'weight' => 65,
     ),
   );
 
@@ -419,7 +464,7 @@ function dab_relatos_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 61,
+      'weight' => 64,
     ),
   );
 
@@ -742,7 +787,48 @@ function dab_relatos_field_default_field_instances() {
         'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
       ),
       'type' => 'options_buttons',
-      'weight' => 61,
+      'weight' => 67,
+    ),
+  );
+
+  // Exported field_instance: 'node-experiencia-field_field_exp_info_b'
+  $field_instances['node-experiencia-field_field_exp_info_b'] = array(
+    'bundle' => 'experiencia',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'markup',
+        'settings' => array(),
+        'type' => 'markup_default',
+        'weight' => 23,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'display_in_partial_form' => 0,
+    'entity_type' => 'node',
+    'exclude_cv' => 0,
+    'field_name' => 'field_field_exp_info_b',
+    'label' => 'field_exp_info_b',
+    'required' => 0,
+    'settings' => array(
+      'exclude_cv' => FALSE,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'markup',
+      'settings' => array(
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+      ),
+      'type' => 'markup',
+      'weight' => 65,
     ),
   );
 
@@ -977,6 +1063,8 @@ function dab_relatos_field_default_field_instances() {
   t('Quais estratégias de ação foram sendo formuladas/produzidas durante o percurso da experiência? O que foi novo e desafiador? A experiência favoreceu uma mudança no processo de trabalho? Ajudou a pensar estratégias para outras ações? (máximo de 4000 caracteres com espaços)');
   t('Qual foi a experiência desenvolvida? Sobre o que foi?');
   t('Venda seu peixe!');
+  t('exp_info_a');
+  t('field_exp_info_b');
   t('Âmbito da experiência');
 
   return $field_instances;
