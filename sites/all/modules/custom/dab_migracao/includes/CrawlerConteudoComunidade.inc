@@ -73,10 +73,10 @@ class CrawlerConteudoComunidade {
             $tipo_arquivo = $this->extrairTipo($img_icone_arquivo);
             $nome_arquivo = $this->salvarArquivo($link_href, $tipo_arquivo);
 
-            
-            preg_match('/.*\/comunidades\/([^\/]*)\/.*/', $link_href,$match);
+
+            preg_match('/.*\/comunidades\/([^\/]*)\/.*/', $link_href, $match);
             $comunidade = end($match);
-            
+
             $elemento_corrente = array(
               'link_href' => $link_href,
               'link_texto' => $link->text(),
@@ -128,7 +128,7 @@ class CrawlerConteudoComunidade {
       $xml_item->appendChild($xml_element);
     }
     $this->doc->appendChild($xml_item);
-    
+
     $this->doc->formatOutput = TRUE;
     $this->doc->save($this->caminho_arquivo_output);
   }
@@ -163,7 +163,8 @@ class CrawlerConteudoComunidade {
       else {
         if ($tipo == 'link_icon' || $tipo == 'document_icon') {
           $nome_arquivo .= '.' . 'html';
-        }elseif($tipo == 'image'){
+        }
+        elseif ($tipo == 'image') {
           $nome_arquivo .= '.' . 'jpg';
         }
       }
@@ -172,11 +173,29 @@ class CrawlerConteudoComunidade {
     $caminho_arquivo = realpath(__DIR__ . '/..');
     $caminho_arquivo .= '/files/' . $nome_arquivo;
 
+
     $contador = 1;
     while (file_exists($caminho_arquivo)) {
       $contador++;
       $regex_sufixo = '(_[0-9]+)?\.'; //Exemplo: '/caminho/do/arquivo/nome.txt' => '.' ou '/caminho/do/arquivo/nome_2.txt' => '_2.'
-      $caminho_arquivo = preg_replace("/$regex_sufixo(?!.*$regex_sufixo)/", "_$contador.", $caminho_arquivo);
+      $sufixo = "_$contador.";
+      $caminho_arquivo = preg_replace("/$regex_sufixo(?!.*$regex_sufixo)/", $sufixo, $caminho_arquivo);
+
+      if (strlen($caminho_arquivo) > 255) {//correção no nome do arquivo por causa do tamanho
+        $extensao = substr(strrchr($caminho_arquivo, '.'), 1);
+
+        if (strpos($caminho_arquivo, $sufixo)) {
+          $caminho_arquivo = preg_replace("/$regex_sufixo(?!.*$regex_sufixo)/", ".", $caminho_arquivo);
+        }
+        else {
+          $sufixo = '.';
+        }
+        $caminho_arquivo = preg_replace("/\.$extensao/", "", $caminho_arquivo);
+        $tamanho_final = 255 - strlen($sufixo) - strlen($extensao);
+        $caminho_arquivo = substr($caminho_arquivo, 0, $tamanho_final) . $sufixo . $extensao;
+
+        print_r("\n>>>>>>>>>>>>>>>>>>>>>> Alteração no nome do arquivo por causa do tamanho. Novo nome: " . $caminho_arquivo);
+      }
     }
 
     $dirname = dirname($caminho_arquivo);
