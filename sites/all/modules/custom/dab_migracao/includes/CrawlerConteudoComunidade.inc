@@ -14,6 +14,7 @@ class CrawlerConteudoComunidade {
   private $count_item;
   private $count_pagina;
   private $doc;
+  private $root;
   private $caminho_arquivo_output;
 
   public function __construct($username, $password) {
@@ -30,6 +31,8 @@ class CrawlerConteudoComunidade {
 
 
     $this->doc = new DOMDocument('1.0', 'utf-8');
+    $this->root = $this->doc->createElement('root');
+    $this->doc->appendChild($this->root);
 
     $url_pagina_corrente = self::URL_PESQUISA;
     $this->count_item = 0;
@@ -71,19 +74,25 @@ class CrawlerConteudoComunidade {
 
             $img_icone_arquivo = htmlqp($item_html, 'img');
             $tipo_arquivo = $this->extrairTipo($img_icone_arquivo);
-            $nome_arquivo = $this->salvarArquivo($link_href, $tipo_arquivo);
+            $caminho_completo_arquivo = $this->salvarArquivo($link_href, $tipo_arquivo);
 
 
             preg_match('/.*\/comunidades\/([^\/]*)\/.*/', $link_href, $match);
             $comunidade = end($match);
 
+            $caminho_relativo_nome_arq = str_replace($this->getCaminhoPastaArquivosComunidades(), '', $caminho_completo_arquivo);
+            $arquivo_id = substr($caminho_relativo_nome_arq, 0, 255);
+
             $elemento_corrente = array(
+              'arquivo_id' => $arquivo_id,
+              'arq_caminho_completo' => $caminho_completo_arquivo,
+              'source_dir' => dirname($caminho_completo_arquivo),
+              'filename' => str_replace(dirname($caminho_completo_arquivo) . '/', '', $caminho_completo_arquivo),
+              'comunidade' => $comunidade,
               'link_href' => $link_href,
               'link_texto' => $link->text(),
               'privacidade' => $link->attr("class"),
-              'nome_arquivo' => $nome_arquivo,
               'tipo_arquivo' => $tipo_arquivo,
-              'comunidade' => $comunidade,
             );
           }
           elseif (preg_match('/\<dd.*\>/', $item_html)) {
@@ -127,7 +136,7 @@ class CrawlerConteudoComunidade {
       $xml_element->nodeValue = $value;
       $xml_item->appendChild($xml_element);
     }
-    $this->doc->appendChild($xml_item);
+    $this->root->appendChild($xml_item);
 
     $this->doc->formatOutput = TRUE;
     $this->doc->save($this->caminho_arquivo_output);
@@ -170,44 +179,64 @@ class CrawlerConteudoComunidade {
       }
     }
 
-    $caminho_arquivo = realpath(__DIR__ . '/..');
-    $caminho_arquivo .= '/files/' . $nome_arquivo;
+    $caminho_completo_arq = $this->getCaminhoPastaArquivosComunidades() . $nome_arquivo;
 
+    //$caminho_final_arq = $this->processarNomeArquivo($caminho_inicial_arq);
 
-    $contador = 1;
-    while (file_exists($caminho_arquivo)) {
-      $contador++;
-      $regex_sufixo = '(_[0-9]+)?\.'; //Exemplo: '/caminho/do/arquivo/nome.txt' => '.' ou '/caminho/do/arquivo/nome_2.txt' => '_2.'
-      $sufixo = "_$contador.";
-      $caminho_arquivo = preg_replace("/$regex_sufixo(?!.*$regex_sufixo)/", $sufixo, $caminho_arquivo);
-
-      if (strlen($caminho_arquivo) > 255) {//correção no nome do arquivo por causa do tamanho
-        $extensao = substr(strrchr($caminho_arquivo, '.'), 1);
-
-        if (strpos($caminho_arquivo, $sufixo)) {
-          $caminho_arquivo = preg_replace("/$regex_sufixo(?!.*$regex_sufixo)/", ".", $caminho_arquivo);
-        }
-        else {
-          $sufixo = '.';
-        }
-        $caminho_arquivo = preg_replace("/\.$extensao/", "", $caminho_arquivo);
-        $tamanho_final = 255 - strlen($sufixo) - strlen($extensao);
-        $caminho_arquivo = substr($caminho_arquivo, 0, $tamanho_final) . $sufixo . $extensao;
-
-        print_r("\n>>>>>>>>>>>>>>>>>>>>>> Alteração no nome do arquivo por causa do tamanho. Novo nome: " . $caminho_arquivo);
-      }
-    }
-
-    $dirname = dirname($caminho_arquivo);
+    $dirname = dirname($caminho_completo_arq);
     if (!is_dir($dirname)) {
       mkdir($dirname, 0755, true);
     }
 
-    $this->fazerRequisicaoDownloadArquivo($url, $caminho_arquivo);
+    $this->fazerRequisicaoDownloadArquivo($url, $caminho_completo_arq);
 
 
-    return $caminho_arquivo;
+    return $caminho_completo_arq;
   }
+
+  private function getCaminhoPastaArquivosComunidades() {
+    return realpath(__DIR__ . '/..') . '/files/';
+  }
+
+//  private function processarNomeArquivo($caminho_completo_original) {
+//    if (!file_exists($caminho_completo_original)) {
+//      $extensao = strrchr($caminho_completo_original, '.');
+//      $arquivo_sem_extensao = str_replace($extensao, '', $caminho_completo_original);
+//      $tamanho_final = 255 - strlen($extensao);
+//      $caminho_arquivo = substr($arquivo_sem_extensao, 0, $tamanho_final) . $extensao;
+//
+//      print_r("\n>>>>>>>>>>>>>>>>>>>>>> Alteração no nome do arquivo por causa do tamanho. Novo nome: " . $caminho_arquivo);
+//
+//      return $caminho_arquivo;
+//    }
+//
+//    $caminho_arquivo = $caminho_completo_original;
+//    $contador = 1;
+//    do {
+//      $contador++;
+//      $regex_sufixo = '(_[0-9]+)?\.'; //Exemplo: '/caminho/do/arquivo/nome.txt' => '.' ou '/caminho/do/arquivo/nome_2.txt' => '_2.'
+//      $sufixo = "_$contador.";
+//      $caminho_arquivo = preg_replace("/$regex_sufixo(?!.*$regex_sufixo)/", $sufixo, $caminho_arquivo);
+//
+//      if (strlen($caminho_arquivo) > 255) {//correção no nome do arquivo por causa do tamanho
+//        $extensao = substr(strrchr($caminho_arquivo, '.'), 1);
+//
+//        if (strpos($caminho_arquivo, $sufixo)) {
+//          $caminho_arquivo = preg_replace("/$regex_sufixo(?!.*$regex_sufixo)/", ".", $caminho_arquivo);
+//        }
+//        else {
+//          $sufixo = '.';
+//        }
+//        $caminho_arquivo = preg_replace("/\.$extensao/", "", $caminho_arquivo);
+//        $tamanho_final = 255 - strlen($sufixo) - strlen($extensao);
+//        $caminho_arquivo = substr($caminho_arquivo, 0, $tamanho_final) . $sufixo . $extensao;
+//
+//        print_r("\n>>>>>>>>>>>>>>>>>>>>>> Alteração no nome do arquivo por causa do tamanho. Novo nome: " . $caminho_arquivo);
+//      }
+//    } while (file_exists($caminho_arquivo));
+//
+//    return $caminho_arquivo;
+//  }
 
   private function fazerRequisicaoDownloadArquivo($url, $caminho_arquivo) {
     $username = urlencode($this->username);
