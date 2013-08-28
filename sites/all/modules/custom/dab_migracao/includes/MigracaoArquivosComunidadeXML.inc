@@ -57,8 +57,14 @@ class MigracaoArquivosComunidadeXML extends XMLMigration {
       ->xpath('field_document_file:source_dir');
     $this->addFieldMapping('field_document_file:destination_file', 'filename')
       ->xpath('filename');
+    $this->addFieldMapping('field_document_file:preserve_files')
+      ->defaultValue(0);
+    $this->addFieldMapping('field_document_file:file_replace')
+      ->defaultValue(MigrateFile::FILE_EXISTS_REUSE);
 
-    $this->addFieldMapping('title', 'link_texto')//modificar no prepare
+    $this->addFieldMapping('title_field', 'link_texto')
+      ->xpath('link_texto');
+    $this->addFieldMapping('title', 'link_texto')
       ->xpath('link_texto');
 
     $this->addFieldMapping('body', 'descricao')
@@ -73,39 +79,37 @@ class MigracaoArquivosComunidadeXML extends XMLMigration {
       ->sourceMigration('Comunidades')
       ->xpath('comunidade');
 
+    $this->addFieldMapping('status', 'privacidade'); //fazer a tradução no prepare
+
     $this->addFieldMapping('created', 'data_atualizacao')
       ->xpath('data_atualizacao');
     $this->addFieldMapping('changed', 'data_atualizacao')
       ->xpath('data_atualizacao');
-
-    $this->addFieldMapping('status', 'privacidade')->defaultValue(0); //fazer a tradução no prepare
   }
 
   public function prepareRow($row) {
     if (parent::prepareRow($row) === FALSE) {
       return FALSE;
     }
-    $row->xml->data_atualizacao = strtotime($row->xml->data_atualizacao);
-
     if (empty($row->xml->link_texto)) {
       $row->xml->link_texto = $row->xml->arquivo_id;
     }
-    if ($row->xml->privacidade == 'state-publico') {
-      $row->xml->privacidade = TRUE;
+
+    if (strlen('public://' . $row->xml->filename) > 255) {
+      $extensao = strrchr($row->xml->filename, '.');
+      $arquivo_sem_extensao = str_replace($extensao, '', $row->xml->filename);
+      $tamanho_final = 255 - strlen('public://') - strlen($extensao);
+      $row->xml->filename = substr($arquivo_sem_extensao, 0, $tamanho_final) . $extensao;
     }
-    else {
-      $row->xml->privacidade = FALSE;
+
+    if (!empty($row->xml->data_atualizacao)) {
+      $date = DateTime::createFromFormat('d/m/Y H:i', $row->xml->data_atualizacao);
+      $row->xml->data_atualizacao = $date->getTimestamp();
     }
-    $i++;
   }
 
   public function prepare($node, stdClass $row) {
-    if (strlen($node->uri) > 255) {
-      $extensao = strrchr($node->uri, '.');
-      $arquivo_sem_extensao = str_replace($extensao, '', $node->uri);
-      $tamanho_final = 255 - strlen('public://') - strlen($extensao);
-      $node->uri = substr($arquivo_sem_extensao, 0, $tamanho_final) . $extensao;
-    }
+    $node->status = ($row->xml->privacidade == 'state-publico');
   }
 
   private function getUserMigrations() {
