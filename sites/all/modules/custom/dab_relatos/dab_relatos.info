@@ -25,6 +25,7 @@ features[ctools][] = views:views_default:3.0
 features[features_api][] = api:2
 features[field_base][] = field_descricao
 features[field_base][] = field_endereco
+features[field_base][] = field_exp_info_a
 features[field_base][] = field_experiencia_ambito
 features[field_base][] = field_experiencia_anexo
 features[field_base][] = field_experiencia_ator_categoria
