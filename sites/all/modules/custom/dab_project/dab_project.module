@@ -7,6 +7,7 @@ function dab_project_init(){
   drupal_add_js(drupal_get_path('module', 'dab_project') .'/dab-project.js');
 
   // commet chat css and js
+  // TODO mover isso para uma configuração
   drupal_add_js('/cometchat/cometchatjs.php?v=2', 'external');
   drupal_add_css( '/cometchat/cometchatcss.php', 'external');
 
@@ -14,7 +15,8 @@ function dab_project_init(){
 
 
 /**
- *  Adição de validação customizada no form de registro de usuário
+ * Hook_user_register_form_alter
+ *  Adição de função na validação customizada no form de registro de usuário
  */
 function dab_project_form_user_register_form_alter(&$form, &$form_state, $form_id){
     $form['#validate'][] = 'dab_project_user_registration_validate';
@@ -24,6 +26,8 @@ function dab_project_form_user_register_form_alter(&$form, &$form_state, $form_i
  * User registration Validade
  */
 function dab_project_user_registration_validate(&$form,&$form_state){
+
+    // - evita o envio de um cpf que existe
     $cpf = $form_state['values']['field_cpf']['und'][0]['value'];
 
     $check_unique_query = 'SELECT field_cpf_value FROM {field_data_field_cpf} WHERE field_cpf_value = :cpf  LIMIT 1 ';
@@ -37,7 +41,6 @@ function dab_project_user_registration_validate(&$form,&$form_state){
 /**
  * @param $form
  * @param $form_state
- * @param $form_id
  */
 function dab_project_form_user_profile_form_alter(&$form){
 
@@ -48,6 +51,8 @@ function dab_project_form_user_profile_form_alter(&$form){
 
 /**
  * User profile Validade
+ * @param $form
+ * @param $form_state
  */
 function dab_project_form_user_profile_form_validate(&$form, &$form_state){
 
@@ -78,6 +83,7 @@ function dab_project_menu() {
 
 /**
  * Page callback
+ * Pagina com o Iframe do evento da mostra
  */
 function dab_project_mostrasaude_iframe_page() {
   drupal_set_title('IV Mostra Nacional de Experiências em Saúde da Família / Atenção Básica');
@@ -92,7 +98,8 @@ function dab_project_mostrasaude_iframe_page() {
 function dab_project_panels_pane_content_alter($content, $pane, $args, $context) {
 
   // traduzir todos os títulos de panels
-  if ($content->title) {
+  if ( isset($content->title) ) {
+
     $content->title = t($content->title);
   }
   return $content;
