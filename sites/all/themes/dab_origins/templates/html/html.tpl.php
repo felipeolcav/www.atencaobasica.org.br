@@ -72,28 +72,27 @@
   <?php print $page; ?>
   <?php print $page_bottom; ?>
 
-    <div id="footer-logos">
+    <div id="footer-logos" class="container">
       <div id="logos">
-        <a href="http://dab.saude.gov.br/" target="_blank"><img src="/sites/default/files/pictures/saude-mais-perto.png"></a>
+        <a href="http://dab.saude.gov.br/" target="_blank"><img src="/sites/all/themes/dab_origins/images/logos/saude.png"></a>
 
-        <a href="http://www.saude.gov.br" target="_blank"><img src="/sites/default/files/pictures/sus-ms.png"></a>
+        <a href="http://www.saude.gov.br" target="_blank"><img src="/sites/all/themes/dab_origins/images/logos/sus.png"></a>
 
-        <a href="http://www.saude.gov.br" target="_blank"><img src="/sites/default/files/pictures/brasil.png"></a>
+        <a href="http://www.saude.gov.br" target="_blank"><img src="/sites/all/themes/dab_origins/images/logos/governo.png"></a>
 
-        <a href="http://www.communitas.org.br" target="_blank"><img src="/sites/default/files/pictures/communitas.png"></a>
+        <a href="http://www.communitas.org.br" target="_blank"><img src="/sites/all/themes/dab_origins/images/logos/communitas.png"></a>
 
-        <a href="http://www.opas.org.br" target="_blank"><img src="/sites/default/files/pictures/opas.png"></a>
+        <a href="http://www.opas.org.br" target="_blank"><img src="/sites/all/themes/dab_origins/images/logos/pan.png"></a>
 
-        <a href="http://www.otics.org" target="_blank"><img src="/sites/default/files/pictures/otics.png"></a>
+        <a href="http://www.otics.org" target="_blank"><img src="/sites/all/themes/dab_origins/images/logos/oties.png"></a>
 
-        <a href="http://atencaointegrada.org/" target="_blank"><img src="/sites/default/files/pictures/iasin.png"></a>
+        <a href="http://atencaointegrada.org/" target="_blank"><img src="/sites/all/themes/dab_origins/images/logos/atencaointegrada.png"></a>
 
-        <a href="http://www.w3.org/" target="_blank"><img src="/sites/default/files/pictures/w3c_home.png"></a>
+        <a href="http://www.w3.org/" target="_blank"><img src="/sites/all/themes/dab_origins/images/logos/w3c.png"></a>
       </div>
       <div id="cc-logo">
-        <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/br/deed.pt_BR" rel="license" target="_blank"><img alt="Creative Commons License" src="/sites/default/files/pictures/creative-commons.png"></a>
+        <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/br/deed.pt_BR" rel="license" target="_blank"><img alt="Creative Commons License" src="/sites/all/themes/dab_origins/images/logos/creative.png"></a>
       </div>
-
     </div>
 
 

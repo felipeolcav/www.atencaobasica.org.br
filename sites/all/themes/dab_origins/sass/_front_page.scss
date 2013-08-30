@@ -1,5 +1,5 @@
 
-.front.not-logged-in {
+body.front.not-logged-in {
 
   /* Bloco destacado */
   /* css do bloco de informação na home de usuário deslogado */
@@ -7,11 +7,13 @@
     padding-left: 100px;
     background:  url('../images/bussola-icone.png') no-repeat scroll 15px ;
     margin-bottom: 0px;
+    min-height: 70px;
     .pane-title {
       font-size: 26px;
       margin: 0px;
       padding: 0px;
       border: 0px;
+      color: $texto-azul;
     }
     .block-content {
        color: #bbbaba;
@@ -46,19 +48,24 @@
     @include border-radius(0px 8px 8px 0px);
   }
 
-
   .region-three-33-second section,
   .region-three-33-third section,
   .pane-user-login {
-    height: 390px;
+    height: 400px;
     padding: 10px 25px;
 
     .pane-title {
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
     img {
       width: 35px;
+    }
+
+    .views-row {
+      border-bottom: 1px dotted #e1e1e1;
+      padding-bottom: 0.7em;
+      margin-bottom: 0.7em;
     }
   }
 
@@ -81,7 +88,7 @@
 
     a {
       color: $destaque-font-color;
-
+      font-weight: bold;
       &:hover {
         color: blue ;
       }
