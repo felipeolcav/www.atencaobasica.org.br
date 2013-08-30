@@ -12,3 +12,5 @@ nbproject/*
 .gitignore
 sites/all/modules/custom/dab_migracao/xml*
 .DS_Store
+
+sites/all/themes/dab_origins/.sass-cache/
