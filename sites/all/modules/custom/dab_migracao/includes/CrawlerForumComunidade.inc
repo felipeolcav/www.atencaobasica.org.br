@@ -34,14 +34,16 @@ class CrawlerForumComunidade {
     $pagina_comunidades = $this->fazerRequisicaoWeb(self::URL_COMUNIDADES);
 
     foreach (@qp($pagina_comunidades, '.cop_listing_item', array('ignore_parser_warnings' => TRUE)) as $div_comunidade) {
-      $link_comunidade = htmlqp($div_comunidade, '.cop_listing_text a');
-      $url_comunidade = $link_comunidade->attr("href");
+      $dados_comunidade = array();
 
-      $pagina_foruns_comunidade = $this->fazerRequisicaoWeb($url_comunidade . '/forum');
-      $id_comunidade = end(split("/", $url_comunidade));
+      $link_comunidade = htmlqp($div_comunidade, '.cop_listing_text a');
+      $dados_comunidade['url'] = $link_comunidade->attr("href") . '/forum';
+      $dados_comunidade['id'] = end(split("/", $dados_comunidade['url']));
+
+      $pagina_foruns_comunidade = $this->fazerRequisicaoWeb($dados_comunidade['url']);
 
       foreach (@qp($pagina_foruns_comunidade, '#listing-table tbody tr', array('ignore_parser_warnings' => TRUE)) as $linha_forum) {
-        $dados_forum = array('id_comunidade' => $id_comunidade);
+        $dados_forum = array();
 
         foreach (@qp($linha_forum, 'td', array('ignore_parser_warnings' => TRUE)) as $ind_col_forum => $col_forum) {
           switch ($ind_col_forum) {
@@ -62,14 +64,14 @@ class CrawlerForumComunidade {
           }
         }
         $url_forum = split('/', $dados_forum['url']);
-        $dados_forum['id_forum'] = $url_forum[count($url_forum) - 2];
+        $dados_forum['id'] = $url_forum[count($url_forum) - 2];
 
         $pagina_topicos_forum = $this->fazerRequisicaoWeb($dados_forum['url']);
         $div_descricao_forum = @qp($pagina_topicos_forum, 'div.ploneboardForumDescription', array('ignore_parser_warnings' => TRUE));
         $dados_forum['descricao'] = $div_descricao_forum->text();
 
         foreach (@qp($pagina_topicos_forum, 'table.listing tbody tr', array('ignore_parser_warnings' => TRUE)) as $linha_topico) {
-          $dados_topico = array('id_comunidade' => $id_comunidade, 'id_forum' => $dados_forum['id_forum']);
+          $dados_topico = array();
 
           foreach (@qp($linha_topico, 'td', array('ignore_parser_warnings' => TRUE)) as $ind_col_topico => $col_topico) {
             if ($ind_col_topico == 0) {
@@ -87,32 +89,45 @@ class CrawlerForumComunidade {
           $ul_top_level = @qp($pagina_comentarios_topico, 'div.boardConversation ul.topLevelComment', array('ignore_parser_warnings' => TRUE));
 
           $comentarios = array();
-          foreach (@qp($ul_top_level, 'li', array('ignore_parser_warnings' => TRUE)) as $li_top_level) {
-            $comentarios[] = $this->processarLI($li_top_level, $dados_topico);
+          foreach (@qp($ul_top_level, '>li', array('ignore_parser_warnings' => TRUE)) as $li_top_level) {
+            $comentario = $this->processarLI($li_top_level, $dados_comunidade, $dados_forum, $dados_topico, NULL);
+            $comentarios[] = $comentario;
           }
         }
       }
     }
   }
 
-  private function processarLI($li, $dados_topico) {
-    $comentario = array('id_comunidade' => $dados_topico['id_comunidade']
-      , 'id_forum' => $dados_topico['id_forum']
-      , 'topico' => $dados_topico['nome']);
+  private function processarLI($li, $dados_comunidade, $dados_forum, $dados_topico, $comentario_pai) {
+    print_r("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>> Processando LI ....");
 
-    $div_comment = @qp($li, 'div.boardComment', array('ignore_parser_warnings' => TRUE));
-    $comentario['id_comentario'] = @qp($div_comment, '>a', array('ignore_parser_warnings' => TRUE))->attr('id');
+    $comentario = array(
+      'comunidade_id' => $dados_comunidade['id']
+      , 'comunidade_url' => $dados_comunidade['url']
+      , 'forum_id' => $dados_forum['id']
+      , 'forum_url' => $dados_forum['url']
+      , 'topico_url' => $dados_topico['url']
+      , 'comentario_pai' => $comentario_pai['comentario_id']
+      );
 
+    $div_comment = @qp($li, '>div.boardComment', array('ignore_parser_warnings' => TRUE));
+    $div_details = @qp($div_comment, '>div.boardCommentDetails', array('ignore_parser_warnings' => TRUE));
+    $comentario['comentario_id'] = $div_details->attr('name');
+    
+    
     $div_header = htmlqp($div_comment->html(), 'div.boardCommentDetails > div.boardCommentHeaderTitleBlock');
+    $link = htmlqp($div_header, '> a');
+    $link_href = $link->attr('href');
+    $comentario['comentario_id'] = end(explode('/',$link_href ));
 
     $exploded_texto = explode("\n", $div_header->text());
     $data_str = $exploded_texto[count($exploded_texto) - 2];
     $comentario['data'] = $data_str;
 
-    $link_autor = @qp($div_header->html(), 'a[href*="@"]', array('ignore_parser_warnings' => TRUE));
+    $link_autor = htmlqp($div_header->html(), 'a[href*="@"]');
     $comentario['autor_email'] = end(split('/', $link_autor->attr('href')));
     $comentario['autor_nome'] = $link_autor->text();
-
+    
     $div_comment_content = @qp($div_comment, 'div.boardCommentBody > div.boardCommentContent', array('ignore_parser_warnings' => TRUE));
     $comentario['conteudo'] = $div_comment_content->html();
     $comentario['conteudo'] = str_replace('<div class="boardCommentContent">', '', $comentario['conteudo']);
@@ -128,6 +143,22 @@ class CrawlerForumComunidade {
         $comentario['anexos'] = $anexos;
       }
     }
+    
+    if(empty($comentario['comentario_id'])){
+      print_r($comentario);
+      throw new Exception("\n\n#### Comentario sem ID");
+    }
+
+    $sub_comentarios = array();
+    foreach (@qp($li, '> ul > li', array('ignore_parser_warnings' => TRUE)) as $li_sub_comentario) {
+      $sub_comentarios[] = $this->processarLI($li_sub_comentario, $dados_comunidade, $dados_forum, $dados_topico, $comentario);
+    }
+
+    if (!empty($sub_comentarios)) {
+      $comentario['sub_comentarios'] = $sub_comentarios;
+    }
+
+    print_r($comentario);
     return $comentario;
   }
 
@@ -170,45 +201,6 @@ class CrawlerForumComunidade {
     return realpath(__DIR__ . '/..') . '/comment-attachments/';
   }
 
-//  private function processarNomeArquivo($caminho_completo_original) {
-//    if (!file_exists($caminho_completo_original)) {
-//      $extensao = strrchr($caminho_completo_original, '.');
-//      $arquivo_sem_extensao = str_replace($extensao, '', $caminho_completo_original);
-//      $tamanho_final = 255 - strlen($extensao);
-//      $caminho_arquivo = substr($arquivo_sem_extensao, 0, $tamanho_final) . $extensao;
-//
-//      print_r("\n>>>>>>>>>>>>>>>>>>>>>> Alteração no nome do arquivo por causa do tamanho. Novo nome: " . $caminho_arquivo);
-//
-//      return $caminho_arquivo;
-//    }
-//
-//    $caminho_arquivo = $caminho_completo_original;
-//    $contador = 1;
-//    do {
-//      $contador++;
-//      $regex_sufixo = '(_[0-9]+)?\.'; //Exemplo: '/caminho/do/arquivo/nome.txt' => '.' ou '/caminho/do/arquivo/nome_2.txt' => '_2.'
-//      $sufixo = "_$contador.";
-//      $caminho_arquivo = preg_replace("/$regex_sufixo(?!.*$regex_sufixo)/", $sufixo, $caminho_arquivo);
-//
-//      if (strlen($caminho_arquivo) > 255) {//correção no nome do arquivo por causa do tamanho
-//        $extensao = substr(strrchr($caminho_arquivo, '.'), 1);
-//
-//        if (strpos($caminho_arquivo, $sufixo)) {
-//          $caminho_arquivo = preg_replace("/$regex_sufixo(?!.*$regex_sufixo)/", ".", $caminho_arquivo);
-//        }
-//        else {
-//          $sufixo = '.';
-//        }
-//        $caminho_arquivo = preg_replace("/\.$extensao/", "", $caminho_arquivo);
-//        $tamanho_final = 255 - strlen($sufixo) - strlen($extensao);
-//        $caminho_arquivo = substr($caminho_arquivo, 0, $tamanho_final) . $sufixo . $extensao;
-//
-//        print_r("\n>>>>>>>>>>>>>>>>>>>>>> Alteração no nome do arquivo por causa do tamanho. Novo nome: " . $caminho_arquivo);
-//      }
-//    } while (file_exists($caminho_arquivo));
-//
-//    return $caminho_arquivo;
-//  }
 
   private function fazerRequisicaoDownloadArquivo($url, $caminho_arquivo) {
     $username = urlencode($this->username);
