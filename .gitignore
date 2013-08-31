@@ -13,3 +13,4 @@ nbproject/*
 sites/all/modules/custom/dab_migracao/xml*
 .DS_Store
 sites/all/modules/custom/dab_migracao/files*
+sites/all/modules/custom/dab_migracao/comment-attachments*

@@ -11,12 +11,16 @@
 function dab_migracao_drush_command() {
   $commands = array();
   $commands['dab-migracao-papel-comunidade'] = array(
-    'description' => 'Migração dos papeis dos usuários nas comunidades',
+    'description' => 'Migração dos papeis dos usuários nas Comunidades',
     'aliases' => array('dab-mpc'),
   );
   $commands['dab-migracao-crawler-conteudo-comunidade'] = array(
-    'description' => 'Migração dos papeis dos usuários nas comunidades',
+    'description' => 'Crawler para buscar os arquivos das Comunidades',
     'aliases' => array('dab-ccc'),
+  );
+  $commands['dab-migracao-crawler-forum-comunidade'] = array(
+    'description' => 'Migração dos Fóruns das Comunidades',
+    'aliases' => array('dab-cfc'),
   );
 
   return $commands;
@@ -39,6 +43,13 @@ function drush_dab_migracao_crawler_conteudo_comunidade() {
   $password = $_SERVER['argv'][4];
 
   $crawler = new CrawlerConteudoComunidade($username, $password);
+  $crawler->executar();
+}
+function drush_dab_migracao_crawler_forum_comunidade() {
+  $username = $_SERVER['argv'][3];
+  $password = $_SERVER['argv'][4];
+
+  $crawler = new CrawlerForumComunidade($username, $password);
   $crawler->executar();
 }
 
