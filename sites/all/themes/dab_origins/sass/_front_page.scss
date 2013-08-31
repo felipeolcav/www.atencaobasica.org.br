@@ -40,6 +40,9 @@ body.front.not-logged-in {
     padding-right: 15px;
     margin-right: 0px;
     @include border-radius(8px 0px 0px 8px);
+    .pane-title {
+      text-decoration: none;
+    }
   }
 
   .region-three-33-third section {
@@ -78,7 +81,7 @@ body.front.not-logged-in {
 
     color: $destaque-font-color;
     font-weight: bold;
-
+    border-right: 0px;
     .pane-title {
       color: $destaque-font-color;
       border-color: $destaque-font-color;
@@ -100,7 +103,7 @@ body.front.not-logged-in {
   .region-three-33-third section {
     color: $atividades-font-color;
     font-weight: bold;
-
+    border-left: 0px;
     .pane-title {
       color: $atividades-font-color;
       border-color: $atividades-font-color;
