@@ -109,13 +109,17 @@ class CrawlerForumComunidade {
             if ($ind_col_topico == 0) {
               $link_pagina_topico = htmlqp($col_topico, 'a');
 
-              $dados_topico['url'] = $link_pagina_topico->attr("href");
+              $url_topico = $link_pagina_topico->attr("href");
+              $dados_topico['id'] = end(explode('/',$url_topico));
+              $dados_topico['url'] = $url_topico;
               $dados_topico['nome'] = preg_replace('/por .*/', '', $link_pagina_topico->text());
               $dados_topico['visibilidade'] = $link_pagina_topico->attr("class");
               $dados_topico['autor'] = str_replace('por ', '', htmlqp($link_pagina_topico, 'span')->text());
               break;
             }
           }
+          
+          $this->inserirTopicoNoXML($dados_comunidade, $dados_forum, $dados_topico);
 
           $pagina_comentarios_topico = $this->fazerRequisicaoWeb($dados_topico['url']);
           $ul_top_level = @qp($pagina_comentarios_topico, 'div.boardConversation ul.topLevelComment', array('ignore_parser_warnings' => TRUE));
@@ -150,30 +154,67 @@ class CrawlerForumComunidade {
   private function inserirForumNoXML($dados_comunidade, $dados_forum) {
     print_r("\n\n\t\tÍndice Fóruns: " . $this->count_foruns);
 
-    $xml_item = $this->doc_foruns->createElement('forum');
-    foreach ($dados_comunidade as $key_comunidade => $value_comunidade) {
-      $xml_element = $this->doc_foruns->createElement('comunidade_' . $key_comunidade);
-      $xml_element->nodeValue = $value_comunidade;
-      $xml_item->appendChild($xml_element);
-    }
+    $forum = $this->doc_foruns->createElement('forum');
     foreach ($dados_forum as $key_forum => $value_forum) {
       $xml_element = $this->doc_foruns->createElement('forum_' . $key_forum);
       $xml_element->nodeValue = $value_forum;
-      $xml_item->appendChild($xml_element);
+      $forum->appendChild($xml_element);
+    }
+    foreach ($dados_comunidade as $key_comunidade => $value_comunidade) {
+      $xml_element = $this->doc_foruns->createElement('comunidade_' . $key_comunidade);
+      $xml_element->nodeValue = $value_comunidade;
+      $forum->appendChild($xml_element);
     }
     
-    $xml_element = $this->doc_foruns->createElement('comunidades_processadas');
+    $xml_element = $this->doc_foruns->createElement('num_comunidade');
     $xml_element->nodeValue = $this->count_comunidades;
-    $xml_item->appendChild($xml_element);
+    $forum->appendChild($xml_element);
     
-    $this->root_foruns->appendChild($xml_item);
-    $xml_element = $this->doc_foruns->createElement('foruns_processados');
+    $xml_element = $this->doc_foruns->createElement('num_forum');
     $xml_element->nodeValue = $this->count_foruns;
-    $xml_item->appendChild($xml_element);
-    $this->root_foruns->appendChild($xml_item);
+    $forum->appendChild($xml_element);
+    
+    $this->root_foruns->appendChild($forum);
 
     $this->doc_foruns->formatOutput = TRUE;
     $this->doc_foruns->save($this->arquivo_foruns);
+  }
+  private function inserirTopicoNoXML($dados_comunidade, $dados_forum, $dados_topico) {
+    print_r("\n\n\t\t\tÍndice Tópicos: " . $this->count_topicos);
+
+    $topico = $this->doc_topicos->createElement('topico');
+    foreach ($dados_topico as $key_topico => $value_topico) {
+      $xml_element = $this->doc_topicos->createElement('topico_' . $key_topico);
+      $xml_element->nodeValue = $value_topico;
+      $topico->appendChild($xml_element);
+    }
+    foreach ($dados_forum as $key_forum => $value_forum) {
+      $xml_element = $this->doc_topicos->createElement('forum_' . $key_forum);
+      $xml_element->nodeValue = $value_forum;
+      $topico->appendChild($xml_element);
+    }
+    foreach ($dados_comunidade as $key_comunidade => $value_comunidade) {
+      $xml_element = $this->doc_topicos->createElement('comunidade_' . $key_comunidade);
+      $xml_element->nodeValue = $value_comunidade;
+      $topico->appendChild($xml_element);
+    }
+    
+    $xml_element = $this->doc_topicos->createElement('num_comunidade');
+    $xml_element->nodeValue = $this->count_comunidades;
+    $topico->appendChild($xml_element);
+    
+    $xml_element = $this->doc_topicos->createElement('num_forum');
+    $xml_element->nodeValue = $this->count_foruns;
+    $topico->appendChild($xml_element);
+    
+    $xml_element = $this->doc_topicos->createElement('num_topico');
+    $xml_element->nodeValue = $this->count_topicos;
+    $topico->appendChild($xml_element);
+    
+    $this->root_topicos->appendChild($topico);
+
+    $this->doc_topicos->formatOutput = TRUE;
+    $this->doc_topicos->save($this->arquivo_topicos);
   }
 
   private function processarLI($li, $dados_comunidade, $dados_forum, $dados_topico, $comentario_pai) {
