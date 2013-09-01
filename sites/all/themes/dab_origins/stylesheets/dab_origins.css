@@ -279,12 +279,7 @@ h2#page-title {
   margin-bottom: 0.85em;
 }
 
-/* line 49, ../sass/dab_origins.scss */
-a {
-  text-decoration: underline;
-}
-
-/* line 71, ../sass/dab_origins.scss */
+/* line 67, ../sass/dab_origins.scss */
 .commons-pod,
 .region-three-33-first section,
 .page-user .pane-views-panes,
@@ -312,22 +307,22 @@ body.front.logged-in #views-exposed-form-commons-homepage-content-panel-pane-1 .
   box-shadow: 0 0 0 0 transparent;
 }
 
-/* line 78, ../sass/dab_origins.scss */
+/* line 74, ../sass/dab_origins.scss */
 .general-settings.commons-pod > .commons-pod {
   padding: 20px 15px;
 }
-/* line 80, ../sass/dab_origins.scss */
+/* line 76, ../sass/dab_origins.scss */
 .general-settings.commons-pod > .commons-pod .fieldset-outer-wrapper {
   margin-bottom: 10px;
 }
 
-/* line 85, ../sass/dab_origins.scss */
+/* line 81, ../sass/dab_origins.scss */
 div.entity-message .user-picture {
   float: left;
   margin-right: 10px;
 }
 
-/* line 94, ../sass/dab_origins.scss */
+/* line 90, ../sass/dab_origins.scss */
 .view-commons-radioactivity-groups-most-active .type-Pergunta:before,
 .view-commons-groups-recent-content .type-type-Pergunta:before,
 .view-commons-radioactivity-groups-active-in-group .type-Pergunta:before,
@@ -344,7 +339,7 @@ div.entity-message .user-picture {
   margin-right: 6px;
 }
 
-/* line 106, ../sass/dab_origins.scss */
+/* line 102, ../sass/dab_origins.scss */
 .view-commons-radioactivity-groups-most-active .type-Enquete:before,
 .view-commons-groups-recent-content .type-Enquete:before,
 .view-commons-radioactivity-groups-active-in-group .type-Enquete:before {
@@ -358,56 +353,56 @@ div.entity-message .user-picture {
   margin-right: 6px;
 }
 
-/* line 117, ../sass/dab_origins.scss */
+/* line 113, ../sass/dab_origins.scss */
 .main-menu-comunidades a {
   background: url("../images/icons/icon-groups.png") no-repeat center 10px;
 }
 
-/* line 120, ../sass/dab_origins.scss */
+/* line 116, ../sass/dab_origins.scss */
 .block-commons-utility-links {
   margin-bottom: 2px;
 }
 
-/* line 124, ../sass/dab_origins.scss */
+/* line 120, ../sass/dab_origins.scss */
 .palette-black-blue-yellow h3 {
   color: #353535;
 }
 
 /* MOSTRA IFRAME PAGE */
-/* line 130, ../sass/dab_origins.scss */
+/* line 126, ../sass/dab_origins.scss */
 #mostrasaude-iframe {
   border: none;
 }
 
-/* line 133, ../sass/dab_origins.scss */
+/* line 129, ../sass/dab_origins.scss */
 .main-menu-mostra a {
   background: url("../images/marca_ivmostra.png") no-repeat center 10px;
 }
 
-/* line 136, ../sass/dab_origins.scss */
+/* line 132, ../sass/dab_origins.scss */
 body.page-mostra div#page-top {
   display: none;
 }
 
 /* footer */
-/* line 143, ../sass/dab_origins.scss */
+/* line 139, ../sass/dab_origins.scss */
 #footer-logos {
   text-align: center;
 }
-/* line 147, ../sass/dab_origins.scss */
+/* line 143, ../sass/dab_origins.scss */
 #footer-logos img {
   height: 36px;
   border: 2px solid transparent;
 }
-/* line 151, ../sass/dab_origins.scss */
+/* line 147, ../sass/dab_origins.scss */
 #footer-logos a {
   padding: 3px;
 }
-/* line 153, ../sass/dab_origins.scss */
+/* line 149, ../sass/dab_origins.scss */
 #footer-logos a:hover img {
   border-color: blue;
 }
-/* line 158, ../sass/dab_origins.scss */
+/* line 154, ../sass/dab_origins.scss */
 #footer-logos #logos {
   padding: 25px;
   background-color: #e1e1e1;
@@ -417,22 +412,22 @@ body.page-mostra div#page-top {
   -o-border-radius: 8px;
   border-radius: 8px;
 }
-/* line 163, ../sass/dab_origins.scss */
+/* line 159, ../sass/dab_origins.scss */
 #footer-logos #cc-logo {
   margin-top: -20px;
 }
-/* line 165, ../sass/dab_origins.scss */
+/* line 161, ../sass/dab_origins.scss */
 #footer-logos #cc-logo img {
   height: 35px;
 }
 
-/* line 172, ../sass/dab_origins.scss */
+/* line 168, ../sass/dab_origins.scss */
 .pane-commons-groups-commons-groups-create-group {
   position: relative;
 }
 
 /* css do bloco branco na página do usuário */
-/* line 182, ../sass/dab_origins.scss */
+/* line 178, ../sass/dab_origins.scss */
 .node-destacado-top,
 .region-three-33-top section.pane-node,
 .region-three-33-first section,
@@ -449,22 +444,22 @@ body.page-mostra div#page-top {
 }
 
 /* USER LOGIN BLOCK */
-/* line 192, ../sass/dab_origins.scss */
+/* line 188, ../sass/dab_origins.scss */
 section.pane-user-login {
   background-color: white;
 }
-/* line 195, ../sass/dab_origins.scss */
+/* line 191, ../sass/dab_origins.scss */
 section.pane-user-login h3 {
   color: #02669d;
   border-color: #02669d;
   padding-left: 40px;
   background: url("../images/cadeado.png") no-repeat scroll 5px;
 }
-/* line 202, ../sass/dab_origins.scss */
+/* line 198, ../sass/dab_origins.scss */
 section.pane-user-login label {
   display: none;
 }
-/* line 207, ../sass/dab_origins.scss */
+/* line 203, ../sass/dab_origins.scss */
 section.pane-user-login input#edit-name,
 section.pane-user-login input#edit-pass {
   -moz-box-sizing: border-box;
@@ -473,28 +468,28 @@ section.pane-user-login input#edit-pass {
   padding-right: 50px;
   font-weight: bold;
 }
-/* line 214, ../sass/dab_origins.scss */
+/* line 210, ../sass/dab_origins.scss */
 section.pane-user-login input#edit-name:focus, section.pane-user-login input#edit-name:hover,
 section.pane-user-login input#edit-pass:focus,
 section.pane-user-login input#edit-pass:hover {
   font-weight: normal;
   background-color: white;
 }
-/* line 223, ../sass/dab_origins.scss */
+/* line 219, ../sass/dab_origins.scss */
 section.pane-user-login input#edit-name,
 section.pane-user-login input#edit-pass,
 section.pane-user-login input#edit-submit {
   width: 100%;
 }
-/* line 227, ../sass/dab_origins.scss */
+/* line 223, ../sass/dab_origins.scss */
 section.pane-user-login input#edit-name {
   background: url("../images/icons/people-icon.png") #e1e1e1 right center no-repeat scroll;
 }
-/* line 230, ../sass/dab_origins.scss */
+/* line 226, ../sass/dab_origins.scss */
 section.pane-user-login input#edit-pass {
   background: url("../images/icons/cadeado-aberto-icon.png") #e1e1e1 right center no-repeat scroll;
 }
-/* line 234, ../sass/dab_origins.scss */
+/* line 230, ../sass/dab_origins.scss */
 section.pane-user-login input#edit-submit {
   padding: 15px;
   text-transform: uppercase;
@@ -509,27 +504,27 @@ section.pane-user-login input#edit-submit {
   border-radius: 8px;
   font-size: 1.2em;
 }
-/* line 245, ../sass/dab_origins.scss */
+/* line 241, ../sass/dab_origins.scss */
 section.pane-user-login input#edit-submit:focus, section.pane-user-login input#edit-submit:hover {
   background-color: #1089cb;
   box-shadow: 2px 2px 5px #cccccc;
 }
-/* line 249, ../sass/dab_origins.scss */
+/* line 245, ../sass/dab_origins.scss */
 section.pane-user-login input#edit-submit:active {
   background-color: #004063;
 }
-/* line 254, ../sass/dab_origins.scss */
+/* line 250, ../sass/dab_origins.scss */
 section.pane-user-login ul {
   padding: 10px 0px;
 }
-/* line 256, ../sass/dab_origins.scss */
+/* line 252, ../sass/dab_origins.scss */
 section.pane-user-login ul li {
   padding: 3px 0px;
   list-style: none;
   margin: 0px;
 }
 
-/* line 266, ../sass/dab_origins.scss */
+/* line 262, ../sass/dab_origins.scss */
 .node-destacado-top,
 .region-three-33-top section.pane-node {
   font-size: 16px;
@@ -539,19 +534,19 @@ section.pane-user-login ul li {
   -o-border-radius: 8px;
   border-radius: 8px;
 }
-/* line 269, ../sass/dab_origins.scss */
+/* line 265, ../sass/dab_origins.scss */
 .node-destacado-top .pane-title,
 .region-three-33-top section.pane-node .pane-title {
   text-transform: none;
 }
 
-/* line 275, ../sass/dab_origins.scss */
+/* line 271, ../sass/dab_origins.scss */
 .node-destacado-top {
   background: url("../images/pessoa.png") #e1e1e1 no-repeat scroll 15px;
   padding: 10px 20px 0px 120px;
   margin-bottom: 30px;
 }
-/* line 279, ../sass/dab_origins.scss */
+/* line 275, ../sass/dab_origins.scss */
 .node-destacado-top .pane-title {
   margin: 0px;
   padding: 10px 0 5px 0px;
