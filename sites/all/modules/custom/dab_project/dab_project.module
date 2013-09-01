@@ -121,7 +121,6 @@ function dab_project_panels_pane_content_alter($content, $pane, $args, $context)
  */
 function dab_project_user_view_alter(&$build) {
   // Removendo o cpf de todas as views de usuário
-  kpr($build);
   if(isset($build['field_cpf'])){
     $build['field_cpf']['#access'] = false;
   }
