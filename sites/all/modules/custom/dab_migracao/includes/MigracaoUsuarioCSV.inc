@@ -14,20 +14,21 @@ class UsuarioMigration extends Migration {
     
     $columns = array(
       // "Source": ('Fieldname', 'Description')
-      0 => array('Nome', 'Nome do usuário'),
-      1 => array('Email', 'Email do usuário'),
-      2 => array('Estado', 'Estado do usuário'),
-      3 => array('Municipio', 'Municipio do usuário'),
-      4 => array('Cpf', 'CPF do usuário'),
-      5 => array('Profissao', 'Profissão do usuário'),
-      6 => array('Populacao', 'Populacao: campo não utilizado')
+      0 => array('ID', 'Email original do usuário'),
+      1 => array('Nome', 'Nome do usuário'),
+      2 => array('Email', 'Email do usuário'),
+      3 => array('Estado', 'Estado do usuário'),
+      4 => array('Municipio', 'Municipio do usuário'),
+      5 => array('Cpf', 'CPF do usuário'),
+      6 => array('Profissao', 'Profissão do usuário'),
+      7 => array('Populacao', 'Populacao: campo não utilizado')
     );
     $this->source = new MigrateSourceCSV(DRUPAL_ROOT . '/'
         . drupal_get_path('module', 'dab_migracao')
         . '/csv/' . $arguments['file_name'] . '.csv', $columns);
     $this->destination = new MigrateDestinationUser();
     $this->map = new MigrateSQLMap($this->machineName,
-        array('Email' => array(
+        array('ID' => array(
             'type' => 'varchar',
             'length' => 255,
             'not null' => TRUE,
@@ -39,8 +40,9 @@ class UsuarioMigration extends Migration {
     //Nome,Email,Estado,Municipio,Populacao
     // Mapped fields
     $this->addFieldMapping('field_name_first', 'Nome');
-    $this->addFieldMapping('name', 'Email')->dedupe('users', 'name');
-    $this->addFieldMapping('mail', 'Email')->dedupe('users', 'mail');;
+    $this->addFieldMapping('name', 'ID');
+    $this->addFieldMapping('mail', 'ID');
+    $this->addFieldMapping('field_novo_email', 'Email');
     $this->addFieldMapping('field_estado', 'Estado');
     $this->addFieldMapping('field_cidade', 'Municipio');
     $this->addFieldMapping('field_cpf', 'Cpf');

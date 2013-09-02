@@ -1,6 +1,6 @@
 name = CDP - Usuários
 core = 7.x
-package = Features
+package = DAB - Comunidade de Práticas
 version = 7.x-1.0
 project = cdp_usuarios
 dependencies[] = features
@@ -12,5 +12,6 @@ features[field_base][] = field_cidade
 features[field_base][] = field_cpf
 features[field_base][] = field_estado
 features[field_base][] = field_formacao_profissiona
+features[field_base][] = field_novo_email
 features[taxonomy][] = estados
 features[taxonomy][] = formacao_profissional
