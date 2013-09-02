@@ -5,9 +5,9 @@ class CrawlerConteudoComunidade {
   const ARQUIVO_XML_OUTPUT = "./sites/all/modules/custom/dab_migracao/xml/arquivos-conteudo-comunidade.xml";
   const URL_BASE = "http://www.atencaobasica.org.br/";
   const USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; rv:8.0) Gecko/20100101 Firefox/8.0";
-  const URL_PESQUISA = "http://www.atencaobasica.org.br/@@search?advanced_search=False&sort_on=Date&SearchableText=&portal_type%3Alist=CoPDocument&portal_type%3Alist=CoPFile&portal_type%3Alist=CoPImage&portal_type%3Alist=CoPLink&created.query%3Arecord%3Alist%3Adate=1970-01-02&created.range%3Arecord=min";
+//  const URL_PESQUISA = "http://www.atencaobasica.org.br/@@search?advanced_search=False&sort_on=Date&SearchableText=&portal_type%3Alist=CoPDocument&portal_type%3Alist=CoPFile&portal_type%3Alist=CoPImage&portal_type%3Alist=CoPLink&created.query%3Arecord%3Alist%3Adate=1970-01-02&created.range%3Arecord=min";
+  const URL_PESQUISA = "http://www.atencaobasica.org.br/@@search?portal_type:list=CoPDocument&portal_type:list=CoPFile&portal_type:list=CoPImage&b_start:int=0&advanced_search=False&created.query:date:list:record=1970/01/02%2000%3A00%3A00%20GMT%2B0&created.range:record=min&SearchableText=&sort_on=Date";//sem link
 
-//const URL_PESQUISA = "http://www.atencaobasica.org.br/@@search?SearchableText=&sort_on=Date&b_start:int=0&advanced_search=False&sort_order=reverse&created.range:record=min&created.query:date:list:record=1970/01/02%2000%3A00%3A00%20GMT%2B0&portal_type:list=CoPDocument&portal_type:list=CoPFile&portal_type:list=CoPImage&portal_type:list=CoPLink";
 
   private $username;
   private $password;
