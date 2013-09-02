@@ -54,11 +54,11 @@ class MigracaoComunidadeXML extends XMLMigration {
     $this->addFieldMapping('title_field', 'nome')
       ->xpath('nome');
 
-    // $this->addFieldMapping('uid', 'Email')
-    //   ->sourceMigration('ConsolidadoDeUsuariosDoPlone')
-    //   ->xpath('dono')
-    //   ->defaultValue(1);
-    $this->addFieldMapping('uid')->defaultValue(1);
+    $this->addFieldMapping('uid', 'Email')
+      ->sourceMigration('ConsolidadoDeUsuariosDoPlone')
+      ->xpath('dono')
+      ->defaultValue(1);
+    //$this->addFieldMapping('uid')->defaultValue(1);
       
     $this->addFieldMapping('status')->defaultValue(1);
 

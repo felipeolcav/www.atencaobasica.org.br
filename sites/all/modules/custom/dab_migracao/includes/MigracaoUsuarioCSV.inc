@@ -18,7 +18,9 @@ class UsuarioMigration extends Migration {
       1 => array('Email', 'Email do usuário'),
       2 => array('Estado', 'Estado do usuário'),
       3 => array('Municipio', 'Municipio do usuário'),
-      4 => array('Populacao', 'Populacao: campo não utilizado')
+      4 => array('Cpf', 'CPF do usuário'),
+      5 => array('Profissao', 'Profissão do usuário'),
+      6 => array('Populacao', 'Populacao: campo não utilizado')
     );
     $this->source = new MigrateSourceCSV(DRUPAL_ROOT . '/'
         . drupal_get_path('module', 'dab_migracao')
@@ -41,6 +43,9 @@ class UsuarioMigration extends Migration {
     $this->addFieldMapping('mail', 'Email')->dedupe('users', 'mail');;
     $this->addFieldMapping('field_estado', 'Estado');
     $this->addFieldMapping('field_cidade', 'Municipio');
+    $this->addFieldMapping('field_cpf', 'Cpf');
+    $this->addFieldMapping('field_formacao_profissiona', 'Profissao')
+       ->arguments(array('create_term' => TRUE));
 
     $this->addFieldMapping('init')
       ->defaultValue('')
