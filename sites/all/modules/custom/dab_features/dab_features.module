@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the dab_features feature.
+ */
+
+include_once 'dab_features.features.inc';

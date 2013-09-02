@@ -7,56 +7,9 @@ function dab_project_init(){
   drupal_add_js(drupal_get_path('module', 'dab_project') .'/dab-project.js');
 
   // commet chat css and js
-  drupal_add_js('/cometchat/cometchatjs.php?v=2', 'external');
-  drupal_add_css( '/cometchat/cometchatcss.php', 'external');
-
-}
-
-
-/**
- *  Adição de validação customizada no form de registro de usuário
- */
-function dab_project_form_user_register_form_alter(&$form, &$form_state, $form_id){
-    $form['#validate'][] = 'dab_project_user_registration_validate';
-}
-
-/**
- * User registration Validade
- */
-function dab_project_user_registration_validate(&$form,&$form_state){
-    $cpf = $form_state['values']['field_cpf']['und'][0]['value'];
-
-    $check_unique_query = 'SELECT field_cpf_value FROM {field_data_field_cpf} WHERE field_cpf_value = :cpf  LIMIT 1 ';
-
-    //if a result is returned, that means the $staff_id exists
-    if (db_query($check_unique_query,array(':cpf'=>$cpf))->fetchField()){
-        form_set_error('cpf', t('This CPF is already in use'));
-    }
-}
-
-/**
- * @param $form
- * @param $form_state
- * @param $form_id
- */
-function dab_project_form_user_profile_form_alter(&$form){
-
-  // esconde o campo de estado do usuário
-  $form['field_estado']['#access'] = false;
-  $form['#validate'][] = 'dab_project_form_user_profile_form_validate';
-}
-
-/**
- * User profile Validade
- */
-function dab_project_form_user_profile_form_validate(&$form, &$form_state){
-
-  // muda os valores do field_estado com a sigla no field_cidade.
-  if( !empty( $form_state['values']['field_cidade']['und'][0]['value'] )){
-    preg_match('#\((.*?)\)#', $form_state['values']['field_cidade']['und'][0]['value'], $match);
-    $form_state['values']['field_estado']['und'][0]['value'] = $match[1];
-
-  }
+  // TODO mover isso para uma configuração
+  drupal_add_js(  variable_get('dab_cometchat_js', '/cometchat/cometchatjs.php'), 'external');
+  drupal_add_css(  variable_get('dab_cometchat_js', '/cometchat/cometchatcss.php'), 'external');
 
 }
 
@@ -73,11 +26,75 @@ function dab_project_menu() {
     'menu_name' => 'main-menu',
     'type' => MENU_NORMAL_ITEM
   );
+
+  $items['admin/config/system/dab_project'] = array(
+    'title' => 'DAB - Configuração do modulo dab_project',
+    'description' => 'Página de configuração da rede do DAB',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('dab_project_admin_settings'),
+    'access arguments' => array('administer site settings'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'dab_project.admin.inc',
+   );
+
   return $items;
+}
+
+
+/**
+ * Hook_user_register_form_alter
+ *  Adição de função na validação customizada no form de registro de usuário
+ */
+function dab_project_form_user_register_form_alter(&$form, &$form_state, $form_id){
+    $form['#validate'][] = 'dab_project_user_registration_validate';
+}
+
+/**
+ * User registration Validade
+ */
+function dab_project_user_registration_validate(&$form,&$form_state){
+
+    // - evita o envio de um cpf que existe
+    $cpf = $form_state['values']['field_cpf']['und'][0]['value'];
+
+    $check_unique_query = 'SELECT field_cpf_value FROM {field_data_field_cpf} WHERE field_cpf_value = :cpf  LIMIT 1 ';
+
+    //if a result is returned, that means the $staff_id exists
+    if (db_query($check_unique_query,array(':cpf'=>$cpf))->fetchField()){
+        form_set_error('cpf', t('This CPF is already in use'));
+    }
+}
+
+/**
+ * @param $form
+ * @param $form_state
+ */
+function dab_project_form_user_profile_form_alter(&$form){
+
+  // esconde o campo de estado do usuário
+  $form['field_estado']['#access'] = false;
+  $form['#validate'][] = 'dab_project_form_user_profile_form_validate';
+}
+
+/**
+ * User profile Validade
+ * @param $form
+ * @param $form_state
+ */
+function dab_project_form_user_profile_form_validate(&$form, &$form_state){
+
+  // muda os valores do field_estado com a sigla no field_cidade.
+  if( !empty( $form_state['values']['field_cidade']['und'][0]['value'] )){
+    preg_match('#\((.*?)\)#', $form_state['values']['field_cidade']['und'][0]['value'], $match);
+    $form_state['values']['field_estado']['und'][0]['value'] = $match[1];
+
+  }
+
 }
 
 /**
  * Page callback
+ * Pagina com o Iframe do evento da mostra
  */
 function dab_project_mostrasaude_iframe_page() {
   drupal_set_title('IV Mostra Nacional de Experiências em Saúde da Família / Atenção Básica');
@@ -92,11 +109,19 @@ function dab_project_mostrasaude_iframe_page() {
 function dab_project_panels_pane_content_alter($content, $pane, $args, $context) {
 
   // traduzir todos os títulos de panels
-  if ($content->title) {
+  if ( isset($content->title) ) {
+
     $content->title = t($content->title);
   }
   return $content;
 }
 
-
-?>
+/**
+ * Implements hook_user_view_alter().
+ */
+function dab_project_user_view_alter(&$build) {
+  // Removendo o cpf de todas as views de usuário
+  if(isset($build['field_cpf'])){
+    $build['field_cpf']['#access'] = false;
+  }
+}

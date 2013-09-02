@@ -35,27 +35,44 @@ function dab_relatos_block_view($delta = '') {
 
   switch ($delta) {
     case 'adicionar_relato':
-      drupal_add_library('qtip', 'qtip');
-      $block['subject'] = 'Inscreva seu relato';
-      $block['content'] = l('Adicionar Relato de Experiência', 'node/add/experiencia', array(
-        'query' => array(
-          drupal_get_destination(),
-          'og_group_ref' => arg(1)
-      )));
+
+      if (user_is_logged_in()) {
+
+        $og_group_ref = arg(1);
+        if(in_array($og_group_ref, _dab_relatos_comunidades_de_eixos_tematicos())) {
+
+          drupal_add_library('qtip', 'qtip');
+
+          $block['subject'] = 'Inscreva seu relato';
+          $block['content'] = l('Adicionar Relato de Experiência', 'node/add/experiencia', array(
+            'query' => array(
+              drupal_get_destination(),
+              'og_group_ref' => $og_group_ref
+          )));
+        }
+      }
+
     break;
   }
   return $block;
 }
 
+/**
+ * Melhorias de usabilidade no formulário de cadastro de Relato de Experiência
+ */
 function dab_relatos_form_experiencia_node_form_alter(&$form, &$form_state) {
 
-  drupal_add_css(drupal_get_path('module', 'dab_relatos') . '/assets/stylesheets/relatos.css');
+  // Caso o usuário não seja administrador, ele somente poderá acessar o formulário se for
+  // através do link que já especifica a Comunidade
+  global $user;
+  if (!isset($_GET['og_group_ref']) && !in_array('administrator', $user->roles)) {
+    drupal_set_message('Favor escolher primeiro o grupo referente ao eixo temático do seu relato para então poder cadastrar.');
+    drupal_goto('<front>');
+  }
 
   /**** Colocar textos informativos e letras como ordenadores nos campos ****/
   $form['title_field']['#prefix'] = '<h3>1 - Identificação da Experiência</h3>';
   $form['field_experiencia_desenvolvida']['#prefix'] = '<h3>2 - O que e como você conta?</h3><p>Esta etapa tem como objetivo detalhar a experiência. Isso pode ser feito de mais de uma forma:</p><p>I - respondendo a cada uma das questões;</p><p>II – você pode utilizar diferentes linguagens, como por exemplo narrativas, poesias, cordel, etc. que contem da experiência usando o último campo para texto "outras observações / campo livre". Você também pode usar esse campo caso não tenha identificado onde inserir informações relevantes da experiência;</p><p>III - Adicionando imagens, músicas e vídeos à Galeria Audiovisual da experiência. Isso ajudará a contar mais e melhor sobre como a experiência acontece!</p><p>obs1.: é possível alterar / adicionar informações a estes campos até 20 de Outubro. A curadoria da mostra está à disposição para contribuir com a elaboração e detalhamento do relato.</p><p>obs2.: nenhum dos campos é obrigatório, mas quanto mais campos forem preenchidos, mais o relato de experiência ficará completo, facilitando a compreensão de outras pessoas.</p><h4>a. Detalhando a experiência</h4>';
-  $form['fgm_node_experiencia_form_group_experiencia_autores']['#prefix'] = '<h3>3 - Quem participa, onde acontece?</h3><h4>a. Autores do relato: quem inscreve e apresenta o relato de experiência</h4><p>Máximo de 6 pessoas podem inscrever</p>' . $form['fgm_node_experiencia_form_group_experiencia_autores']['#prefix'];
-  $form['fgm_node_experiencia_form_group_experiencia_atores']['#prefix'] = '<h4>b. Atores: quem participa(ou) da experiência?</h4><p>Máximo de 20 pessoas podem estar como participantes</p>' . $form['fgm_node_experiencia_form_group_experiencia_atores']['#prefix'];
   $form['field_video']['#prefix'] = '<h4>b. Galeria audiovisual</h4>';
   $form['title_field'][LANGUAGE_NONE][0]['value']['#title'] = 'a. ' . $form['title_field'][LANGUAGE_NONE][0]['value']['#title'];
   $form['field_descricao'][LANGUAGE_NONE][0]['value']['#title'] = 'b. ' . $form['field_descricao'][LANGUAGE_NONE][0]['value']['#title'];
@@ -66,4 +83,73 @@ function dab_relatos_form_experiencia_node_form_alter(&$form, &$form_state) {
   $form['field_experiencia_anexo'][LANGUAGE_NONE]['#title'] = 'e. ' . $form['field_experiencia_anexo'][LANGUAGE_NONE]['#title'];
   /**** Colocar textos informativos e letras como ordenadores nos campos - FIM ****/
 
+  if (isset($_GET['og_group_ref'])) {
+    $eixo_tematico_tid = _dab_relatos_mapeamento_comunidades_eixo_tematico($_GET['og_group_ref']);
+    if ($eixo_tematico_tid) {
+      // $form['field_experiencia_catespecificas']['#type'] = 'hidden';
+      // $form['field_experiencia_catespecificas']['#value'] = $eixo_tematico_tid;
+      $form['field_experiencia_catespecificas'][LANGUAGE_NONE]['#default_value'][] = $eixo_tematico_tid;
+    }
+
+  }
+
+}
+
+function _dab_relatos_comunidades_de_eixos_tematicos() {
+  $termos = array();
+  $termos[] = 113; // Eixo 1
+  $termos[] = 124; // Eixo 2
+  $termos[] = 126; // Eixo 3
+  $termos[] = 127; // Eixo 4
+  $termos[] = 128; // Eixo 5
+  $termos[] = 129; // Eixo 6
+  $termos[] = 130; // Eixo 7
+  $termos[] = 131; // Eixo 8
+  $termos[] = 132; // Eixo 9
+  $termos[] = 114; // Eixo 10
+  $termos[] = 115; // Eixo 11
+  $termos[] = 116; // Eixo 12
+  $termos[] = 117; // Eixo 13
+  $termos[] = 118; // Eixo 14
+  $termos[] = 119; // Eixo 15
+  $termos[] = 120; // Eixo 16
+  $termos[] = 121; // Eixo 17
+  $termos[] = 122; // Eixo 18
+  $termos[] = 123; // Eixo 19
+  $termos[] = 125; // Eixo 20
+  return $termos;
+}
+
+/**
+ * Recebe o NID de uma das comunidades de Eixo e retorna o Termo(TID) de Taxonomia respectivo
+ */
+function _dab_relatos_mapeamento_comunidades_eixo_tematico($nid) {
+  $termos = array();
+  // [nid] Comunidade = [tid] Termo do vocabulário "experiencia_eixos"
+  $termos[113] = 35; // Eixo 1
+  $termos[124] = 36; // Eixo 2
+  $termos[126] = 38; // Eixo 3
+  $termos[127] = 39; // Eixo 4
+  $termos[128] = 41; // Eixo 5
+  $termos[129] = 42; // Eixo 6
+  $termos[130] = 43; // Eixo 7
+  $termos[131] = 44; // Eixo 8
+  $termos[132] = 45; // Eixo 9
+  $termos[114] = 46; // Eixo 10
+  $termos[115] = 50; // Eixo 11
+  $termos[116] = 51; // Eixo 12
+  $termos[117] = 52; // Eixo 13
+  $termos[118] = 53; // Eixo 14
+  $termos[119] = 54; // Eixo 15
+  $termos[120] = 55; // Eixo 16
+  $termos[121] = 57; // Eixo 17
+  $termos[122] = 58; // Eixo 18
+  $termos[123] = 59; // Eixo 19
+  $termos[125] = 60; // Eixo 20
+  if (isset($termos[$nid])) {
+    return $termos[$nid];
+  }
+  else {
+    return FALSE;
+  }
 }

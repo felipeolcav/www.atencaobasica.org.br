@@ -1,0 +1,21 @@
+@import "compass/css3/border-radius";
+
+@mixin textfield {
+  @include border-radius(2px, 2px);
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-background-clip: padding;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  -webkit-appearance: none;
+  background-color: white;
+  border: 1px solid #cccccc;
+  color: black;
+  outline: 0;
+  margin: 0;
+  padding: .5em;
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.2em;
+}

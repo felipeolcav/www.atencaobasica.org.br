@@ -1,0 +1,283 @@
+@import "compass/css3/border-radius";
+@import "compass/css3/box-shadow";
+
+$atividades-font-color: #16a085;
+$destaque-font-color: #c0392b;
+$bg-cinza: #e1e1e1;
+$texto-azul: #02669d;
+
+@import "formularios";
+@import "relatodeexperiencia";
+@import "front_page";
+$default-box-shadow-color: #858585;
+$default-box-shadow-blur: 4px;
+$default-box-shadow-h-offset: 1px;
+$default-box-shadow-v-offset: 1px;
+
+
+@mixin box-arredondado {
+  border: 1px solid #ccc;
+  @include border-radius(5px);
+}
+
+html {
+ background-color: #f8f7f7;
+ line-height: 1.3;
+}
+
+header {
+  min-height: 52px;
+}
+
+h2#page-title {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+
+.pane-title {
+  font-size: 17px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-bottom: 2px solid #000;
+  padding: 15px 5px 15px 5px;
+  line-height: 1.2em;
+  margin-bottom: 0.85em;
+
+}
+
+.panels-ipe-portlet-content {
+  > .block {
+  }
+}
+// Zera a border padrão do Commons Origins
+.commons-pod,
+.region-three-33-first section,
+.page-user .pane-views-panes,
+.front.not-logged-in .pane-views,
+.front.not-logged-in .pane-views-panes,
+.page-events .view-commons-events-upcoming .view-content,
+.pane-commons-bw-group,
+.view-display-id-commons_events_upcoming_page .views-row,
+.view-commons-homepage-content .node-teaser.node-group > .view-content > .views-row,
+body.front.logged-in .view-commons-homepage-content > .view-content,
+body.front.logged-in #views-exposed-form-commons-homepage-content-panel-pane-1 .views-exposed-widgets.widgets-active,
+.page-events .region-three-25-50-25-third .pane-views-panes,
+.pane-search-result .block-content .search-results,
+.page-search-user .user-results {
+  background-color: white;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  @include border-radius(8px);
+  @include single-box-shadow(transparent, 0, 0, 0, 0, false);
+}
+.general-settings.commons-pod > .commons-pod {
+  padding: 20px 15px;
+  .fieldset-outer-wrapper {
+    margin-bottom: 10px;
+  }
+}
+
+div.entity-message .user-picture {
+  float: left;
+  margin-right: 10px;
+}
+.view-commons-radioactivity-groups-most-active .type-Pergunta:before,
+.view-commons-groups-recent-content .type-type-Pergunta:before,
+.view-commons-radioactivity-groups-active-in-group .type-Pergunta:before,
+.view-commons-radioactivity-groups-most-active .type-Resposta:before,
+.view-commons-groups-recent-content .type-type-Resposta:before,
+.view-commons-radioactivity-groups-active-in-group .type-Resposta:before  {
+  content: "";
+  background: url('../images/icons/icon-gray-question.png') no-repeat;
+  width: 11px;
+  height: 11px;
+  display: inline-block;
+  position: relative;
+  top: 1px;
+  margin-right: 6px;
+}
+.view-commons-radioactivity-groups-most-active .type-Enquete:before,
+.view-commons-groups-recent-content .type-Enquete:before,
+.view-commons-radioactivity-groups-active-in-group .type-Enquete:before {
+  content: "";
+  background: url('../images/icons/polls.png') no-repeat;
+  width: 11px;
+  height: 11px;
+  display: inline-block;
+  position: relative;
+  top: 1px;
+  margin-right: 6px;
+
+}
+.main-menu-comunidades a {
+  background: url('../images/icons/icon-groups.png') no-repeat center 10px;
+}
+.block-commons-utility-links {
+  margin-bottom: 2px;
+}
+
+.palette-black-blue-yellow h3 {
+  color: #353535;
+}
+
+/* MOSTRA IFRAME PAGE */
+
+#mostrasaude-iframe {
+  border: none;
+}
+.main-menu-mostra a {
+  background: url('../images/marca_ivmostra.png') no-repeat center 10px;
+}
+body.page-mostra div#page-top {
+  display: none;
+
+}
+
+/* footer */
+
+#footer-logos {
+  text-align: center;
+
+
+  img {
+    height: 36px;
+    border: 2px solid transparent;
+  }
+  a {
+    padding: 3px;
+    &:hover img {
+      border-color: blue ;
+    }
+  }
+
+  #logos {
+    padding: 25px;
+    background-color: $bg-cinza;
+    @include border-radius(8px);
+  }
+  #cc-logo {
+    margin-top: -20px;
+    img {
+      height: 35px;
+    }
+  }
+
+}
+
+.pane-commons-groups-commons-groups-create-group {
+  position: relative;
+}
+
+/* css do bloco branco na página do usuário */
+
+.node-destacado-top,
+.region-three-33-top section.pane-node,
+.region-three-33-first section,
+#block-entity-field-17,
+.pane-user-field-formacao-profissional {
+  background-color: white;
+  margin: 10px 0;
+  padding: 10px;
+  @include border-radius(8px);
+}
+
+
+/* USER LOGIN BLOCK */
+
+section.pane-user-login {
+  background-color: white;
+
+  h3 {
+    color: $texto-azul;
+    border-color: $texto-azul;
+    padding-left: 40px;
+    background: url('../images/cadeado.png') no-repeat scroll 5px ;
+  }
+
+  label {
+    display: none;
+  }
+
+  input#edit-name,
+  input#edit-pass {
+   -moz-box-sizing: border-box;
+    border-radius: 6px 6px 6px 6px;
+    height: 50px;
+    padding-right: 50px;
+    font-weight: bold;
+    &:focus,
+    &:hover {
+      font-weight: normal;
+      background-color: #fff ;
+    }
+
+  }
+
+  input#edit-name,
+  input#edit-pass,
+  input#edit-submit{
+    width: 100%
+  }
+
+  input#edit-name {
+    background: url('../images/icons/people-icon.png') $bg-cinza right center no-repeat scroll ;
+  }
+  input#edit-pass{
+    background: url('../images/icons/cadeado-aberto-icon.png') $bg-cinza right center no-repeat scroll ;
+  }
+
+  input#edit-submit{
+    padding: 15px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #fff;
+    background: $texto-azul;
+    text-shadow: none;
+    @include border-radius(8px);
+    font-size: 1.2em;
+
+    &:focus,
+    &:hover {
+      background-color: #1089cb ;
+      box-shadow: 2px 2px 5px #ccc;
+    }
+    &:active {
+       background-color: #004063 ;
+    }
+  }
+
+  ul{
+    padding: 10px 0px;
+    li{
+      padding: 3px 0px;
+      list-style: none;
+      margin: 0px;
+    }
+  }
+}
+
+
+.node-destacado-top,
+.region-three-33-top section.pane-node {
+  font-size: 16px;
+  @include border-radius(8px);
+  .pane-title {
+    text-transform: none;
+  }
+
+}
+
+.node-destacado-top {
+  background:  url('../images/pessoa.png') $bg-cinza no-repeat scroll 15px ;
+  padding: 10px 20px 0px 120px;
+  margin-bottom: 30px;
+  .pane-title {
+      margin: 0px;
+      padding: 10px 0 5px 0px;
+      border: 0px;
+  }
+}
+
+
+

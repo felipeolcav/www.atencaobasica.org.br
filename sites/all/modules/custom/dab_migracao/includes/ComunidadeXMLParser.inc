@@ -33,9 +33,9 @@ class ComunidadeXMLParser {
         $linha = $this->avancarAteItem('pickle', TRUE); //aqui já é o segundo pickle
         $comunidades[] = $this->processarDadosComunidade($linha);
 
-        // if ($this->count_comunidades >= 60) {//para não ficar processando o resto e não encontrar nada. Para rodar por completo, remover este código
-        //   break;
-        // }
+        if ($this->count_comunidades >= 72) {//para não ficar processando o resto e não encontrar nada. Para rodar por completo, remover este código
+          break;
+        }
       }
       $xml_comunidades = $this->gerarComunidadesXML($comunidades);
       $dom_comunidades = new DOMDocument;

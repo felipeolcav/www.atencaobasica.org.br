@@ -29,21 +29,21 @@ function commons_topics_system_info_alter(&$info, $file, $type) {
  * Implements hook_form_FORM_ID_alter();
  */
 function commons_topics_form_node_form_alter(&$form, &$form_state) {
-  if (isset($form['field_topics'])) {
-    $form['topics_wrapper'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Topics'),
-      '#collapsible' => TRUE,
-      '#collapsed' => FALSE,
-      '#group' => 'additional_settings',
-      '#weight' => -15,
-    );
-    $form['topics_wrapper']['field_topics'] = $form['field_topics'];
-    $form['field_topics'] = array('#language' => NULL);
-    $form['#attached']['js'] = array(
-      drupal_get_path('module', 'commons_topics') . '/js/commons_topics.js',
-    );
-  }
+  // if (isset($form['field_topics'])) {
+  //   $form['topics_wrapper'] = array(
+  //     '#type' => 'fieldset',
+  //     '#title' => t('Topics'),
+  //     '#collapsible' => TRUE,
+  //     '#collapsed' => FALSE,
+  //     '#group' => 'additional_settings',
+  //     '#weight' => -15,
+  //   );
+  //   $form['topics_wrapper']['field_topics'] = $form['field_topics'];
+  //   $form['field_topics'] = array('#language' => NULL);
+  //   $form['#attached']['js'] = array(
+  //     drupal_get_path('module', 'commons_topics') . '/js/commons_topics.js',
+  //   );
+  // }
 }
 
 /**

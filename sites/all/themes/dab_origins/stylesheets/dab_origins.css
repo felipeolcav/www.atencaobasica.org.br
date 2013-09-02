@@ -1,0 +1,554 @@
+@charset "UTF-8";
+/* line 3, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form .fieldset-outer-wrapper {
+  border: 0;
+  padding: 0;
+}
+/* line 7, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form h3 {
+  margin: 0 0 20px;
+  font-size: 15px;
+  font-weight: normal;
+  text-transform: uppercase;
+  border-bottom: 1px solid black;
+}
+/* line 14, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form .description {
+  font-family: Verdana;
+  font-size: 11px;
+  font-weight: normal;
+  color: #666;
+  margin: 5px 0 20px;
+}
+/* line 22, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form #edit-field-experiencia-ambito-und label,
+#experiencia-node-form #edit-field-experiencia-pontosequipes-und label {
+  font-weight: normal;
+  padding-left: 10px;
+  border-left: none;
+}
+/* line 28, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form .form-item-field-experiencia-catespecificas-und > label,
+#experiencia-node-form .form-item-field-experiencia-ambito-und > label {
+  border-left: none;
+  padding-left: 0;
+}
+/* line 32, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form .form-item-field-experiencia-catespecificas-und {
+  margin-top: 10px;
+}
+/* line 35, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form #edit-field-experiencia-catespecificas-und {
+  width: 66.66%;
+}
+/* line 43, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form #edit-title-field label,
+#experiencia-node-form #edit-field-descricao label,
+#experiencia-node-form #edit-field-imagem-de-destaque label,
+#experiencia-node-form #edit-field-experiencia-pontosequipes > div > label,
+#experiencia-node-form #edit-field-experiencia-anexo-und .fieldset-legend,
+#experiencia-node-form #block-system-main .primary-fields h4 {
+  color: #000;
+  font-family: Helvetica;
+  font-weight: normal;
+  border-left: 10px solid #4995cb;
+  padding-left: 10px;
+  margin: 0 0 10px;
+  display: block;
+}
+/* line 52, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form #edit-field-descricao label {
+  margin-top: 10px;
+}
+/* line 55, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form #edit-field-topics input {
+  -webkit-border-radius: 2px 2px;
+  -moz-border-radius: 2px / 2px;
+  border-radius: 2px / 2px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-background-clip: padding;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  -webkit-appearance: none;
+  background-color: white;
+  border: 1px solid #cccccc;
+  color: black;
+  outline: 0;
+  margin: 0;
+  padding: .5em;
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.2em;
+}
+/* line 59, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form #field-video-values,
+#experiencia-node-form #field-video-values tr {
+  border: none;
+  background: #fff;
+}
+/* line 64, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form #field-video-values tbody,
+#experiencia-node-form #field-video-values tr .fieldset-outer-wrapper {
+  margin: 0;
+  border: none;
+}
+/* line 69, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form #field-video-values .field-label label,
+#experiencia-node-form #edit-field-imagem-und .fieldset-legend {
+  font-size: 14px;
+  color: #000;
+  font-weight: bold;
+}
+/* line 74, ../sass/_relatodeexperiencia.scss */
+#experiencia-node-form .form-item-field-endereco-und-0-locality {
+  margin-top: 0;
+}
+
+/* line 79, ../sass/_relatodeexperiencia.scss */
+.primary-fields .cke_browser_webkit {
+  width: 570px;
+}
+
+/* line 2, ../sass/_front_page.scss */
+body.front.not-logged-in {
+  /* Bloco destacado */
+  /* css do bloco de informação na home de usuário deslogado */
+  /* Bloco de destaques - featured */
+  /* BLoco de atividades */
+}
+/* line 6, ../sass/_front_page.scss */
+body.front.not-logged-in #block-system-main .pane-1 {
+  padding-left: 100px;
+  background: url("../images/bussola-icone.png") no-repeat scroll 15px;
+  margin-bottom: 0px;
+  min-height: 70px;
+}
+/* line 11, ../sass/_front_page.scss */
+body.front.not-logged-in #block-system-main .pane-1 .pane-title {
+  font-size: 26px;
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+  color: #02669d;
+}
+/* line 18, ../sass/_front_page.scss */
+body.front.not-logged-in #block-system-main .pane-1 .block-content {
+  color: #bbbaba;
+}
+/* line 22, ../sass/_front_page.scss */
+body.front.not-logged-in #block-system-main .pane-1 div.block-inner:after {
+  display: block;
+}
+/* line 28, ../sass/_front_page.scss */
+body.front.not-logged-in .region-three-33-second {
+  padding-right: 0px;
+  margin-right: 0px;
+}
+/* line 33, ../sass/_front_page.scss */
+body.front.not-logged-in .region .region-three-33-third {
+  padding-left: 0px;
+  margin-left: 0px;
+}
+/* line 39, ../sass/_front_page.scss */
+body.front.not-logged-in .pane-views-panes.pane-commons-featured-panel-pane-1 {
+  padding-right: 15px;
+  margin-right: 0px;
+  -webkit-border-radius: 8px 0px 0px 8px;
+  -moz-border-radius: 8px 0px 0px 8px;
+  -ms-border-radius: 8px 0px 0px 8px;
+  -o-border-radius: 8px 0px 0px 8px;
+  border-radius: 8px 0px 0px 8px;
+}
+/* line 43, ../sass/_front_page.scss */
+body.front.not-logged-in .pane-views-panes.pane-commons-featured-panel-pane-1 .pane-title {
+  text-decoration: none;
+}
+/* line 48, ../sass/_front_page.scss */
+body.front.not-logged-in .region-three-33-third section {
+  padding-left: 15px;
+  margin-left: 0px;
+  -webkit-border-radius: 0px 8px 8px 0px;
+  -moz-border-radius: 0px 8px 8px 0px;
+  -ms-border-radius: 0px 8px 8px 0px;
+  -o-border-radius: 0px 8px 8px 0px;
+  border-radius: 0px 8px 8px 0px;
+}
+/* line 56, ../sass/_front_page.scss */
+body.front.not-logged-in .region-three-33-second section,
+body.front.not-logged-in .region-three-33-third section,
+body.front.not-logged-in .pane-user-login {
+  height: 410px;
+  padding: 10px 25px;
+  font-size: 13px;
+}
+/* line 60, ../sass/_front_page.scss */
+body.front.not-logged-in .region-three-33-second section .pane-title,
+body.front.not-logged-in .region-three-33-third section .pane-title,
+body.front.not-logged-in .pane-user-login .pane-title {
+  margin-bottom: 20px;
+}
+/* line 64, ../sass/_front_page.scss */
+body.front.not-logged-in .region-three-33-second section img,
+body.front.not-logged-in .region-three-33-third section img,
+body.front.not-logged-in .pane-user-login img {
+  width: 35px;
+}
+/* line 68, ../sass/_front_page.scss */
+body.front.not-logged-in .region-three-33-second section .views-row,
+body.front.not-logged-in .region-three-33-third section .views-row,
+body.front.not-logged-in .pane-user-login .views-row {
+  border-bottom: 1px dotted #e1e1e1;
+  padding-bottom: 0.7em;
+  margin-bottom: 0.7em;
+}
+/* line 75, ../sass/_front_page.scss */
+body.front.not-logged-in .pane-views-panes > div {
+  padding: 0px;
+}
+/* line 80, ../sass/_front_page.scss */
+body.front.not-logged-in .region-three-33-second section {
+  color: #c0392b;
+  font-weight: bold;
+  border-right: 0px;
+}
+/* line 85, ../sass/_front_page.scss */
+body.front.not-logged-in .region-three-33-second section .pane-title {
+  color: #c0392b;
+  border-color: #c0392b;
+  padding-left: 40px;
+  background: url("../images/destaques.png") no-repeat scroll 5px;
+}
+/* line 92, ../sass/_front_page.scss */
+body.front.not-logged-in .region-three-33-second section a {
+  color: #c0392b;
+  font-weight: bold;
+}
+/* line 95, ../sass/_front_page.scss */
+body.front.not-logged-in .region-three-33-second section a:hover {
+  color: blue;
+}
+/* line 103, ../sass/_front_page.scss */
+body.front.not-logged-in .region-three-33-third section {
+  color: #16a085;
+  font-weight: bold;
+  border-left: 0px;
+}
+/* line 107, ../sass/_front_page.scss */
+body.front.not-logged-in .region-three-33-third section .pane-title {
+  color: #16a085;
+  border-color: #16a085;
+  padding-left: 40px;
+  background: url("../images/atualizar.png") no-repeat scroll 5px;
+}
+/* line 115, ../sass/_front_page.scss */
+body.front.not-logged-in .region-three-33-third section a {
+  color: #16a085;
+}
+/* line 118, ../sass/_front_page.scss */
+body.front.not-logged-in .region-three-33-third section a:hover {
+  color: blue;
+}
+
+/* line 23, ../sass/dab_origins.scss */
+html {
+  background-color: #f8f7f7;
+  line-height: 1.3;
+}
+
+/* line 28, ../sass/dab_origins.scss */
+header {
+  min-height: 52px;
+}
+
+/* line 32, ../sass/dab_origins.scss */
+h2#page-title {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+/* line 38, ../sass/dab_origins.scss */
+.pane-title {
+  font-size: 17px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-bottom: 2px solid black;
+  padding: 15px 5px 15px 5px;
+  line-height: 1.2em;
+  margin-bottom: 0.85em;
+}
+
+/* line 67, ../sass/dab_origins.scss */
+.commons-pod,
+.region-three-33-first section,
+.page-user .pane-views-panes,
+.front.not-logged-in .pane-views,
+.front.not-logged-in .pane-views-panes,
+.page-events .view-commons-events-upcoming .view-content,
+.pane-commons-bw-group,
+.view-display-id-commons_events_upcoming_page .views-row,
+.view-commons-homepage-content .node-teaser.node-group > .view-content > .views-row,
+body.front.logged-in .view-commons-homepage-content > .view-content,
+body.front.logged-in #views-exposed-form-commons-homepage-content-panel-pane-1 .views-exposed-widgets.widgets-active,
+.page-events .region-three-25-50-25-third .pane-views-panes,
+.pane-search-result .block-content .search-results,
+.page-search-user .user-results {
+  background-color: white;
+  margin: 10px 0;
+  border: 1px solid #cccccc;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
+  border-radius: 8px;
+  -webkit-box-shadow: 0 0 0 0 transparent;
+  -moz-box-shadow: 0 0 0 0 transparent;
+  box-shadow: 0 0 0 0 transparent;
+}
+
+/* line 74, ../sass/dab_origins.scss */
+.general-settings.commons-pod > .commons-pod {
+  padding: 20px 15px;
+}
+/* line 76, ../sass/dab_origins.scss */
+.general-settings.commons-pod > .commons-pod .fieldset-outer-wrapper {
+  margin-bottom: 10px;
+}
+
+/* line 81, ../sass/dab_origins.scss */
+div.entity-message .user-picture {
+  float: left;
+  margin-right: 10px;
+}
+
+/* line 90, ../sass/dab_origins.scss */
+.view-commons-radioactivity-groups-most-active .type-Pergunta:before,
+.view-commons-groups-recent-content .type-type-Pergunta:before,
+.view-commons-radioactivity-groups-active-in-group .type-Pergunta:before,
+.view-commons-radioactivity-groups-most-active .type-Resposta:before,
+.view-commons-groups-recent-content .type-type-Resposta:before,
+.view-commons-radioactivity-groups-active-in-group .type-Resposta:before {
+  content: "";
+  background: url("../images/icons/icon-gray-question.png") no-repeat;
+  width: 11px;
+  height: 11px;
+  display: inline-block;
+  position: relative;
+  top: 1px;
+  margin-right: 6px;
+}
+
+/* line 102, ../sass/dab_origins.scss */
+.view-commons-radioactivity-groups-most-active .type-Enquete:before,
+.view-commons-groups-recent-content .type-Enquete:before,
+.view-commons-radioactivity-groups-active-in-group .type-Enquete:before {
+  content: "";
+  background: url("../images/icons/polls.png") no-repeat;
+  width: 11px;
+  height: 11px;
+  display: inline-block;
+  position: relative;
+  top: 1px;
+  margin-right: 6px;
+}
+
+/* line 113, ../sass/dab_origins.scss */
+.main-menu-comunidades a {
+  background: url("../images/icons/icon-groups.png") no-repeat center 10px;
+}
+
+/* line 116, ../sass/dab_origins.scss */
+.block-commons-utility-links {
+  margin-bottom: 2px;
+}
+
+/* line 120, ../sass/dab_origins.scss */
+.palette-black-blue-yellow h3 {
+  color: #353535;
+}
+
+/* MOSTRA IFRAME PAGE */
+/* line 126, ../sass/dab_origins.scss */
+#mostrasaude-iframe {
+  border: none;
+}
+
+/* line 129, ../sass/dab_origins.scss */
+.main-menu-mostra a {
+  background: url("../images/marca_ivmostra.png") no-repeat center 10px;
+}
+
+/* line 132, ../sass/dab_origins.scss */
+body.page-mostra div#page-top {
+  display: none;
+}
+
+/* footer */
+/* line 139, ../sass/dab_origins.scss */
+#footer-logos {
+  text-align: center;
+}
+/* line 143, ../sass/dab_origins.scss */
+#footer-logos img {
+  height: 36px;
+  border: 2px solid transparent;
+}
+/* line 147, ../sass/dab_origins.scss */
+#footer-logos a {
+  padding: 3px;
+}
+/* line 149, ../sass/dab_origins.scss */
+#footer-logos a:hover img {
+  border-color: blue;
+}
+/* line 154, ../sass/dab_origins.scss */
+#footer-logos #logos {
+  padding: 25px;
+  background-color: #e1e1e1;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
+  border-radius: 8px;
+}
+/* line 159, ../sass/dab_origins.scss */
+#footer-logos #cc-logo {
+  margin-top: -20px;
+}
+/* line 161, ../sass/dab_origins.scss */
+#footer-logos #cc-logo img {
+  height: 35px;
+}
+
+/* line 168, ../sass/dab_origins.scss */
+.pane-commons-groups-commons-groups-create-group {
+  position: relative;
+}
+
+/* css do bloco branco na página do usuário */
+/* line 178, ../sass/dab_origins.scss */
+.node-destacado-top,
+.region-three-33-top section.pane-node,
+.region-three-33-first section,
+#block-entity-field-17,
+.pane-user-field-formacao-profissional {
+  background-color: white;
+  margin: 10px 0;
+  padding: 10px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
+  border-radius: 8px;
+}
+
+/* USER LOGIN BLOCK */
+/* line 188, ../sass/dab_origins.scss */
+section.pane-user-login {
+  background-color: white;
+}
+/* line 191, ../sass/dab_origins.scss */
+section.pane-user-login h3 {
+  color: #02669d;
+  border-color: #02669d;
+  padding-left: 40px;
+  background: url("../images/cadeado.png") no-repeat scroll 5px;
+}
+/* line 198, ../sass/dab_origins.scss */
+section.pane-user-login label {
+  display: none;
+}
+/* line 203, ../sass/dab_origins.scss */
+section.pane-user-login input#edit-name,
+section.pane-user-login input#edit-pass {
+  -moz-box-sizing: border-box;
+  border-radius: 6px 6px 6px 6px;
+  height: 50px;
+  padding-right: 50px;
+  font-weight: bold;
+}
+/* line 210, ../sass/dab_origins.scss */
+section.pane-user-login input#edit-name:focus, section.pane-user-login input#edit-name:hover,
+section.pane-user-login input#edit-pass:focus,
+section.pane-user-login input#edit-pass:hover {
+  font-weight: normal;
+  background-color: white;
+}
+/* line 219, ../sass/dab_origins.scss */
+section.pane-user-login input#edit-name,
+section.pane-user-login input#edit-pass,
+section.pane-user-login input#edit-submit {
+  width: 100%;
+}
+/* line 223, ../sass/dab_origins.scss */
+section.pane-user-login input#edit-name {
+  background: url("../images/icons/people-icon.png") #e1e1e1 right center no-repeat scroll;
+}
+/* line 226, ../sass/dab_origins.scss */
+section.pane-user-login input#edit-pass {
+  background: url("../images/icons/cadeado-aberto-icon.png") #e1e1e1 right center no-repeat scroll;
+}
+/* line 230, ../sass/dab_origins.scss */
+section.pane-user-login input#edit-submit {
+  padding: 15px;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #fff;
+  background: #02669d;
+  text-shadow: none;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
+  border-radius: 8px;
+  font-size: 1.2em;
+}
+/* line 241, ../sass/dab_origins.scss */
+section.pane-user-login input#edit-submit:focus, section.pane-user-login input#edit-submit:hover {
+  background-color: #1089cb;
+  box-shadow: 2px 2px 5px #cccccc;
+}
+/* line 245, ../sass/dab_origins.scss */
+section.pane-user-login input#edit-submit:active {
+  background-color: #004063;
+}
+/* line 250, ../sass/dab_origins.scss */
+section.pane-user-login ul {
+  padding: 10px 0px;
+}
+/* line 252, ../sass/dab_origins.scss */
+section.pane-user-login ul li {
+  padding: 3px 0px;
+  list-style: none;
+  margin: 0px;
+}
+
+/* line 262, ../sass/dab_origins.scss */
+.node-destacado-top,
+.region-three-33-top section.pane-node {
+  font-size: 16px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
+  border-radius: 8px;
+}
+/* line 265, ../sass/dab_origins.scss */
+.node-destacado-top .pane-title,
+.region-three-33-top section.pane-node .pane-title {
+  text-transform: none;
+}
+
+/* line 271, ../sass/dab_origins.scss */
+.node-destacado-top {
+  background: url("../images/pessoa.png") #e1e1e1 no-repeat scroll 15px;
+  padding: 10px 20px 0px 120px;
+  margin-bottom: 30px;
+}
+/* line 275, ../sass/dab_origins.scss */
+.node-destacado-top .pane-title {
+  margin: 0px;
+  padding: 10px 0 5px 0px;
+  border: 0px;
+}
