@@ -301,16 +301,20 @@ class CrawlerForumComunidade {
     print_r("\n\n\t\t\t\t>>>Comentários Visitados : " . $this->count_comentarios);
 
     $dados_comentario = array();
+    $dados_comentario['pai_id'] = $comentario_pai['id'];
+    
+    
 
     $div_comment = @qp($li, '>div.boardComment', array('ignore_parser_warnings' => TRUE));
     $div_details = @qp($div_comment, '>div.boardCommentDetails', array('ignore_parser_warnings' => TRUE));
-    $dados_comentario['comentario_id'] = $div_details->attr('name');
+    $dados_comentario['id'] = $div_details->attr('name');
+    
 
 
     $div_header = htmlqp($div_comment->html(), 'div.boardCommentDetails > div.boardCommentHeaderTitleBlock');
     $link = htmlqp($div_header, '> a');
     $link_href = $link->attr('href');
-    $dados_comentario['comentario_id'] = end(explode('/', $link_href));
+    $dados_comentario['id'] = end(explode('/', $link_href));
 
     $exploded_texto = explode("\n", $div_header->text());
     $data_str = $exploded_texto[count($exploded_texto) - 2];
@@ -340,7 +344,7 @@ class CrawlerForumComunidade {
         }
       }
 
-      if (empty($dados_comentario['comentario_id'])) {
+      if (empty($dados_comentario['id'])) {
         print_r($dados_comentario);
         throw new Exception("Comentario sem ID");
       }
@@ -376,7 +380,10 @@ class CrawlerForumComunidade {
       , 'Dezembro' => '12'
     );
     $separated_values = preg_split("/ (de|às) /", $str_data);
-    $composed_value = $separated_values[0] . '-' . $traducao_mes[$separated_values[1]] . '-' . $separated_values[2] . ' ' . $separated_values[3] . '';
+    if(count($separated_values) != 4){
+      return NULL;
+    }
+    $composed_value = $separated_values[0] . '-' . $traducao_mes[$separated_values[1]] . '-' . $separated_values[2] . ' ' . $separated_values[3];
     
     return $composed_value;
   }

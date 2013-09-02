@@ -1,31 +1,26 @@
 <?php
 
-class MigracaoTopicosXML extends XMLMigration {
+class MigracaoComentariosTopicosXML extends XMLMigration {
 
   public function __construct($arguments) {
 
     parent::__construct();
-    $this->description = 'Migraçao dos tópicos de cada fórum das Comunidades.';
+    $this->description = 'Migraçao dos comentários dos tópicos de cada fórum das Comunidades.';
 
     $this->machineName = $arguments['machine_name'];
     $source_fields = array(
+      'comentario_pai_id' => 'comentario_pai_id',
+      'comentario_id' => 'comentario_id',
+      'comentario_data' => 'comentario_data',
+      'comentario_autor_email' => 'comentario_autor_email',
+      'comentario_conteudo' => 'comentario_conteudo',
       'topico_id' => 'topico_id',
-      'topico_url' => 'topico_url',
-      'topico_nome' => 'topico_nome',
-      'topico_visibilidade' => 'topico_visibilidade',
-      'topico_autor' => 'topico_autor',
-      'primeiro_comentario_email' => 'primeiro_comentario_email',
-      'primeiro_comentario_data' => 'primeiro_comentario_data',
-      'ultimo_comentario_data' => 'ultimo_comentario_data',
-      'forum_id' => 'forum_id',
       'forum_nome' => 'forum_nome',
-      'forum_url' => 'forum_url',
       'comunidade_id' => 'comunidade_id',
-      'comunidade_url' => 'comunidade_url',
     );
 
     $this->map = new MigrateSQLMap($this->machineName,
-        array('topico_id' => array(
+        array('map_comentario_id' => array(
             'type' => 'int',
             'not null' => TRUE,
           )
@@ -34,72 +29,58 @@ class MigracaoTopicosXML extends XMLMigration {
     );
 
     $xml_folder = DRUPAL_ROOT . '/' . drupal_get_path('module', 'dab_migracao') . '/xml/';
-    $items_url = $xml_folder . 'topicos-forum.xml';
-    $item_xpath = '/root/topico';
-    $item_ID_xpath = 'topico_id';
+    $items_url = $xml_folder . 'comentarios-topico.xml';
+    $item_xpath = '/root/comentario';
+    $item_ID_xpath = 'comentario_id';
 
     $items_class = new MigrateItemsXML($items_url, $item_xpath, $item_ID_xpath);
     $this->source = new MigrateSourceMultiItems($items_class, $source_fields);
 
-    $this->destination = new MigrateDestinationNode('post');
+    $this->destination = new MigrateDestinationComment('comment_node_post');
 
 
     // Mapped fields
-    $this->addFieldMapping('title_field', 'topico_nome')
-      ->xpath('topico_nome');
-    $this->addFieldMapping('title', 'topico_nome')
-      ->xpath('topico_nome');
+    $this->addFieldMapping('map_comentario_id', 'comentario_id')
+      ->xpath('comentario_id');
+
+    $this->addFieldMapping('nid', 'topico_id')
+      ->sourceMigration('TopicosForum')
+      ->xpath('topico_id');
+
+    $this->addFieldMapping('pid', 'comentario_pai_id')
+      ->sourceMigration($this->machineName)
+      ->xpath('comentario_pai_id');
 
     $this->addFieldMapping('uid', 'Email')
       ->sourceMigration($this->getUserMigrations())
-      ->xpath('primeiro_comentario_email')
+      ->xpath('comentario_autor_email')
       ->defaultValue(1);
 
-    $this->addFieldMapping('og_group_ref', 'id_group')
-      ->sourceMigration('Comunidades')
-      ->xpath('comunidade_id');
+    $this->addFieldMapping('comment_body', 'comentario_conteudo')
+      ->xpath('comentario_conteudo');
 
-    $this->addFieldMapping('status', 'topico_visibilidade'); //fazer a tradução no prepare
+    $this->addFieldMapping('comment_body:format')
+      ->defaultValue('filtered_html');
 
-    $this->addFieldMapping('created', 'primeiro_comentario_data')
-      ->xpath('primeiro_comentario_data');
-
-    $this->addFieldMapping('changed', 'ultimo_comentario_data')
-      ->xpath('ultimo_comentario_data');
-
-    $this->addFieldMapping('field_topics', 'forum_nome')
-      ->xpath('forum_nome');
-
-    $this->addFieldMapping('field_topics:create_term')
+    $this->addFieldMapping('status')
       ->defaultValue(1);
 
-    $this->addFieldMapping('field_topics:ignore_case')
-      ->defaultValue(1);
+    $this->addFieldMapping('created', 'comentario_data')
+      ->xpath('comentario_data');
+
+    $this->addFieldMapping('changed', 'comentario_data')
+      ->xpath('comentario_data');
   }
 
   public function prepareRow($row) {
     if (parent::prepareRow($row) === FALSE) {
       return FALSE;
     }
-    if (empty($row->xml->link_texto)) {
-      $row->xml->link_texto = $row->xml->arquivo_id;
-    }
 
-    if (!empty($row->xml->primeiro_comentario_data)) {
-      
-      $date = DateTime::createFromFormat('d-m-Y H:i', $row->xml->primeiro_comentario_data);
-      $row->xml->primeiro_comentario_data = $date->getTimestamp();
+    if (!empty($row->xml->comentario_data)) {
+      $date = DateTime::createFromFormat('d-m-Y H:i', $row->xml->comentario_data);
+      $row->xml->comentario_data = $date->getTimestamp();
     }
-    if (!empty($row->xml->ultimo_comentario_data)) {
-      $date = DateTime::createFromFormat('d-m-Y H:i', $row->xml->ultimo_comentario_data);
-      $row->xml->ultimo_comentario_data = $date->getTimestamp();
-    }
-  }
-
-  public function prepare($node, stdClass $row) {
-    $node->status = ($row->xml->topico_visibilidade == 'state-publico');
-    $node->title = substr($node->title, 0, 255);
-    //comment_save()
   }
 
   private function getUserMigrations() {

@@ -288,6 +288,13 @@ function dab_migracao_migrate_api() {
           'Comunidades',
         ),
       ),
+      'ComentariosTopicos' => array(
+        'class_name' => 'MigracaoComentariosTopicosXML',
+        'dependencies' => array(
+          'grupoUsuario',
+          'Comunidades',
+        ),
+      ),
       
       
     ),
