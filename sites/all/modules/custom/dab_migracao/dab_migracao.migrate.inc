@@ -22,6 +22,13 @@ function dab_migracao_migrate_api() {
           'Comunidades',
         ),
       ),
+      'ArquivosComunidade' => array(
+        'class_name' => 'MigracaoArquivosComunidadeXML',
+        'dependencies' => array(
+          'grupoUsuario',
+          'Comunidades',
+        ),
+      ),
     ),
   );
   return $api;

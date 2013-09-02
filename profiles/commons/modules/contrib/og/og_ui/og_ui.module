@@ -1140,7 +1140,7 @@ function og_ui_og_ui_get_group_admin($group_type, $gid) {
 /**
  * Implements hook_migrate_api().
  */
-function og_ui_migrate_api() {
+function og_ui_migrate_apiA() {
   $migrations = array();
   if (db_table_exists('d6_og')) {
     $migrations['OgUiMigrateAddField'] = array('class_name' => 'OgUiMigrateAddField');

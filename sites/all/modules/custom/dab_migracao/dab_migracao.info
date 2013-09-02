@@ -4,12 +4,16 @@ package = DAB
 version = 7.x-1.0-dev
 core = 7.x
 
+dependencies[] = querypath
 dependencies[] = migrate (>=2.5)
-;dependencies[] = migrate_ui
+dependencies[] = migrate_ui
 
 #  include the files that contain your Migrate classes 
 files[] = dab_migracao.migrate.inc
 files[] = includes/MigracaoUsuarioCSV.inc
 files[] = includes/ComunidadeXMLParser.inc
 files[] = includes/MigracaoComunidadeXML.inc
+files[] = includes/MigracaoArquivosComunidadeXML.inc
 files[] = includes/MigracaoVinculoUsuarioComunidadeXML.inc
+files[] = includes/CrawlerConteudoComunidade.inc
+files[] = includes/CrawlerForumComunidade.inc
