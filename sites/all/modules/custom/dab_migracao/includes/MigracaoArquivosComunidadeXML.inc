@@ -71,7 +71,7 @@ class MigracaoArquivosComunidadeXML extends XMLMigration {
       ->xpath('descricao');
 
     $this->addFieldMapping('uid', 'Email')
-      ->sourceMigration($this->getUserMigrations())
+      ->sourceMigration('ConsolidadoDeUsuariosDoPlone')
       ->xpath('autor_email')
       ->defaultValue(1);
 
@@ -111,81 +111,4 @@ class MigracaoArquivosComunidadeXML extends XMLMigration {
   public function prepare($node, stdClass $row) {
     $node->status = ($row->xml->privacidade == 'state-publico');
   }
-
-  private function getUserMigrations() {
-    return array(
-      'APSSESMG',
-      'AcademiaDaSaude',
-      'AlimentaNutricaoSUS',
-      'AssistenciaReabilitacaoComunidade',
-      'AtividadeFisicaSaude',
-      'BoasVindas',
-      'CaminhosCuidadoApoioPedagogico',
-      'CaminhosCuidadoCoordenacaoNacional',
-      'CaminhosCuidadoEquipeComunicacao',
-      'ConscienciaEmDia',
-      'ConversacaoCoordenadoresCuradoresABSF',
-      'CoordenacaoCuradoriaMostraNacionalABSF',
-      'CursoColaborativoDoencasCronicas',
-      'DesignComunidadePraticas',
-      'EvolucaoParticipacaoDentistasSUS',
-      'GTIF',
-      'GrupoFacilitadoresComunidadePraticas',
-      'HistoriasCcotidianoAtencaoBasica',
-      'MostraEixoTematico1',
-      'MostraEixoTematico10',
-      'MostraEixoTematico11',
-      'MostraEixoTematico12',
-      'MostraEixoTematico13',
-      'MostraEixoTematico14',
-      'MostraEixoTematico15',
-      'MostraEixoTematico16',
-      'MostraEixoTematico17',
-      'MostraEixoTematico18',
-      'MostraEixoTematico19',
-      'MostraEixoTematico2',
-      'MostraEixoTematico20',
-      'MostraEixoTematico3',
-      'MostraEixoTematico4',
-      'MostraEixoTematico5',
-      'MostraEixoTematico6',
-      'MostraEixoTematico7',
-      'MostraEixoTematico8',
-      'MostraEixoTematico9',
-      'MelhorEmCasa',
-      'MedicosNoro',
-      'NASF',
-      'UsuarioNosso',
-      'OncoDiscussoes',
-      'PMAQAcessoQualidadeAtencaoBasica',
-      'PMAQ1',
-      'PraticasIntegrativasComplementares',
-      'SaudeNaEscola',
-      'ESUS',
-      'EmDesenvolvimento',
-      'PMAQ'
-      )
-    ;
-  }
-
 }
-
-/*
-Title                       title_field           Texto	Campo de texto	editar	apagar	
- 
-Body                        body                  Texto longo e sumário	Área de texto com resumo	editar	apagar	
- 
-File                        field_document_file   Arquivo	Arquivo	editar	apagar	
- 
-Radioactivity               field_radioactivity   Radioactivity	Default text field	editar	apagar	
- 
-Groups                      og_group_ref          Entity Reference	OG reference	editar	apagar	
- 
-Topics                      field_topics          Referência de termo	Widget de autocompletar de termo	editar	apagar	
- 
-Group content visibility    group_content_access	Listagem (inteiro)	Lista de seleção	editar	apagar	
- 
-Redirecionamento de URLs    redirect              Redirect module form elements			
- 
-Configurações de endereço   path                  Elementos de formulário do módulo Path
- */

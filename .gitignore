@@ -10,10 +10,13 @@ sites/*/private
 nbproject/*
 
 .gitignore
-sites/all/modules/custom/dab_migracao/xml*
+
 .DS_Store
-<<<<<<< HEAD
+
 
 sites/all/themes/dab_origins/.sass-cache/
+sites/all/modules/custom/dab_migracao/xml*
+sites/all/modules/custom/dab_migracao/csv*
 sites/all/modules/custom/dab_migracao/files*
 sites/all/modules/custom/dab_migracao/comment-attachments*
+db_dev.sql.tar.gz

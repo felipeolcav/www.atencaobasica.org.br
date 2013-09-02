@@ -431,5 +431,4 @@ class ComunidadeXMLParser {
     preg_match($regex, $tag, $output_array);
     return end($output_array);
   }
-
 }
