@@ -281,6 +281,13 @@ function dab_migracao_migrate_api() {
           'Comunidades',
         ),
       ),
+      'TopicosForum' => array(
+        'class_name' => 'MigracaoTopicosXML',
+        'dependencies' => array(
+          'grupoUsuario',
+          'Comunidades',
+        ),
+      ),
       
       
     ),

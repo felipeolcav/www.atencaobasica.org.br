@@ -13,6 +13,7 @@ files[] = dab_migracao.migrate.inc
 files[] = includes/MigracaoUsuarioCSV.inc
 files[] = includes/ComunidadeXMLParser.inc
 files[] = includes/MigracaoComunidadeXML.inc
+files[] = includes/MigracaoTopicosXML.inc
 files[] = includes/MigracaoArquivosComunidadeXML.inc
 files[] = includes/MigracaoVinculoUsuarioComunidadeXML.inc
 files[] = includes/CrawlerConteudoComunidade.inc

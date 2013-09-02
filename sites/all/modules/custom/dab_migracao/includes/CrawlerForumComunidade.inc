@@ -14,6 +14,10 @@ class CrawlerForumComunidade {
   private $count_topicos;
   private $count_comentarios;
   private $count_anexos;
+  private $count_foruns_inseridos;
+  private $count_topicos_inseridos;
+  private $count_comentarios_inseridos;
+  private $count_anexos_inseridos;
   private $doc_foruns;
   private $root_foruns;
   private $arquivo_foruns = "./sites/all/modules/custom/dab_migracao/xml/foruns-comunidade.xml";
@@ -52,12 +56,16 @@ class CrawlerForumComunidade {
     $this->count_topicos = 0;
     $this->count_comentarios = 0;
     $this->count_anexos = 0;
+    $this->count_foruns_inseridos = 0;
+    $this->count_topicos_inseridos = 0;
+    $this->count_comentarios_inseridos = 0;
+    $this->count_anexos_inseridos = 0;
 
     $pagina_comunidades = $this->fazerRequisicaoWeb(self::URL_COMUNIDADES);
 
     foreach (@qp($pagina_comunidades, '.cop_listing_item', array('ignore_parser_warnings' => TRUE)) as $div_comunidade) {
       $this->count_comunidades++;
-      print_r("\n\n\tÍndice Comunidades: " . $this->count_comunidades);
+      print_r("\n\n\t--Índice Comunidade : " . $this->count_comunidades);
 
       $dados_comunidade = array();
 
@@ -70,6 +78,7 @@ class CrawlerForumComunidade {
 
       foreach (@qp($pagina_foruns_comunidade, '#listing-table tbody tr', array('ignore_parser_warnings' => TRUE)) as $linha_forum) {
         $this->count_foruns++;
+        print_r("\n\n\t\t>>>Fóruns Visitados : " . $this->count_foruns);
 
         $dados_forum = array();
 
@@ -78,7 +87,7 @@ class CrawlerForumComunidade {
             case 2:
               $link_pagina_forum = htmlqp($col_forum, 'a');
               $dados_forum['url'] = self::URL_BASE . $link_pagina_forum->attr("href");
-              $dados_forum['nome'] = $link_pagina_forum->text();
+              $dados_forum['nome'] = str_replace("\n", '', $link_pagina_forum->text());
               break;
             case 4:
               $dados_forum['data_modificacao'] = $col_forum->text();
@@ -98,38 +107,46 @@ class CrawlerForumComunidade {
         $div_descricao_forum = @qp($pagina_topicos_forum, 'div.ploneboardForumDescription', array('ignore_parser_warnings' => TRUE));
         $dados_forum['descricao'] = $div_descricao_forum->text();
 
-        $this->inserirForumNoXML($dados_comunidade, $dados_forum);
+        try {
+          foreach (@qp($pagina_topicos_forum, 'table.listing tbody tr', array('ignore_parser_warnings' => TRUE)) as $linha_topico) {
+            $this->count_topicos++;
+            print_r("\n\n\t\t\t>>>Tópicos Visitados : " . $this->count_topicos);
 
-        foreach (@qp($pagina_topicos_forum, 'table.listing tbody tr', array('ignore_parser_warnings' => TRUE)) as $linha_topico) {
-          $this->count_topicos++;
+            try {
+              $dados_topico = array();
 
-          $dados_topico = array();
+              foreach (@qp($linha_topico, 'td', array('ignore_parser_warnings' => TRUE)) as $ind_col_topico => $col_topico) {
+                if ($ind_col_topico == 0) {
+                  $link_pagina_topico = htmlqp($col_topico, 'a');
 
-          foreach (@qp($linha_topico, 'td', array('ignore_parser_warnings' => TRUE)) as $ind_col_topico => $col_topico) {
-            if ($ind_col_topico == 0) {
-              $link_pagina_topico = htmlqp($col_topico, 'a');
+                  $url_topico = $link_pagina_topico->attr("href");
+                  $dados_topico['id'] = end(explode('/', $url_topico));
+                  $dados_topico['url'] = $url_topico;
+                  $dados_topico['nome'] = str_replace("\n", '', preg_replace('/por .*/', '', $link_pagina_topico->text()));
+                  $dados_topico['visibilidade'] = $link_pagina_topico->attr("class");
+                  $dados_topico['autor'] = str_replace('por ', '', htmlqp($link_pagina_topico, 'span')->text());
+                  break;
+                }
+              }
 
-              $url_topico = $link_pagina_topico->attr("href");
-              $dados_topico['id'] = end(explode('/', $url_topico));
-              $dados_topico['url'] = $url_topico;
-              $dados_topico['nome'] = preg_replace('/por .*/', '', $link_pagina_topico->text());
-              $dados_topico['visibilidade'] = $link_pagina_topico->attr("class");
-              $dados_topico['autor'] = str_replace('por ', '', htmlqp($link_pagina_topico, 'span')->text());
-              break;
+              $pagina_comentarios_topico = $this->fazerRequisicaoWeb($dados_topico['url']);
+              $ul_top_level = @qp($pagina_comentarios_topico, 'div.boardConversation ul.topLevelComment', array('ignore_parser_warnings' => TRUE));
+
+              $comentarios = array();
+              foreach (@qp($ul_top_level, '>li', array('ignore_parser_warnings' => TRUE)) as $li_top_level) {
+                $comentario = $this->processarLI($li_top_level, $dados_comunidade, $dados_forum, $dados_topico, NULL);
+                $comentarios[] = $comentario;
+              }
+            } catch (Exception $e_topico) {
+              print_r("\n#############" . $e_topico);
             }
+            $this->inserirTopicoNoXML($dados_comunidade, $dados_forum, $dados_topico, $comentarios);
           }
-
-          $this->inserirTopicoNoXML($dados_comunidade, $dados_forum, $dados_topico);
-
-          $pagina_comentarios_topico = $this->fazerRequisicaoWeb($dados_topico['url']);
-          $ul_top_level = @qp($pagina_comentarios_topico, 'div.boardConversation ul.topLevelComment', array('ignore_parser_warnings' => TRUE));
-
-          $comentarios = array();
-          foreach (@qp($ul_top_level, '>li', array('ignore_parser_warnings' => TRUE)) as $li_top_level) {
-            $comentario = $this->processarLI($li_top_level, $dados_comunidade, $dados_forum, $dados_topico, NULL);
-            $comentarios[] = $comentario;
-          }
+        } catch (Exception $e_forum) {
+          print_r("\n#############" . $e_forum);
         }
+
+        $this->inserirForumNoXML($dados_comunidade, $dados_forum);
       }
     }
   }
@@ -152,36 +169,30 @@ class CrawlerForumComunidade {
   }
 
   private function inserirForumNoXML($dados_comunidade, $dados_forum) {
-    print_r("\n\n\t\tÍndice Fóruns: " . $this->count_foruns);
-
     $forum = $this->doc_foruns->createElement('forum');
     foreach ($dados_forum as $key_forum => $value_forum) {
       $xml_element = $this->doc_foruns->createElement('forum_' . $key_forum);
       $xml_element->nodeValue = $value_forum;
       $forum->appendChild($xml_element);
     }
-    foreach ($dados_comunidade as $key_comunidade => $value_comunidade) {
-      $xml_element = $this->doc_foruns->createElement('comunidade_' . $key_comunidade);
-      $xml_element->nodeValue = $value_comunidade;
-      $forum->appendChild($xml_element);
-    }
 
-    $xml_element = $this->doc_foruns->createElement('num_comunidade');
-    $xml_element->nodeValue = $this->count_comunidades;
+    //comunidade ---------------------------------------------------------------
+    $xml_element = $this->doc_foruns->createElement('comunidade_id');
+    $xml_element->nodeValue = $dados_comunidade['id'];
     $forum->appendChild($xml_element);
-
-    $xml_element = $this->doc_foruns->createElement('num_forum');
-    $xml_element->nodeValue = $this->count_foruns;
+    $xml_element = $this->doc_foruns->createElement('comunidade_url');
+    $xml_element->nodeValue = $dados_comunidade['url'];
     $forum->appendChild($xml_element);
+    //--------------------------------------------------------------------------
 
     $this->root_foruns->appendChild($forum);
 
     $this->doc_foruns->formatOutput = TRUE;
     $this->doc_foruns->save($this->arquivo_foruns);
+    print_r("\n\n\t\t<<<Fóruns Inseridos : " . ++$this->count_foruns_inseridos);
   }
 
-  private function inserirTopicoNoXML($dados_comunidade, $dados_forum, $dados_topico) {
-    print_r("\n\n\t\t\tÍndice Tópicos: " . $this->count_topicos);
+  private function inserirTopicoNoXML($dados_comunidade, $dados_forum, $dados_topico, $comentarios) {
 
     $topico = $this->doc_topicos->createElement('topico');
     foreach ($dados_topico as $key_topico => $value_topico) {
@@ -189,93 +200,107 @@ class CrawlerForumComunidade {
       $xml_element->nodeValue = $value_topico;
       $topico->appendChild($xml_element);
     }
-    foreach ($dados_forum as $key_forum => $value_forum) {
-      $xml_element = $this->doc_topicos->createElement('forum_' . $key_forum);
-      $xml_element->nodeValue = $value_forum;
+    if (!empty($comentarios)) {
+
+      $xml_element = $this->doc_topicos->createElement('primeiro_comentario_email');
+      $xml_element->nodeValue = $comentarios[0]['autor_email'];
+      $topico->appendChild($xml_element);
+
+      $xml_element = $this->doc_topicos->createElement('primeiro_comentario_nome');
+      $xml_element->nodeValue = $comentarios[0]['autor_nome'];
+      $topico->appendChild($xml_element);
+
+      $xml_element = $this->doc_topicos->createElement('primeiro_comentario_data');
+      $xml_element->nodeValue = $comentarios[0]['data'];
+      $topico->appendChild($xml_element);
+
+      $xml_element = $this->doc_topicos->createElement('primeiro_comentario_conteudo');
+      $xml_element->nodeValue = $comentarios[0]['data'];
+      $topico->appendChild($xml_element);
+
+      $xml_element = $this->doc_topicos->createElement('ultimo_comentario_data');
+      $xml_element->nodeValue = $comentarios[count($comentarios) - 1]['data'];
       $topico->appendChild($xml_element);
     }
-    foreach ($dados_comunidade as $key_comunidade => $value_comunidade) {
-      $xml_element = $this->doc_topicos->createElement('comunidade_' . $key_comunidade);
-      $xml_element->nodeValue = $value_comunidade;
-      $topico->appendChild($xml_element);
-    }
 
-    $xml_element = $this->doc_topicos->createElement('num_comunidade');
-    $xml_element->nodeValue = $this->count_comunidades;
+    //forum --------------------------------------------------------------------
+    $xml_element = $this->doc_topicos->createElement('forum_id');
+    $xml_element->nodeValue = $dados_forum['id'];
     $topico->appendChild($xml_element);
-
-    $xml_element = $this->doc_topicos->createElement('num_forum');
-    $xml_element->nodeValue = $this->count_foruns;
+    $xml_element = $this->doc_topicos->createElement('forum_nome');
+    $xml_element->nodeValue = $dados_forum['nome'];
     $topico->appendChild($xml_element);
-
-    $xml_element = $this->doc_topicos->createElement('num_topico');
-    $xml_element->nodeValue = $this->count_topicos;
+    $xml_element = $this->doc_topicos->createElement('forum_url');
+    $xml_element->nodeValue = $dados_forum['url'];
     $topico->appendChild($xml_element);
+    //--------------------------------------------------------------------------
+    //comunidade ---------------------------------------------------------------
+    $xml_element = $this->doc_topicos->createElement('comunidade_id');
+    $xml_element->nodeValue = $dados_comunidade['id'];
+    $topico->appendChild($xml_element);
+    $xml_element = $this->doc_topicos->createElement('comunidade_url');
+    $xml_element->nodeValue = $dados_comunidade['url'];
+    $topico->appendChild($xml_element);
+    //--------------------------------------------------------------------------
 
     $this->root_topicos->appendChild($topico);
 
     $this->doc_topicos->formatOutput = TRUE;
     $this->doc_topicos->save($this->arquivo_topicos);
+
+    print_r("\n\n\t\t\t<<<Tópicos Inseridos : " . ++$this->count_topicos_inseridos);
   }
 
   private function inserirComentarioNoXML($dados_comunidade, $dados_forum, $dados_topico, $dados_comentario) {
-    print_r("\n\n\t\t\t\tÍndice Comentários: " . $this->count_comentarios);
-
+    //comentario ---------------------------------------------------------------
     $comentario = $this->doc_comentarios->createElement('comentario');
     foreach ($dados_comentario as $key_comentario => $value_comentario) {
       $xml_element = $this->doc_comentarios->createElement('comentario_' . $key_comentario);
       $xml_element->nodeValue = $value_comentario;
       $comentario->appendChild($xml_element);
     }
-    foreach ($dados_topico as $key_topico => $value_topico) {
-      $xml_element = $this->doc_comentarios->createElement('topico_' . $key_topico);
-      $xml_element->nodeValue = $value_topico;
-      $comentario->appendChild($xml_element);
-    }
-    foreach ($dados_forum as $key_forum => $value_forum) {
-      $xml_element = $this->doc_comentarios->createElement('forum_' . $key_forum);
-      $xml_element->nodeValue = $value_forum;
-      $comentario->appendChild($xml_element);
-    }
-    foreach ($dados_comunidade as $key_comunidade => $value_comunidade) {
-      $xml_element = $this->doc_comentarios->createElement('comunidade_' . $key_comunidade);
-      $xml_element->nodeValue = $value_comunidade;
-      $comentario->appendChild($xml_element);
-    }
-
-    $xml_element = $this->doc_comentarios->createElement('num_comunidade');
-    $xml_element->nodeValue = $this->count_comunidades;
+    //--------------------------------------------------------------------------
+    //topico -------------------------------------------------------------------
+    $xml_element = $this->doc_comentarios->createElement('topico_id');
+    $xml_element->nodeValue = $dados_topico['id'];
     $comentario->appendChild($xml_element);
-
-    $xml_element = $this->doc_comentarios->createElement('num_forum');
-    $xml_element->nodeValue = $this->count_foruns;
+    $xml_element = $this->doc_comentarios->createElement('topico_url');
+    $xml_element->nodeValue = $dados_topico['url'];
     $comentario->appendChild($xml_element);
-
-    $xml_element = $this->doc_comentarios->createElement('num_topico');
-    $xml_element->nodeValue = $this->count_topicos;
+    //--------------------------------------------------------------------------
+    //forum --------------------------------------------------------------------
+    $xml_element = $this->doc_comentarios->createElement('forum_id');
+    $xml_element->nodeValue = $dados_forum['id'];
     $comentario->appendChild($xml_element);
-
-    $xml_element = $this->doc_comentarios->createElement('num_comentario');
-    $xml_element->nodeValue = $this->count_comentarios;
+    $xml_element = $this->doc_comentarios->createElement('forum_url');
+    $xml_element->nodeValue = $dados_forum['url'];
     $comentario->appendChild($xml_element);
+    $xml_element = $this->doc_comentarios->createElement('forum_nome');
+    $xml_element->nodeValue = $dados_forum['nome'];
+    $comentario->appendChild($xml_element);
+    //--------------------------------------------------------------------------
+    //comunidade ---------------------------------------------------------------
+    $xml_element = $this->doc_comentarios->createElement('comunidade_id');
+    $xml_element->nodeValue = $dados_comunidade['id'];
+    $comentario->appendChild($xml_element);
+    $xml_element = $this->doc_comentarios->createElement('comunidade_url');
+    $xml_element->nodeValue = $dados_comunidade['url'];
+    $comentario->appendChild($xml_element);
+    //--------------------------------------------------------------------------
 
     $this->doc_comentarios->appendChild($comentario);
 
     $this->doc_comentarios->formatOutput = TRUE;
     $this->doc_comentarios->save($this->arquivo_comentarios);
+
+    print_r("\n\n\t\t\t\t<<<Comentários Inseridos : " . ++$this->count_comentarios_inseridos);
   }
 
   private function processarLI($li, $dados_comunidade, $dados_forum, $dados_topico, $comentario_pai) {
     $this->count_comentarios++;
+    print_r("\n\n\t\t\t\t>>>Comentários Visitados : " . $this->count_comentarios);
 
-    $dados_comentario = array(
-      'comunidade_id' => $dados_comunidade['id']
-      , 'comunidade_url' => $dados_comunidade['url']
-      , 'forum_id' => $dados_forum['id']
-      , 'forum_url' => $dados_forum['url']
-      , 'topico_url' => $dados_topico['url']
-      , 'comentario_pai' => $comentario_pai['comentario_id']
-    );
+    $dados_comentario = array();
 
     $div_comment = @qp($li, '>div.boardComment', array('ignore_parser_warnings' => TRUE));
     $div_details = @qp($div_comment, '>div.boardCommentDetails', array('ignore_parser_warnings' => TRUE));
@@ -289,7 +314,7 @@ class CrawlerForumComunidade {
 
     $exploded_texto = explode("\n", $div_header->text());
     $data_str = $exploded_texto[count($exploded_texto) - 2];
-    $dados_comentario['data'] = $data_str;
+    $dados_comentario['data'] = $this->converterData($data_str);
 
     $link_autor = htmlqp($div_header->html(), 'a[href*="@"]');
     $dados_comentario['autor_email'] = end(split('/', $link_autor->attr('href')));
@@ -300,25 +325,29 @@ class CrawlerForumComunidade {
     $dados_comentario['conteudo'] = str_replace('<div class="boardCommentContent">', '', $dados_comentario['conteudo']);
     $dados_comentario['conteudo'] = preg_replace('/<\/div>$/', '', $dados_comentario['conteudo']);
 
+    try {
+      $div_attachments = @qp($div_comment, 'fieldset.commentAttachments', array('ignore_parser_warnings' => TRUE));
+      if (count($div_attachments->html()) > 0) {
+        $anexos = array();
+        foreach (@qp($div_attachments->html(), 'li > a', array('ignore_parser_warnings' => TRUE)) as $link_attachment) {
+          $this->count_anexos++;
+          print_r("\n\n\t\t\t\t\t>>>Anexos Visitados : " . $this->count_anexos);
+          $anexos[] = $this->salvarArquivo($link_attachment->attr('href'));
+          print_r("\n\n\t\t\t\t\t<<<Anexos Inseridos : " . ++$this->count_anexos_inseridos);
+        }
+        if (!empty($anexos)) {
+          $dados_comentario['anexos'] = $anexos;
+        }
+      }
+
+      if (empty($dados_comentario['comentario_id'])) {
+        print_r($dados_comentario);
+        throw new Exception("Comentario sem ID");
+      }
+    } catch (Exception $e_comentario) {
+      print_r("\n#############" . $e_comentario);
+    }
     $this->inserirComentarioNoXML($dados_comunidade, $dados_forum, $dados_topico, $dados_comentario);
-
-    $div_attachments = @qp($div_comment, 'fieldset.commentAttachments', array('ignore_parser_warnings' => TRUE));
-    if (count($div_attachments->html()) > 0) {
-      $anexos = array();
-      foreach (@qp($div_attachments->html(), 'li > a', array('ignore_parser_warnings' => TRUE)) as $link_attachment) {
-        $this->count_anexos++;
-
-        $anexos[] = $this->salvarArquivo($link_attachment->attr('href'));
-      }
-      if (!empty($anexos)) {
-        $dados_comentario['anexos'] = $anexos;
-      }
-    }
-
-    if (empty($dados_comentario['comentario_id'])) {
-      print_r($dados_comentario);
-      throw new Exception("\n\n#### Comentario sem ID");
-    }
 
     $sub_comentarios = array();
     foreach (@qp($li, '> ul > li', array('ignore_parser_warnings' => TRUE)) as $li_sub_comentario) {
@@ -329,6 +358,27 @@ class CrawlerForumComunidade {
       $dados_comentario['sub_comentarios'] = $sub_comentarios;
     }
     return $dados_comentario;
+  }
+
+  private function converterData($str_data) {
+    $traducao_mes = array(
+      'Janeiro' => '1'
+      , 'Fevereiro' => '2'
+      , 'Março' => '3'
+      , 'Abril' => '4'
+      , 'Maio' => '5'
+      , 'Junho' => '6'
+      , 'Julho' => '7'
+      , 'Agosto' => '8'
+      , 'Setembro' => '9'
+      , 'Outubro' => '10'
+      , 'Novembro' => '11'
+      , 'Dezembro' => '12'
+    );
+    $separated_values = preg_split("/ (de|às) /", $str_data);
+    $composed_value = $separated_values[0] . '-' . $traducao_mes[$separated_values[1]] . '-' . $separated_values[2] . ' ' . $separated_values[3] . '';
+    
+    return $composed_value;
   }
 
   private function salvarArquivo($url) {
