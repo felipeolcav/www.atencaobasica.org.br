@@ -63,7 +63,7 @@ class CrawlerForumComunidade {
 
     $pagina_comunidades = $this->fazerRequisicaoWeb(self::URL_COMUNIDADES);
 
-    //foreach (@qp($pagina_comunidades, 'div.cop_listing_item', array('ignore_parser_warnings' => TRUE)) as $div_comunidade) {//total de 1831 itens
+    //foreach (@qp($pagina_comunidades, 'div.cop_listing_item', array('ignore_parser_warnings' => TRUE)) as $div_comunidade) {//em torno de 5 mil (não lembro direito)
     foreach (@qp($pagina_comunidades, 'div#cop_todas div.cop_listing_item', array('ignore_parser_warnings' => TRUE)) as $div_comunidade) {//total de 1831 itens
 
       $dados_comunidade = array();
