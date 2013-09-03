@@ -41,6 +41,7 @@ function dab_migracao_migrate_api() {
         'dependencies' => array(
           'grupoUsuario',
           'Comunidades',
+          'TopicosForum',
         ),
       ),
     ),

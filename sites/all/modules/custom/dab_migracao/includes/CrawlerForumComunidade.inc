@@ -63,16 +63,20 @@ class CrawlerForumComunidade {
 
     $pagina_comunidades = $this->fazerRequisicaoWeb(self::URL_COMUNIDADES);
 
-    foreach (@qp($pagina_comunidades, '.cop_listing_item', array('ignore_parser_warnings' => TRUE)) as $div_comunidade) {
-      $this->count_comunidades++;
-      print_r("\n\n\t--Índice Comunidade : " . $this->count_comunidades);
+    //foreach (@qp($pagina_comunidades, 'div.cop_listing_item', array('ignore_parser_warnings' => TRUE)) as $div_comunidade) {//total de 1831 itens
+    foreach (@qp($pagina_comunidades, 'div#cop_todas div.cop_listing_item', array('ignore_parser_warnings' => TRUE)) as $div_comunidade) {//total de 1831 itens
 
       $dados_comunidade = array();
 
-      $link_comunidade = htmlqp($div_comunidade, '.cop_listing_text > a');
+      $link_comunidade = htmlqp($div_comunidade, '>div.cop_listing_text > a');
       $dados_comunidade['url'] = $link_comunidade->attr("href");
       $dados_comunidade['id'] = end(split("/", $dados_comunidade['url']));
       $dados_comunidade['url'] .= '/forum';
+
+      
+      $this->count_comunidades++;
+      print_r("\n\n\t--Índice Comunidade : " . $this->count_comunidades);
+
 
       $pagina_foruns_comunidade = $this->fazerRequisicaoWeb($dados_comunidade['url']);
 
@@ -288,7 +292,7 @@ class CrawlerForumComunidade {
     $comentario->appendChild($xml_element);
     //--------------------------------------------------------------------------
 
-    $this->doc_comentarios->appendChild($comentario);
+    $this->root_comentarios->appendChild($comentario);
 
     $this->doc_comentarios->formatOutput = TRUE;
     $this->doc_comentarios->save($this->arquivo_comentarios);
@@ -302,13 +306,13 @@ class CrawlerForumComunidade {
 
     $dados_comentario = array();
     $dados_comentario['pai_id'] = $comentario_pai['id'];
-    
-    
+
+
 
     $div_comment = @qp($li, '>div.boardComment', array('ignore_parser_warnings' => TRUE));
     $div_details = @qp($div_comment, '>div.boardCommentDetails', array('ignore_parser_warnings' => TRUE));
     $dados_comentario['id'] = $div_details->attr('name');
-    
+
 
 
     $div_header = htmlqp($div_comment->html(), 'div.boardCommentDetails > div.boardCommentHeaderTitleBlock');
@@ -380,11 +384,11 @@ class CrawlerForumComunidade {
       , 'Dezembro' => '12'
     );
     $separated_values = preg_split("/ (de|às) /", $str_data);
-    if(count($separated_values) != 4){
+    if (count($separated_values) != 4) {
       return NULL;
     }
     $composed_value = $separated_values[0] . '-' . $traducao_mes[$separated_values[1]] . '-' . $separated_values[2] . ' ' . $separated_values[3];
-    
+
     return $composed_value;
   }
 
