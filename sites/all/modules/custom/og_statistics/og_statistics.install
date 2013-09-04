@@ -1,0 +1,132 @@
+<?php
+// $Id: og_statistics.install$
+
+/**
+ * @file
+ *   Installs the og_statistics module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function og_statistics_schema() {
+  $schema['og_statistics'] = array(
+    'description' => 'Saves some statistics foreach group',
+    'fields' => array(
+      'nid' => array(
+        'description' => "The groups's {node}.nid.",
+        'type' => 'int',
+        'size' => 'normal',
+        'not null' => TRUE,
+      ),
+    'gid' => array(
+      'description' => "The group's gid",
+    'type' => 'int',
+    'size' => 'normal',
+    'not null' => TRUE,
+    ),
+      'members_count' => array(
+        'description' => 'How many members has a group',
+        'type' => 'int',
+        'size' => 'normal',
+        'not null' => TRUE,
+      ),
+      'content_count' => array(
+        'description' => 'How many posts has a group',
+        'type' => 'int',
+        'size' => 'normal',
+        'not null' => TRUE,
+      ),
+      'comments_count' => array(
+        'description' => 'How many comments has a group',
+        'type' => 'int',
+        'size' => 'normal',
+        'not null' => TRUE,
+      ),
+      'last_activity' => array(
+        'description' => 'Last Time of activity.',
+        'type' => 'int',
+        'size' => 'normal',
+        'not null' => FALSE,
+        'default' => 0,
+      ),
+      'last_node_timestamp' => array(
+        'description' => 'Last Time when a in the group was created.',
+        'type' => 'int',
+        'size' => 'normal',
+        'not null' => FALSE,
+        'default' => 0,
+      ),
+      'last_comment_timestamp' => array(
+        'description' => 'Last Time when a comment in the group was created.',
+        'type' => 'int',
+        'size' => 'normal',
+        'not null' => FALSE,
+        'default' => 0,
+      ),
+      'last_member_timestamp' => array(
+        'description' => 'Last Time when a user joins a group.',
+        'type' => 'int',
+        'size' => 'normal',
+        'not null' => FALSE,
+        'default' => 0,
+      ),
+      'last_comment_uid' => array(
+        'description' => 'Last {users}.uid to post a comment in a group.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => 0,
+      ),
+      'last_comment_nid' => array(
+        'description' => 'Node the last comment was posted to in a group.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => 0,
+      ),
+      'last_comment_cid' => array(
+        'description' => '{comments}.cid of the last comment in a group.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => 0,
+      ),
+      'last_node_nid' => array(
+        'description' => 'Last {node}.nid posted to a group.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => 0,
+      ),
+      'last_node_uid' => array(
+        'description' => '{users}.uid of the last node posted to a group.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => 0,
+      ),
+      'last_member_uid' => array(
+        'description' => '{users}.uid of the last user to join a group.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('nid'),
+  
+  );
+
+  $field_og_group_ref = field_info_field('og_group_ref');
+  foreach ($field_og_group_ref['bundles']['node'] as $bundle) {
+    $schema['og_statistics']['fields'][$bundle . '_count'] = array(
+      'description' => 'How many posts from this bundle does the group have',
+      'type' => 'int',
+      'size' => 'normal',
+      'not null' => TRUE,
+    );
+  }
+
+  return $schema;
+}
