@@ -38,12 +38,10 @@ h2#page-title {
 .pane-title {
   font-size: 17px;
   font-weight: bold;
-  text-transform: uppercase;
-  border-bottom: 2px solid #000;
+  border-bottom: 2px solid #13aef3;
   padding: 15px 5px 15px 5px;
   line-height: 1.2em;
   margin-bottom: 0.85em;
-
 }
 
 .panels-ipe-portlet-content {
@@ -262,9 +260,6 @@ section.pane-user-login {
 .region-three-33-top section.pane-node {
   font-size: 16px;
   @include border-radius(8px);
-  .pane-title {
-    text-transform: none;
-  }
 
 }
 
@@ -279,5 +274,15 @@ section.pane-user-login {
   }
 }
 
+/* barra lateral direita */
+.two-66-33 .region-two-66-33-second {
 
+  /* blocos na barra lateral direita */
+  section.block{
+
+    .pane-title{
+      color: #696969;
+    }
+  }
+}
 
