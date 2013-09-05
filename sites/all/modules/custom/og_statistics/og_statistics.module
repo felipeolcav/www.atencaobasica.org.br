@@ -1,0 +1,168 @@
+<?php
+
+// $Id: og_statistics.module$
+
+/**
+ * @file
+ * Adds fields to group type content with counter statistics.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function og_statistics_menu() {
+  $items = array();
+  $items['admin/config/group/statistics'] = array(
+    'title' => 'Organic Groups Statistics',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('og_statistics_settings'),
+    'access arguments' => array('administer organic groups'),
+    'file' => 'og_statistics.admin.inc',
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['admin/reports/og_statistics'] = array(
+    'title' => 'Organic Groups Statistics',
+    'page callback' => 'og_statistics_overview',
+    'access arguments' => array('administer organic groups'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+function og_statistics_overview() {
+  
+  $gids = OgStatistics::getListOfGroupIds();
+  $groups = OgStatistics::getStatisticsForGroupsList($gids);
+
+  $header = array(
+    t('Title'),
+    t('Members'),
+    t('Content'),
+    t('Comments')
+  );
+
+  $node_types = node_type_get_names();
+
+  $field_og_group_ref = field_info_field('og_group_ref');
+  foreach ($field_og_group_ref['bundles']['node'] as $bundle) {
+    $header[] = $node_types[$bundle];
+  }
+
+  $rows = array();
+  $totals = array(
+    'members' => 0,
+    'contents' => 0,
+    'comments' => 0
+  );
+
+  foreach ($groups as $group) {
+    $node = node_load($group->nid);
+    $new_row = array(
+      l($node->title, 'node/' . $node->nid),
+      $group->members_count,
+      $group->content_count,
+      $group->comments_count,
+    );
+
+    $totals['contents'] += $group->content_count;
+    $totals['comments'] += $group->comments_count;
+
+    $field_og_group_ref = field_info_field('og_group_ref');
+    foreach ($field_og_group_ref['bundles']['node'] as $bundle) {
+      $new_row[] = $group->{$bundle . '_count'};
+    }
+
+    $rows[] = $new_row;
+  }
+  $detailed = theme('table', array('rows' => $rows, 'header' => $header));
+
+  $overview_data = array(
+    array(t('Groups'), count($groups)),
+    array(t('Content'), $totals['contents']),
+    array(t('Comments'), $totals['comments'])
+  );
+  $overview = theme('table', array('rows' => $overview_data, 'caption' => t('Groups summary')));
+
+  return $overview . '<hr/>' . $detailed;
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function og_statistics_views_api() {
+  return array(
+    'api' => '3.0-alpha1',
+  );
+}
+
+/**
+ * Implements hook_entity_insert().
+ */
+function og_statistics_entity_insert($entity, $type) {
+
+  switch ($type) {
+
+    case 'user':
+      // TODO
+    break;
+
+    case 'node':
+      OgStatisticsNode::hook_node_insert($entity);
+    break;
+
+    case 'og_membership':
+      if ($entity->field_name == 'og_user_node') {
+        OgStatisticsUser::insertIntoGroup($account);
+      }
+    break;
+
+  }
+}
+
+/**
+ * Implements hook_entity_update().
+ */
+function og_statistics_entity_update($entity, $type) {
+
+  switch ($type) {
+
+    case 'user':
+      // TODO
+    break;
+
+    case 'node':
+      OgStatisticsNode::hook_node_insert($entity);
+    break;
+
+    case 'og_membership':
+      if ($entity->field_name == 'og_user_node') {
+        OgStatisticsUser::hook_user_insert($account);
+      }
+    break;
+
+  }
+}
+
+/**
+ * Implements hook_entity_delete().
+ */
+function og_statistics_entity_delete($entity, $type) {
+
+  switch ($type) {
+
+    case 'user':
+      // TODO
+    break;
+
+    case 'node':
+      OgStatisticsNode::hook_node_delete($entity);
+    break;
+
+    case 'og_membership':
+      if ($entity->field_name == 'og_user_node') {
+        OgStatisticsUser::hook_user_delete($account);
+      }
+    break;
+
+  }
+}

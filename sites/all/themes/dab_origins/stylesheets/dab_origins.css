@@ -111,21 +111,25 @@
   width: 570px;
 }
 
-/* line 2, ../sass/_front_page.scss */
+/**
+ * Estilos para aplicar apenas na home do sistema
+ *
+ */
+/* line 5, ../sass/_front_page.scss */
 body.front.not-logged-in {
   /* Bloco destacado */
   /* css do bloco de informação na home de usuário deslogado */
   /* Bloco de destaques - featured */
   /* BLoco de atividades */
 }
-/* line 6, ../sass/_front_page.scss */
+/* line 9, ../sass/_front_page.scss */
 body.front.not-logged-in #block-system-main .pane-1 {
   padding-left: 100px;
   background: url("../images/bussola-icone.png") no-repeat scroll 15px;
   margin-bottom: 0px;
   min-height: 70px;
 }
-/* line 11, ../sass/_front_page.scss */
+/* line 14, ../sass/_front_page.scss */
 body.front.not-logged-in #block-system-main .pane-1 .pane-title {
   font-size: 26px;
   margin: 0px;
@@ -133,25 +137,25 @@ body.front.not-logged-in #block-system-main .pane-1 .pane-title {
   border: 0px;
   color: #02669d;
 }
-/* line 18, ../sass/_front_page.scss */
+/* line 21, ../sass/_front_page.scss */
 body.front.not-logged-in #block-system-main .pane-1 .block-content {
   color: #bbbaba;
 }
-/* line 22, ../sass/_front_page.scss */
+/* line 25, ../sass/_front_page.scss */
 body.front.not-logged-in #block-system-main .pane-1 div.block-inner:after {
   display: block;
 }
-/* line 28, ../sass/_front_page.scss */
+/* line 31, ../sass/_front_page.scss */
 body.front.not-logged-in .region-three-33-second {
   padding-right: 0px;
   margin-right: 0px;
 }
-/* line 33, ../sass/_front_page.scss */
+/* line 36, ../sass/_front_page.scss */
 body.front.not-logged-in .region .region-three-33-third {
   padding-left: 0px;
   margin-left: 0px;
 }
-/* line 39, ../sass/_front_page.scss */
+/* line 42, ../sass/_front_page.scss */
 body.front.not-logged-in .pane-views-panes.pane-commons-featured-panel-pane-1 {
   padding-right: 15px;
   margin-right: 0px;
@@ -161,11 +165,11 @@ body.front.not-logged-in .pane-views-panes.pane-commons-featured-panel-pane-1 {
   -o-border-radius: 8px 0px 0px 8px;
   border-radius: 8px 0px 0px 8px;
 }
-/* line 43, ../sass/_front_page.scss */
+/* line 46, ../sass/_front_page.scss */
 body.front.not-logged-in .pane-views-panes.pane-commons-featured-panel-pane-1 .pane-title {
   text-decoration: none;
 }
-/* line 48, ../sass/_front_page.scss */
+/* line 51, ../sass/_front_page.scss */
 body.front.not-logged-in .region-three-33-third section {
   padding-left: 15px;
   margin-left: 0px;
@@ -175,7 +179,7 @@ body.front.not-logged-in .region-three-33-third section {
   -o-border-radius: 0px 8px 8px 0px;
   border-radius: 0px 8px 8px 0px;
 }
-/* line 56, ../sass/_front_page.scss */
+/* line 59, ../sass/_front_page.scss */
 body.front.not-logged-in .region-three-33-second section,
 body.front.not-logged-in .region-three-33-third section,
 body.front.not-logged-in .pane-user-login {
@@ -183,19 +187,19 @@ body.front.not-logged-in .pane-user-login {
   padding: 10px 25px;
   font-size: 13px;
 }
-/* line 60, ../sass/_front_page.scss */
+/* line 63, ../sass/_front_page.scss */
 body.front.not-logged-in .region-three-33-second section .pane-title,
 body.front.not-logged-in .region-three-33-third section .pane-title,
 body.front.not-logged-in .pane-user-login .pane-title {
   margin-bottom: 20px;
 }
-/* line 64, ../sass/_front_page.scss */
+/* line 67, ../sass/_front_page.scss */
 body.front.not-logged-in .region-three-33-second section img,
 body.front.not-logged-in .region-three-33-third section img,
 body.front.not-logged-in .pane-user-login img {
   width: 35px;
 }
-/* line 68, ../sass/_front_page.scss */
+/* line 71, ../sass/_front_page.scss */
 body.front.not-logged-in .region-three-33-second section .views-row,
 body.front.not-logged-in .region-three-33-third section .views-row,
 body.front.not-logged-in .pane-user-login .views-row {
@@ -203,50 +207,50 @@ body.front.not-logged-in .pane-user-login .views-row {
   padding-bottom: 0.7em;
   margin-bottom: 0.7em;
 }
-/* line 75, ../sass/_front_page.scss */
+/* line 78, ../sass/_front_page.scss */
 body.front.not-logged-in .pane-views-panes > div {
   padding: 0px;
 }
-/* line 80, ../sass/_front_page.scss */
+/* line 83, ../sass/_front_page.scss */
 body.front.not-logged-in .region-three-33-second section {
   color: #c0392b;
   font-weight: bold;
   border-right: 0px;
 }
-/* line 85, ../sass/_front_page.scss */
+/* line 88, ../sass/_front_page.scss */
 body.front.not-logged-in .region-three-33-second section .pane-title {
   color: #c0392b;
   border-color: #c0392b;
   padding-left: 40px;
   background: url("../images/destaques.png") no-repeat scroll 5px;
 }
-/* line 92, ../sass/_front_page.scss */
+/* line 95, ../sass/_front_page.scss */
 body.front.not-logged-in .region-three-33-second section a {
   color: #c0392b;
   font-weight: bold;
 }
-/* line 95, ../sass/_front_page.scss */
+/* line 98, ../sass/_front_page.scss */
 body.front.not-logged-in .region-three-33-second section a:hover {
   color: blue;
 }
-/* line 103, ../sass/_front_page.scss */
+/* line 106, ../sass/_front_page.scss */
 body.front.not-logged-in .region-three-33-third section {
   color: #16a085;
   font-weight: bold;
   border-left: 0px;
 }
-/* line 107, ../sass/_front_page.scss */
+/* line 110, ../sass/_front_page.scss */
 body.front.not-logged-in .region-three-33-third section .pane-title {
   color: #16a085;
   border-color: #16a085;
   padding-left: 40px;
   background: url("../images/atualizar.png") no-repeat scroll 5px;
 }
-/* line 115, ../sass/_front_page.scss */
+/* line 118, ../sass/_front_page.scss */
 body.front.not-logged-in .region-three-33-third section a {
   color: #16a085;
 }
-/* line 118, ../sass/_front_page.scss */
+/* line 121, ../sass/_front_page.scss */
 body.front.not-logged-in .region-three-33-third section a:hover {
   color: blue;
 }
@@ -272,14 +276,13 @@ h2#page-title {
 .pane-title {
   font-size: 17px;
   font-weight: bold;
-  text-transform: uppercase;
-  border-bottom: 2px solid black;
+  border-bottom: 2px solid #13aef3;
   padding: 15px 5px 15px 5px;
   line-height: 1.2em;
   margin-bottom: 0.85em;
 }
 
-/* line 67, ../sass/dab_origins.scss */
+/* line 65, ../sass/dab_origins.scss */
 .commons-pod,
 .region-three-33-first section,
 .page-user .pane-views-panes,
@@ -307,22 +310,22 @@ body.front.logged-in #views-exposed-form-commons-homepage-content-panel-pane-1 .
   box-shadow: 0 0 0 0 transparent;
 }
 
-/* line 74, ../sass/dab_origins.scss */
+/* line 72, ../sass/dab_origins.scss */
 .general-settings.commons-pod > .commons-pod {
   padding: 20px 15px;
 }
-/* line 76, ../sass/dab_origins.scss */
+/* line 74, ../sass/dab_origins.scss */
 .general-settings.commons-pod > .commons-pod .fieldset-outer-wrapper {
   margin-bottom: 10px;
 }
 
-/* line 81, ../sass/dab_origins.scss */
+/* line 79, ../sass/dab_origins.scss */
 div.entity-message .user-picture {
   float: left;
   margin-right: 10px;
 }
 
-/* line 90, ../sass/dab_origins.scss */
+/* line 88, ../sass/dab_origins.scss */
 .view-commons-radioactivity-groups-most-active .type-Pergunta:before,
 .view-commons-groups-recent-content .type-type-Pergunta:before,
 .view-commons-radioactivity-groups-active-in-group .type-Pergunta:before,
@@ -339,7 +342,7 @@ div.entity-message .user-picture {
   margin-right: 6px;
 }
 
-/* line 102, ../sass/dab_origins.scss */
+/* line 100, ../sass/dab_origins.scss */
 .view-commons-radioactivity-groups-most-active .type-Enquete:before,
 .view-commons-groups-recent-content .type-Enquete:before,
 .view-commons-radioactivity-groups-active-in-group .type-Enquete:before {
@@ -353,56 +356,56 @@ div.entity-message .user-picture {
   margin-right: 6px;
 }
 
-/* line 113, ../sass/dab_origins.scss */
+/* line 111, ../sass/dab_origins.scss */
 .main-menu-comunidades a {
   background: url("../images/icons/icon-groups.png") no-repeat center 10px;
 }
 
-/* line 116, ../sass/dab_origins.scss */
+/* line 114, ../sass/dab_origins.scss */
 .block-commons-utility-links {
   margin-bottom: 2px;
 }
 
-/* line 120, ../sass/dab_origins.scss */
+/* line 118, ../sass/dab_origins.scss */
 .palette-black-blue-yellow h3 {
   color: #353535;
 }
 
 /* MOSTRA IFRAME PAGE */
-/* line 126, ../sass/dab_origins.scss */
+/* line 124, ../sass/dab_origins.scss */
 #mostrasaude-iframe {
   border: none;
 }
 
-/* line 129, ../sass/dab_origins.scss */
+/* line 127, ../sass/dab_origins.scss */
 .main-menu-mostra a {
   background: url("../images/marca_ivmostra.png") no-repeat center 10px;
 }
 
-/* line 132, ../sass/dab_origins.scss */
+/* line 130, ../sass/dab_origins.scss */
 body.page-mostra div#page-top {
   display: none;
 }
 
 /* footer */
-/* line 139, ../sass/dab_origins.scss */
+/* line 137, ../sass/dab_origins.scss */
 #footer-logos {
   text-align: center;
 }
-/* line 143, ../sass/dab_origins.scss */
+/* line 141, ../sass/dab_origins.scss */
 #footer-logos img {
   height: 36px;
   border: 2px solid transparent;
 }
-/* line 147, ../sass/dab_origins.scss */
+/* line 145, ../sass/dab_origins.scss */
 #footer-logos a {
   padding: 3px;
 }
-/* line 149, ../sass/dab_origins.scss */
+/* line 147, ../sass/dab_origins.scss */
 #footer-logos a:hover img {
   border-color: blue;
 }
-/* line 154, ../sass/dab_origins.scss */
+/* line 152, ../sass/dab_origins.scss */
 #footer-logos #logos {
   padding: 25px;
   background-color: #e1e1e1;
@@ -412,22 +415,22 @@ body.page-mostra div#page-top {
   -o-border-radius: 8px;
   border-radius: 8px;
 }
-/* line 159, ../sass/dab_origins.scss */
+/* line 157, ../sass/dab_origins.scss */
 #footer-logos #cc-logo {
   margin-top: -20px;
 }
-/* line 161, ../sass/dab_origins.scss */
+/* line 159, ../sass/dab_origins.scss */
 #footer-logos #cc-logo img {
   height: 35px;
 }
 
-/* line 168, ../sass/dab_origins.scss */
+/* line 166, ../sass/dab_origins.scss */
 .pane-commons-groups-commons-groups-create-group {
   position: relative;
 }
 
 /* css do bloco branco na página do usuário */
-/* line 178, ../sass/dab_origins.scss */
+/* line 176, ../sass/dab_origins.scss */
 .node-destacado-top,
 .region-three-33-top section.pane-node,
 .region-three-33-first section,
@@ -444,22 +447,22 @@ body.page-mostra div#page-top {
 }
 
 /* USER LOGIN BLOCK */
-/* line 188, ../sass/dab_origins.scss */
+/* line 186, ../sass/dab_origins.scss */
 section.pane-user-login {
   background-color: white;
 }
-/* line 191, ../sass/dab_origins.scss */
+/* line 189, ../sass/dab_origins.scss */
 section.pane-user-login h3 {
   color: #02669d;
   border-color: #02669d;
   padding-left: 40px;
   background: url("../images/cadeado.png") no-repeat scroll 5px;
 }
-/* line 198, ../sass/dab_origins.scss */
+/* line 196, ../sass/dab_origins.scss */
 section.pane-user-login label {
   display: none;
 }
-/* line 203, ../sass/dab_origins.scss */
+/* line 201, ../sass/dab_origins.scss */
 section.pane-user-login input#edit-name,
 section.pane-user-login input#edit-pass {
   -moz-box-sizing: border-box;
@@ -468,28 +471,28 @@ section.pane-user-login input#edit-pass {
   padding-right: 50px;
   font-weight: bold;
 }
-/* line 210, ../sass/dab_origins.scss */
+/* line 208, ../sass/dab_origins.scss */
 section.pane-user-login input#edit-name:focus, section.pane-user-login input#edit-name:hover,
 section.pane-user-login input#edit-pass:focus,
 section.pane-user-login input#edit-pass:hover {
   font-weight: normal;
   background-color: white;
 }
-/* line 219, ../sass/dab_origins.scss */
+/* line 217, ../sass/dab_origins.scss */
 section.pane-user-login input#edit-name,
 section.pane-user-login input#edit-pass,
 section.pane-user-login input#edit-submit {
   width: 100%;
 }
-/* line 223, ../sass/dab_origins.scss */
+/* line 221, ../sass/dab_origins.scss */
 section.pane-user-login input#edit-name {
   background: url("../images/icons/people-icon.png") #e1e1e1 right center no-repeat scroll;
 }
-/* line 226, ../sass/dab_origins.scss */
+/* line 224, ../sass/dab_origins.scss */
 section.pane-user-login input#edit-pass {
   background: url("../images/icons/cadeado-aberto-icon.png") #e1e1e1 right center no-repeat scroll;
 }
-/* line 230, ../sass/dab_origins.scss */
+/* line 228, ../sass/dab_origins.scss */
 section.pane-user-login input#edit-submit {
   padding: 15px;
   text-transform: uppercase;
@@ -504,27 +507,27 @@ section.pane-user-login input#edit-submit {
   border-radius: 8px;
   font-size: 1.2em;
 }
-/* line 241, ../sass/dab_origins.scss */
+/* line 239, ../sass/dab_origins.scss */
 section.pane-user-login input#edit-submit:focus, section.pane-user-login input#edit-submit:hover {
   background-color: #1089cb;
   box-shadow: 2px 2px 5px #cccccc;
 }
-/* line 245, ../sass/dab_origins.scss */
+/* line 243, ../sass/dab_origins.scss */
 section.pane-user-login input#edit-submit:active {
   background-color: #004063;
 }
-/* line 250, ../sass/dab_origins.scss */
+/* line 248, ../sass/dab_origins.scss */
 section.pane-user-login ul {
   padding: 10px 0px;
 }
-/* line 252, ../sass/dab_origins.scss */
+/* line 250, ../sass/dab_origins.scss */
 section.pane-user-login ul li {
   padding: 3px 0px;
   list-style: none;
   margin: 0px;
 }
 
-/* line 262, ../sass/dab_origins.scss */
+/* line 260, ../sass/dab_origins.scss */
 .node-destacado-top,
 .region-three-33-top section.pane-node {
   font-size: 16px;
@@ -534,21 +537,26 @@ section.pane-user-login ul li {
   -o-border-radius: 8px;
   border-radius: 8px;
 }
-/* line 265, ../sass/dab_origins.scss */
-.node-destacado-top .pane-title,
-.region-three-33-top section.pane-node .pane-title {
-  text-transform: none;
-}
 
-/* line 271, ../sass/dab_origins.scss */
+/* line 266, ../sass/dab_origins.scss */
 .node-destacado-top {
   background: url("../images/pessoa.png") #e1e1e1 no-repeat scroll 15px;
   padding: 10px 20px 0px 120px;
   margin-bottom: 30px;
 }
-/* line 275, ../sass/dab_origins.scss */
+/* line 270, ../sass/dab_origins.scss */
 .node-destacado-top .pane-title {
   margin: 0px;
   padding: 10px 0 5px 0px;
   border: 0px;
+}
+
+/* barra lateral direita */
+/* line 278, ../sass/dab_origins.scss */
+.two-66-33 .region-two-66-33-second {
+  /* blocos na barra lateral direita */
+}
+/* line 283, ../sass/dab_origins.scss */
+.two-66-33 .region-two-66-33-second section.block .pane-title {
+  color: #696969;
 }

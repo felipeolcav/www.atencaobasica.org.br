@@ -1,0 +1,13 @@
+; $Id: og_statistics.info$
+name = Organic groups statistics
+description = "Enable statistics for organic groups."
+package = "Organic groups"
+dependencies[] = og
+dependencies[] = og_views
+core = 7.x
+files[] = includes/OgStatistics.php
+files[] = includes/OgStatisticsUser.php
+files[] = includes/OgStatisticsNode.php
+files[] = includes/OgStatisticsComment.php
+files[] = og_statistics.install
+files[] = og_statistics.module

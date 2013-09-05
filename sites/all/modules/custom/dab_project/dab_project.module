@@ -111,7 +111,13 @@ function dab_project_panels_pane_content_alter($content, $pane, $args, $context)
   // traduzir todos os títulos de panels
   if ( isset($content->title) ) {
 
-    $content->title = t($content->title);
+    if( $content->delta == 'commons_groups_user_groups-panel_pane_1' ){
+      $content->title = t('Contributes in the groups ');
+    } else {
+      $content->title = t($content->title);
+    }
+
+
   }
   return $content;
 }
