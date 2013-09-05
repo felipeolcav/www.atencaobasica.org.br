@@ -10,6 +10,35 @@
 function dab_relatos_field_default_field_bases() {
   $field_bases = array();
 
+  // Exported field_base: 'comment_body'
+  $field_bases['comment_body'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(
+      0 => 'comment',
+    ),
+    'field_name' => 'comment_body',
+    'foreign keys' => array(
+      'format' => array(
+        'columns' => array(
+          'format' => 'format',
+        ),
+        'table' => 'filter_format',
+      ),
+    ),
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'text_long',
+  );
+
   // Exported field_base: 'field_descricao'
   $field_bases['field_descricao'] = array(
     'active' => 1,
@@ -37,20 +66,38 @@ function dab_relatos_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_endereco'
-  $field_bases['field_endereco'] = array(
+  // Exported field_base: 'field_envolve_quais_pontos_equip'
+  $field_bases['field_envolve_quais_pontos_equip'] = array(
     'active' => 1,
-    'cardinality' => 1,
+    'cardinality' => 10,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_endereco',
-    'foreign keys' => array(),
-    'indexes' => array(),
+    'field_name' => 'field_envolve_quais_pontos_equip',
+    'foreign keys' => array(
+      'tid' => array(
+        'columns' => array(
+          'tid' => 'tid',
+        ),
+        'table' => 'taxonomy_term_data',
+      ),
+    ),
+    'indexes' => array(
+      'tid' => array(
+        0 => 'tid',
+      ),
+    ),
     'locked' => 0,
-    'module' => 'addressfield',
-    'settings' => array(),
+    'module' => 'taxonomy',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => array(
+          'vocabulary' => 'experi_ncia_envolve_quais_pontos_equipes_da_rede',
+          'parent' => 0,
+        ),
+      ),
+    ),
     'translatable' => 0,
-    'type' => 'addressfield',
+    'type' => 'taxonomy_term_reference',
   );
 
   // Exported field_base: 'field_exp_info_a'
@@ -437,42 +484,6 @@ function dab_relatos_field_default_field_bases() {
     'settings' => array(),
     'translatable' => 0,
     'type' => 'text_long',
-  );
-
-  // Exported field_base: 'field_experiencia_pontosequipes'
-  $field_bases['field_experiencia_pontosequipes'] = array(
-    'active' => 1,
-    'cardinality' => -1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_experiencia_pontosequipes',
-    'foreign keys' => array(),
-    'indexes' => array(
-      'value' => array(
-        0 => 'value',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'list',
-    'settings' => array(
-      'allowed_values' => array(
-        0 => 'Unidade Básica de Saúde / saúde da família',
-        1 => 'Núcleo de Apoio à Saúde da Família',
-        2 => 'Academia da Saúde',
-        3 => 'Consultório na Rua',
-        4 => 'Equipe de Atenção Domiciliar',
-        5 => 'Ambulatório de Especialidades',
-        6 => 'Rede de Atenção Psicossocial',
-        7 => 'Centros de Convivência / Centros Comunitários',
-        8 => 'Rede intersetorial',
-        9 => 'Rede de Urgência e Emergência',
-        10 => 'Escola',
-        11 => 'Outros',
-      ),
-      'allowed_values_function' => '',
-    ),
-    'translatable' => 0,
-    'type' => 'list_integer',
   );
 
   // Exported field_base: 'field_field_exp_info_b'
