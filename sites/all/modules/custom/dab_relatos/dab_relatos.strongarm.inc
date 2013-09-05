@@ -35,7 +35,7 @@ function dab_relatos_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_experiencia';
-  $strongarm->value = '1';
+  $strongarm->value = '2';
   $export['comment_experiencia'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -96,13 +96,13 @@ function dab_relatos_strongarm() {
           'weight' => '64',
         ),
         'path' => array(
-          'weight' => '4',
+          'weight' => '5',
         ),
         'xmlsitemap' => array(
           'weight' => '65',
         ),
         'redirect' => array(
-          'weight' => '6',
+          'weight' => '7',
         ),
       ),
       'display' => array(),
@@ -137,6 +137,7 @@ function dab_relatos_strongarm() {
   $strongarm->name = 'node_options_experiencia';
   $strongarm->value = array(
     0 => 'status',
+    1 => 'promote',
   );
   $export['node_options_experiencia'] = $strongarm;
 
@@ -151,7 +152,7 @@ function dab_relatos_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'node_submitted_experiencia';
-  $strongarm->value = 0;
+  $strongarm->value = 1;
   $export['node_submitted_experiencia'] = $strongarm;
 
   return $export;

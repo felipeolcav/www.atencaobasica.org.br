@@ -93,7 +93,27 @@ function dab_relatos_form_experiencia_node_form_alter(&$form, &$form_state) {
 
   }
 
+  $form['field_estado']['#access'] = false;
+  $form['#validate'][] = '_dab_relatos_cidade_estado_autoselect';
+
 }
+
+/**
+ * Mecanismo de selecionar o estado de acordo com a cidade
+ * @param $form
+ * @param $form_state
+ */
+function _dab_relatos_cidade_estado_autoselect(&$form, &$form_state) {
+
+  // muda os valores do field_estado com a sigla no field_cidade.
+  if( !empty( $form_state['values']['field_cidade']['und'][0]['value'] )){
+    preg_match('#\((.*?)\)#', $form_state['values']['field_cidade']['und'][0]['value'], $match);
+    $form_state['values']['field_estado']['und'][0]['value'] = $match[1];
+
+  }
+
+}
+
 
 function _dab_relatos_comunidades_de_eixos_tematicos() {
   $termos = array();
