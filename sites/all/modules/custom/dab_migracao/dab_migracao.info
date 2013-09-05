@@ -18,4 +18,5 @@ files[] = includes/MigracaoComentariosTopicosXML.inc
 files[] = includes/MigracaoArquivosComunidadeXML.inc
 files[] = includes/MigracaoVinculoUsuarioComunidadeXML.inc
 files[] = includes/CrawlerConteudoComunidade.inc
+files[] = includes/CrawlerPaginasHTML.inc
 files[] = includes/CrawlerForumComunidade.inc

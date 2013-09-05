@@ -5,13 +5,12 @@ class CrawlerConteudoComunidade {
   const ARQUIVO_XML_OUTPUT = "./sites/all/modules/custom/dab_migracao/xml/arquivos-conteudo-comunidade.xml";
   const URL_BASE = "http://www.atencaobasica.org.br/";
   const USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; rv:8.0) Gecko/20100101 Firefox/8.0";
-//  const URL_PESQUISA = "http://www.atencaobasica.org.br/@@search?advanced_search=False&sort_on=Date&SearchableText=&portal_type%3Alist=CoPDocument&portal_type%3Alist=CoPFile&portal_type%3Alist=CoPImage&portal_type%3Alist=CoPLink&created.query%3Arecord%3Alist%3Adate=1970-01-02&created.range%3Arecord=min";
-  const URL_PESQUISA = "http://www.atencaobasica.org.br/@@search?portal_type:list=CoPDocument&portal_type:list=CoPFile&portal_type:list=CoPImage&b_start:int=0&advanced_search=False&created.query:date:list:record=1970/01/02%2000%3A00%3A00%20GMT%2B0&created.range:record=min&SearchableText=&sort_on=Date";//sem link
-
+  //const URL_PESQUISA = "http://www.atencaobasica.org.br/@@search?portal_type:list=CoPDocument&portal_type:list=CoPFile&portal_type:list=CoPImage&b_start:int=0&advanced_search=False&created.query:date:list:record=1970/01/02%2000%3A00%3A00%20GMT%2B0&created.range:record=min&SearchableText=&sort_on=Date"; //sem link
+  const URL_PESQUISA = "http://www.atencaobasica.org.br/@@search?created.query:date:list:record=1970/01/02%2000%3A00%3A00%20GMT%2B0&created.range:record=min&advanced_search=False&SearchableText=&portal_type:list=CoPFile&portal_type:list=CoPImage&sort_on=Date&sort_order=reverse&b_start:int=0"; //sem link e sem página
 
   private $username;
   private $password;
-  private $count_item;
+  private $count_itens_processados;
   private $count_pagina;
   private $doc;
   private $root;
@@ -35,7 +34,7 @@ class CrawlerConteudoComunidade {
     $this->doc->appendChild($this->root);
 
     $url_pagina_corrente = self::URL_PESQUISA;
-    $this->count_item = 0;
+    $this->count_itens_processados = 0;
     $this->count_pagina = 0;
 
     while (!empty($url_pagina_corrente)) {
@@ -64,7 +63,7 @@ class CrawlerConteudoComunidade {
 
           if (preg_match('/\<dt.*\>/', $item_html)) {
             if (isset($elemento_corrente)) {
-              $this->count_item++;
+              $this->count_itens_processados++;
               $this->inserirElementoNoXML($elemento_corrente);
               $elemento_corrente = NULL;
             }
@@ -74,7 +73,11 @@ class CrawlerConteudoComunidade {
 
             $img_icone_arquivo = htmlqp($item_html, 'img');
             $tipo_arquivo = $this->extrairTipo($img_icone_arquivo);
+
             $caminho_completo_arquivo = $this->salvarArquivo($link_href, $tipo_arquivo);
+            if ($caminho_completo_arquivo == NULL) {
+              continue; //nesse momento: $elemento_corrente = NULL;
+            }
 
 
             preg_match('/.*\/comunidades\/([^\/]*)\/.*/', $link_href, $match);
@@ -96,29 +99,31 @@ class CrawlerConteudoComunidade {
             );
           }
           elseif (preg_match('/\<dd.*\>/', $item_html)) {
-            $div_descricao = htmlqp($item_html, 'div');
-            if (count($div_descricao->html()) > 0) {
-              $elemento_corrente['descricao'] = $div_descricao->text();
-            }
+            if (isset($elemento_corrente)) {
+              $div_descricao = htmlqp($item_html, 'div');
+              if (count($div_descricao->html()) > 0) {
+                $elemento_corrente['descricao'] = $div_descricao->text();
+              }
 
-            $link_autor = htmlqp($item_html, 'span.discreet span.documentAuthor a');
-            if (count($link_autor->html()) > 0) {
-              $url_email = $link_autor->attr("href");
-              $elemento_corrente['autor_email'] = end(split('/', $url_email));
-              $elemento_corrente['autor_nome'] = $link_autor->text();
-            }
+              $link_autor = htmlqp($item_html, 'span.discreet span.documentAuthor a');
+              if (count($link_autor->html()) > 0) {
+                $url_email = $link_autor->attr("href");
+                $elemento_corrente['autor_email'] = end(split('/', $url_email));
+                $elemento_corrente['autor_nome'] = $link_autor->text();
+              }
 
-            $span_data_atualizacao = htmlqp($item_html, 'span.discreet span.documentModified');
-            if (count($span_data_atualizacao->html()) > 0) {
-              $regex_extrair_data = '/.*([0-9]{2}\/[0-9]{2}\/[0-9]{4} [0-9]{2}:[0-9]{2}).*/';
-              preg_match($regex_extrair_data, $span_data_atualizacao->text(), $match);
-              $data_atualizacao = end($match);
-              $elemento_corrente['data_atualizacao'] = $data_atualizacao;
+              $span_data_atualizacao = htmlqp($item_html, 'span.discreet span.documentModified');
+              if (count($span_data_atualizacao->html()) > 0) {
+                $regex_extrair_data = '/.*([0-9]{2}\/[0-9]{2}\/[0-9]{4} [0-9]{2}:[0-9]{2}).*/';
+                preg_match($regex_extrair_data, $span_data_atualizacao->text(), $match);
+                $data_atualizacao = end($match);
+                $elemento_corrente['data_atualizacao'] = $data_atualizacao;
+              }
             }
           }
         }
         if (isset($elemento_corrente)) {
-          $this->count_item++;
+          $this->count_itens_processados++;
           $this->inserirElementoNoXML($elemento_corrente);
         }
       }
@@ -127,7 +132,7 @@ class CrawlerConteudoComunidade {
 
   private function inserirElementoNoXML($elemento) {
     print_r("\n\n--------------------------------------------------------------\n");
-    print_r("\nElementos processados: " . $this->count_item . "\n");
+    print_r("\nElementos processados: " . $this->count_itens_processados . "\n");
     print_r($elemento);
 
     $xml_item = $this->doc->createElement('item');
@@ -179,9 +184,12 @@ class CrawlerConteudoComunidade {
       }
     }
 
-    $caminho_completo_arq = $this->getCaminhoPastaArquivosComunidades() . $nome_arquivo;
+    if (preg_match('/.*\.html$/', $nome_arquivo)) {//filtro necessário porque o html ficará em outro crawler
+      print_r("\n\n######## Pulando arquivo html: " . $url);
+      return NULL;
+    }
 
-    //$caminho_final_arq = $this->processarNomeArquivo($caminho_inicial_arq);
+    $caminho_completo_arq = $this->getCaminhoPastaArquivosComunidades() . $nome_arquivo;
 
     $dirname = dirname($caminho_completo_arq);
     if (!is_dir($dirname)) {
@@ -197,46 +205,6 @@ class CrawlerConteudoComunidade {
   private function getCaminhoPastaArquivosComunidades() {
     return realpath(__DIR__ . '/..') . '/files/';
   }
-
-//  private function processarNomeArquivo($caminho_completo_original) {
-//    if (!file_exists($caminho_completo_original)) {
-//      $extensao = strrchr($caminho_completo_original, '.');
-//      $arquivo_sem_extensao = str_replace($extensao, '', $caminho_completo_original);
-//      $tamanho_final = 255 - strlen($extensao);
-//      $caminho_arquivo = substr($arquivo_sem_extensao, 0, $tamanho_final) . $extensao;
-//
-//      print_r("\n>>>>>>>>>>>>>>>>>>>>>> Alteração no nome do arquivo por causa do tamanho. Novo nome: " . $caminho_arquivo);
-//
-//      return $caminho_arquivo;
-//    }
-//
-//    $caminho_arquivo = $caminho_completo_original;
-//    $contador = 1;
-//    do {
-//      $contador++;
-//      $regex_sufixo = '(_[0-9]+)?\.'; //Exemplo: '/caminho/do/arquivo/nome.txt' => '.' ou '/caminho/do/arquivo/nome_2.txt' => '_2.'
-//      $sufixo = "_$contador.";
-//      $caminho_arquivo = preg_replace("/$regex_sufixo(?!.*$regex_sufixo)/", $sufixo, $caminho_arquivo);
-//
-//      if (strlen($caminho_arquivo) > 255) {//correção no nome do arquivo por causa do tamanho
-//        $extensao = substr(strrchr($caminho_arquivo, '.'), 1);
-//
-//        if (strpos($caminho_arquivo, $sufixo)) {
-//          $caminho_arquivo = preg_replace("/$regex_sufixo(?!.*$regex_sufixo)/", ".", $caminho_arquivo);
-//        }
-//        else {
-//          $sufixo = '.';
-//        }
-//        $caminho_arquivo = preg_replace("/\.$extensao/", "", $caminho_arquivo);
-//        $tamanho_final = 255 - strlen($sufixo) - strlen($extensao);
-//        $caminho_arquivo = substr($caminho_arquivo, 0, $tamanho_final) . $sufixo . $extensao;
-//
-//        print_r("\n>>>>>>>>>>>>>>>>>>>>>> Alteração no nome do arquivo por causa do tamanho. Novo nome: " . $caminho_arquivo);
-//      }
-//    } while (file_exists($caminho_arquivo));
-//
-//    return $caminho_arquivo;
-//  }
 
   private function fazerRequisicaoDownloadArquivo($url, $caminho_arquivo) {
     $username = urlencode($this->username);
