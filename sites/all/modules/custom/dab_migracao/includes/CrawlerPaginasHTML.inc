@@ -78,6 +78,7 @@ class CrawlerPaginasHTML {
 
           if (isset($elemento_corrente)) {
 
+            $elemento_corrente['id_link_hash'] = hash('md5', $link_href);
             $elemento_corrente['comunidade'] = $comunidade;
             $elemento_corrente['link_href'] = $link_href;
             $elemento_corrente['link_texto'] = $link->text();
@@ -209,7 +210,7 @@ class CrawlerPaginasHTML {
 
     $div_conteudo = @qp($div_cop_container, '> div#content', array('ignore_parser_warnings' => TRUE));
     $elemento['conteudo'] = $div_conteudo->html();
-    $elemento['conteudo'] = preg_replace("/^<div.*>|<\/div>$/", "", $elemento['conteudo']);
+    
 
     $elemento['comentarios'] = array();
     $div_discussao = @qp($pagina_conteudo_html, 'div.discussion', array('ignore_parser_warnings' => TRUE));

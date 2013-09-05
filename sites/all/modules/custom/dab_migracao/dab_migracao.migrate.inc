@@ -44,6 +44,13 @@ function dab_migracao_migrate_api() {
           'TopicosForum',
         ),
       ),
+      'PaginasHTML' => array(
+        'class_name' => 'MigracaoPaginasHtmlXML',
+        'dependencies' => array(
+          'grupoUsuario',
+          'Comunidades',
+        ),
+      ),
     ),
   );
   return $api;
