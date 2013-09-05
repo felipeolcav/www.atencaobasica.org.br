@@ -87,7 +87,7 @@ Use os filtros abaixo para buscar um relato
   $handler->display->display_options['fields']['field_experiencia_pontosequipes']['table'] = 'field_data_field_experiencia_pontosequipes';
   $handler->display->display_options['fields']['field_experiencia_pontosequipes']['field'] = 'field_experiencia_pontosequipes';
   $handler->display->display_options['fields']['field_experiencia_pontosequipes']['label'] = ' Envolve quais pontos / equipes da rede?';
-  /* Campo: Campo: d. Onde ocorre a experiência? */
+  /* Campo: Campo: Cidade */
   $handler->display->display_options['fields']['field_cidade']['id'] = 'field_cidade';
   $handler->display->display_options['fields']['field_cidade']['table'] = 'field_data_field_cidade';
   $handler->display->display_options['fields']['field_cidade']['field'] = 'field_cidade';
@@ -208,7 +208,7 @@ Use os filtros abaixo para buscar um relato
     4 => 0,
     5 => 0,
   );
-  /* Critério de filtragem: Campo: d. Onde ocorre a experiência? (field_cidade) */
+  /* Critério de filtragem: Campo: Cidade (field_cidade) */
   $handler->display->display_options['filters']['field_cidade_value']['id'] = 'field_cidade_value';
   $handler->display->display_options['filters']['field_cidade_value']['table'] = 'field_data_field_cidade';
   $handler->display->display_options['filters']['field_cidade_value']['field'] = 'field_cidade_value';

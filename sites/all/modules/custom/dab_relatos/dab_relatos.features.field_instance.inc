@@ -169,7 +169,7 @@ Para inserir mais de um, separe-os entre vírgulas.',
         'size' => 60,
       ),
       'type' => 'taxonomy_autocomplete',
-      'weight' => 26,
+      'weight' => 25,
     ),
   );
 
@@ -210,6 +210,47 @@ Para inserir mais de um, separe-os entre vírgulas.',
       ),
       'type' => 'options_select',
       'weight' => 28,
+    ),
+  );
+
+  // Exported field_instance: 'node-experiencia-field_exp_info_a'
+  $field_instances['node-experiencia-field_exp_info_a'] = array(
+    'bundle' => 'experiencia',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'markup',
+        'settings' => array(),
+        'type' => 'markup_default',
+        'weight' => 22,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'display_in_partial_form' => 0,
+    'entity_type' => 'node',
+    'exclude_cv' => 0,
+    'field_name' => 'field_exp_info_a',
+    'label' => 'exp_info_a',
+    'required' => 0,
+    'settings' => array(
+      'exclude_cv' => FALSE,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'markup',
+      'settings' => array(
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+      ),
+      'type' => 'markup',
+      'weight' => 63,
     ),
   );
 
@@ -613,7 +654,7 @@ Para inserir mais de um, separe-os entre vírgulas.',
     'bundle' => 'experiencia',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Durante o desenvolvimento da experiência surgiram desafios que demandaram improvisos? De quais conhecimentos, e/ou articulações lançaram mão para responder aos desafios? (máximo de 4000 caracteres com espaços)',
+    'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -640,7 +681,6 @@ Para inserir mais de um, separe-os entre vírgulas.',
     'label' => 'Desafios para o desenvolvimento',
     'required' => 0,
     'settings' => array(
-      'exclude_cv' => FALSE,
       'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
@@ -648,6 +688,11 @@ Para inserir mais de um, separe-os entre vírgulas.',
       'active' => 1,
       'module' => 'text',
       'settings' => array(
+        'label_help_description' => 'Durante o desenvolvimento da experiência surgiram desafios que demandaram improvisos? De quais conhecimentos, e/ou articulações lançaram mão para responder aos desafios? (máximo de 4000 caracteres com espaços)',
+        'maxlength_js' => '',
+        'maxlength_js_enforce' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'maxlength_js_truncate_html' => 0,
         'rows' => 5,
       ),
       'type' => 'text_textarea',
@@ -660,7 +705,7 @@ Para inserir mais de um, separe-os entre vírgulas.',
     'bundle' => 'experiencia',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Fale em termos gerais sobre o que é a experiência, detalhando mais as informações colocadas no campo "venda seu peixe". (máximo de 4000 caracteres com espaços)',
+    'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -694,6 +739,7 @@ Para inserir mais de um, separe-os entre vírgulas.',
       'active' => 1,
       'module' => 'text',
       'settings' => array(
+        'label_help_description' => 'Fale em termos gerais sobre o que é a experiência, detalhando mais as informações colocadas no campo "venda seu peixe". (máximo de 4000 caracteres com espaços)',
         'maxlength_js' => '',
         'maxlength_js_enforce' => 0,
         'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
@@ -710,7 +756,7 @@ Para inserir mais de um, separe-os entre vírgulas.',
     'bundle' => 'experiencia',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Como o município ou estado se organizou para realizar a experiência? (caso se aplique) Como a equipe se organizou para para realizar a experiência? (caso se aplique) Trata-se de uma experiência planejada? Quais foram as etapas do trabalho realizado? Houve apoio de outros níveis de gestão – distrital, município, região, estado? Houve apoio local? De quem foi a iniciativa para o início da experiência? Houve adesão de outros membros da equipe? (caso se aplique) Como a proposta foi acolhida? De quem foi a iniciativa para o início da experiência? (máximo de 4000 caracteres com espaços)',
+    'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -737,7 +783,6 @@ Para inserir mais de um, separe-os entre vírgulas.',
     'label' => 'Como funciona(ou) a experiência?',
     'required' => 0,
     'settings' => array(
-      'exclude_cv' => FALSE,
       'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
@@ -745,6 +790,11 @@ Para inserir mais de um, separe-os entre vírgulas.',
       'active' => 1,
       'module' => 'text',
       'settings' => array(
+        'label_help_description' => 'Como o município ou estado se organizou para realizar a experiência? (caso se aplique) Como a equipe se organizou para para realizar a experiência? (caso se aplique) Trata-se de uma experiência planejada? Quais foram as etapas do trabalho realizado? Houve apoio de outros níveis de gestão – distrital, município, região, estado? Houve apoio local? De quem foi a iniciativa para o início da experiência? Houve adesão de outros membros da equipe? (caso se aplique) Como a proposta foi acolhida? De quem foi a iniciativa para o início da experiência? (máximo de 4000 caracteres com espaços)',
+        'maxlength_js' => '',
+        'maxlength_js_enforce' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'maxlength_js_truncate_html' => 0,
         'rows' => 5,
       ),
       'type' => 'text_textarea',
@@ -757,7 +807,7 @@ Para inserir mais de um, separe-os entre vírgulas.',
     'bundle' => 'experiencia',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Quais estratégias de ação foram sendo formuladas/produzidas durante o percurso da experiência? O que foi novo e desafiador? A experiência favoreceu uma mudança no processo de trabalho? Ajudou a pensar estratégias para outras ações? (máximo de 4000 caracteres com espaços)',
+    'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -784,7 +834,6 @@ Para inserir mais de um, separe-os entre vírgulas.',
     'label' => 'Quais as novidades?',
     'required' => 0,
     'settings' => array(
-      'exclude_cv' => FALSE,
       'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
@@ -792,6 +841,11 @@ Para inserir mais de um, separe-os entre vírgulas.',
       'active' => 1,
       'module' => 'text',
       'settings' => array(
+        'label_help_description' => 'Quais estratégias de ação foram sendo formuladas/produzidas durante o percurso da experiência? O que foi novo e desafiador? A experiência favoreceu uma mudança no processo de trabalho? Ajudou a pensar estratégias para outras ações? (máximo de 4000 caracteres com espaços)',
+        'maxlength_js' => '',
+        'maxlength_js_enforce' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'maxlength_js_truncate_html' => 0,
         'rows' => 5,
       ),
       'type' => 'text_textarea',
@@ -804,7 +858,7 @@ Para inserir mais de um, separe-os entre vírgulas.',
     'bundle' => 'experiencia',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '(máximo de 4000 caracteres com espaços)',
+    'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -831,7 +885,6 @@ Para inserir mais de um, separe-os entre vírgulas.',
     'label' => 'Outras observações/campo livre',
     'required' => 0,
     'settings' => array(
-      'exclude_cv' => FALSE,
       'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
@@ -839,6 +892,11 @@ Para inserir mais de um, separe-os entre vírgulas.',
       'active' => 1,
       'module' => 'text',
       'settings' => array(
+        'label_help_description' => '(máximo de 4000 caracteres com espaços)',
+        'maxlength_js' => '',
+        'maxlength_js_enforce' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'maxlength_js_truncate_html' => 0,
         'rows' => 5,
       ),
       'type' => 'text_textarea',
@@ -1236,7 +1294,6 @@ Para inserir mais de um tema, separe-os entre vírgulas.',
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('(máximo de 4000 caracteres com espaços)');
   t('Anexe aqui termos de autorização de uso de imagem ou termo de consentimento de entrevista (clique aqui para mais informações).');
   t('Arquivos anexados');
   t('As informações desse campo serão utilizadas para divulgação da experiência! Por isso, "venda seu peixe!", diga em poucas palavras sobre o que é a experiência e porque é interessante que outras pessoas a conheçam. (máximo de 500 caracteres)');
@@ -1245,7 +1302,6 @@ Para inserir mais de um tema, separe-os entre vírgulas.',
   t('Clique em upload e o sistema permitirá adicionar mais uma imagem');
   t('Comment');
   t('Como funciona(ou) a experiência?');
-  t('Como o município ou estado se organizou para realizar a experiência? (caso se aplique) Como a equipe se organizou para para realizar a experiência? (caso se aplique) Trata-se de uma experiência planejada? Quais foram as etapas do trabalho realizado? Houve apoio de outros níveis de gestão – distrital, município, região, estado? Houve apoio local? De quem foi a iniciativa para o início da experiência? Houve adesão de outros membros da equipe? (caso se aplique) Como a proposta foi acolhida? De quem foi a iniciativa para o início da experiência? (máximo de 4000 caracteres com espaços)');
   t('Confirme o eixo temático');
   t('Desafios para o desenvolvimento');
   t('Digite 1 ou 2 letras e veja os <b>pontos da rede</b> já existentes. Caso não encontre um que contemple, termine de digitar para adicionar um novo.
@@ -1254,10 +1310,8 @@ Para inserir mais de um, separe-os entre vírgulas.');
   t('Digite 1 ou 2 letras e veja os <b>temas</b> já existentes. Caso não encontre um tema que contemple, termine de digitar para adicionar um novo.
 <br><br>
 Para inserir mais de um tema, separe-os entre vírgulas.');
-  t('Durante o desenvolvimento da experiência surgiram desafios que demandaram improvisos? De quais conhecimentos, e/ou articulações lançaram mão para responder aos desafios? (máximo de 4000 caracteres com espaços)');
   t('Envolve quais pontos / equipes da rede?');
   t('Estado');
-  t('Fale em termos gerais sobre o que é a experiência, detalhando mais as informações colocadas no campo "venda seu peixe". (máximo de 4000 caracteres com espaços)');
   t('Galeria de Vídeos');
   t('Galeria de imagens');
   t('Groups audience');
@@ -1267,11 +1321,11 @@ Para inserir mais de um tema, separe-os entre vírgulas.');
   t('Outras observações/campo livre');
   t('Para começar, uma imagem');
   t('Quais as novidades?');
-  t('Quais estratégias de ação foram sendo formuladas/produzidas durante o percurso da experiência? O que foi novo e desafiador? A experiência favoreceu uma mudança no processo de trabalho? Ajudou a pensar estratégias para outras ações? (máximo de 4000 caracteres com espaços)');
   t('Qual foi a experiência desenvolvida? Sobre o que foi?');
   t('Temas');
   t('Venda seu peixe!');
   t('d. Onde ocorre a experiência?');
+  t('exp_info_a');
   t('field_exp_info_a');
   t('field_exp_info_b');
   t('Âmbito da experiência');

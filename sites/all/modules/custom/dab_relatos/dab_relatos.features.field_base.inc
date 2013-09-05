@@ -126,6 +126,30 @@ function dab_relatos_field_default_field_bases() {
     'type' => 'markup',
   );
 
+  // Exported field_base: 'field_exp_info_ab'
+  $field_bases['field_exp_info_ab'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_exp_info_ab',
+    'foreign keys' => array(),
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'markup',
+    'settings' => array(
+      'markup' => array(
+        'format' => 'filtered_html',
+        'value' => '<p><strong>a. Autores do relato: quem inscreve e apresenta o relato de experiência</strong></p>
+
+<p>Máximo de 6 pessoas podem inscrever</p>
+',
+      ),
+    ),
+    'translatable' => 0,
+    'type' => 'markup',
+  );
+
   // Exported field_base: 'field_experiencia_ambito'
   $field_bases['field_experiencia_ambito'] = array(
     'active' => 1,
